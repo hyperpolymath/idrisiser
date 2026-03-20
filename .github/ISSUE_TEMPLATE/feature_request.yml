@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# Feature request issue template for {{OWNER}}/{{REPO}}
+# Feature request issue template for hyperpolymath/idrisiser
 name: Feature Request
 description: Suggest an idea or enhancement for this project
 title: "[Feature]: "

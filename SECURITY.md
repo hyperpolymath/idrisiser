@@ -1,20 +1,21 @@
-<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
 # Security Policy
+
+## Supported Versions
+
+| Version | Supported |
+|---------|-----------|
+| 0.1.x   | ✅        |
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability, please report it responsibly.
+Please report security vulnerabilities to: j.d.a.jewell@open.ac.uk
 
-**Email:** j.d.a.jewell@open.ac.uk
+Do NOT open a public issue for security vulnerabilities.
 
-**Please include:**
-- Description of the vulnerability
-- Steps to reproduce
-- Potential impact
+## Response Time
 
-**Response timeline:**
-- Acknowledgement within 48 hours
-- Initial assessment within 7 days
-- Fix or mitigation within 90 days
+We aim to respond within 48 hours and provide a fix within 7 days for critical issues.
 
-**Safe harbour:** We will not pursue legal action against security researchers who follow responsible disclosure.
+## Scope
+
+This policy covers the idrisiser CLI tool and its generated artifacts.

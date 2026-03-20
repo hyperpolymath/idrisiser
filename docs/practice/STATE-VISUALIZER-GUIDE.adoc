@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: PMPL-1.0-or-later
 = TOPOLOGY.md — Generation Guide
-{{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 :toc:
 :sectnums:
 
@@ -152,4 +152,4 @@ _structured data_ for tooling. Both should agree.
 
 == Copyright
 
-Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>

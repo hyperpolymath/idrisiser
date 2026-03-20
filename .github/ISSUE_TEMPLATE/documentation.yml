@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# Documentation issue template for {{OWNER}}/{{REPO}}
+# Documentation issue template for hyperpolymath/idrisiser
 name: Documentation
 description: Report unclear, missing, or incorrect documentation
 title: "[Docs]: "

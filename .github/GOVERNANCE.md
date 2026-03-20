@@ -155,4 +155,4 @@ with the community before adoption, even though the BDFL retains final authority
 
 ---
 
-<sub>Copyright (c) {{CURRENT_YEAR}} {{OWNER}}. Licensed under PMPL-1.0-or-later.</sub>
+<sub>Copyright (c) 2026 hyperpolymath. Licensed under PMPL-1.0-or-later.</sub>

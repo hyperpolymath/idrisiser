@@ -19,7 +19,7 @@ K9!
       name = "TODO: component-name",
       version = "1.0.0",
       description = "TODO: Brief description with validation details",
-      author = "{{AUTHOR}} <{{AUTHOR_EMAIL}}>",
+      author = "Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>",
     },
   },
 

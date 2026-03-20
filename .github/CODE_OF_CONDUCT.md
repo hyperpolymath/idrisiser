@@ -6,12 +6,12 @@ TEMPLATE INSTRUCTIONS (delete this block before publishing)
 ============================================================================
 Replace all {{PLACEHOLDER}} values:
   {{PROJECT_NAME}}     - Your project name
-  {{OWNER}}            - GitHub/GitLab username or org
-  {{REPO}}             - Repository name
+  hyperpolymath            - GitHub/GitLab username or org
+  idrisiser             - Repository name
   {{CONDUCT_EMAIL}}    - Email for conduct reports
   {{CONDUCT_TEAM}}     - Name of conduct team/committee
   {{RESPONSE_TIME}}    - Initial response SLA (e.g., 48 hours)
-  {{CURRENT_YEAR}}     - Current year
+  2026     - Current year
 
 Review and customise:
 - Adjust enforcement ladder for your community size
@@ -310,7 +310,7 @@ We thank these communities for their leadership in creating welcoming spaces.
 
 If you have questions about this Code of Conduct:
 
-- Open a [Discussion](https://{{FORGE}}/{{OWNER}}/{{REPO}}/discussions) (for general questions)
+- Open a [Discussion](https://github.com/hyperpolymath/idrisiser/discussions) (for general questions)
 - Email {{CONDUCT_EMAIL}} (for private questions)
 - Contact any maintainer directly
 
@@ -324,4 +324,4 @@ We're all here because we care about this project. Let's make it a place where e
 
 ---
 
-<sub>Last updated: {{CURRENT_YEAR}} · Based on Contributor Covenant 2.1</sub>
+<sub>Last updated: 2026 · Based on Contributor Covenant 2.1</sub>

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# Custom issue template for {{OWNER}}/{{REPO}}
+# Custom issue template for hyperpolymath/idrisiser
 name: Other
 description: Report an issue that does not fit the other categories
 title: ""

@@ -20,7 +20,7 @@ K9!
       name = "TODO: component-name",
       version = "1.0.0",
       description = "TODO: Detailed description of what this component does",
-      author = "{{AUTHOR}} <{{AUTHOR_EMAIL}}>",
+      author = "Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>",
     },
     warnings = [
       "This component has full system access",

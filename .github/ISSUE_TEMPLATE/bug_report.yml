@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# Bug report issue template for {{OWNER}}/{{REPO}}
+# Bug report issue template for hyperpolymath/idrisiser
 name: Bug Report
 description: Create a report to help us improve
 title: "[Bug]: "

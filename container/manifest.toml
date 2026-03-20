@@ -16,11 +16,11 @@ cerro-torre .ctp bundle with Ed25519 signing and full provenance
 tracking.
 """
 license = "{{LICENSE}}"
-homepage = "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
-maintainer = "{{AUTHOR}} <{{EMAIL}}>"
+homepage = "https://github.com/hyperpolymath/idrisiser"
+maintainer = "Jonathan D.A. Jewell <{{EMAIL}}>"
 
 [provenance]
-upstream = "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
+upstream = "https://github.com/hyperpolymath/idrisiser"
 import_date = {{CURRENT_DATE}}T00:00:00Z
 
 [dependencies]

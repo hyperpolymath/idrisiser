@@ -1,6 +1,6 @@
 = Threat Model
 <!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
-<!-- Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}> -->
+<!-- Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk> -->
 
 # Threat Model: {{PROJECT_NAME}}
 
@@ -11,7 +11,7 @@
 | Project       | {{PROJECT_NAME}}               |
 | Version       | 1.0                            |
 | Last Reviewed | {{DATE}}                       |
-| Author        | {{AUTHOR}}                     |
+| Author        | Jonathan D.A. Jewell                     |
 | Methodology   | STRIDE                         |
 
 ## Scope

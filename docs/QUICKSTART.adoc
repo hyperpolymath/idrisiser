@@ -13,7 +13,7 @@ Get up and running in 60 seconds.
 
 [source,bash]
 ----
-git clone https://github.com/{{OWNER}}/rsr-template-repo my-project
+git clone https://github.com/hyperpolymath/rsr-template-repo my-project
 cd my-project
 rm -rf .git && git init -b main
 just init       # interactive placeholder replacement

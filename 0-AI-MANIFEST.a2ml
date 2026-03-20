@@ -76,7 +76,7 @@ Policy enforcement contracts (k9, dust, lust, must, trust).
 2. **Single source of truth** - `.machine_readable/` is authoritative
 3. **No stale metadata** - If root state files exist, they are OUT OF DATE
 4. **License consistency** - All code PMPL-1.0-or-later unless platform requires MPL-2.0
-5. **Author attribution** - Always "{{AUTHOR}} <{{AUTHOR_EMAIL}}>"
+5. **Author attribution** - Always "Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"
 6. **Container images** - MUST use Chainguard base (`cgr.dev/chainguard/wolfi-base:latest` or `cgr.dev/chainguard/static:latest`)
 7. **Container runtime** - Podman, never Docker. Files are `Containerfile`, never `Dockerfile`
 8. **Container orchestration** - `selur-compose`, never `docker-compose`

@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 #
 # git-cliff configuration for conventional commit changelog generation.
 # https://git-cliff.org/docs/configuration
 #
 # Placeholders — replace before first use:
-#   {{OWNER}} — GitHub organization or username
-#   {{REPO}}  — GitHub repository name
+#   hyperpolymath — GitHub organization or username
+#   idrisiser  — GitHub repository name
 
 [changelog]
 # Changelog header
@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 # https://keats.github.io/tera/docs/#introduction
 body = """
 {%- macro remote_url() -%}
-  https://github.com/{{OWNER}}/{{REPO}}
+  https://github.com/hyperpolymath/idrisiser
 {%- endmacro -%}
 
 {% if version -%}
@@ -57,7 +57,7 @@ body = """
 # Template for the changelog footer
 footer = """
 {%- macro remote_url() -%}
-  https://github.com/{{OWNER}}/{{REPO}}
+  https://github.com/hyperpolymath/idrisiser
 {%- endmacro -%}
 
 {% for release in releases -%}

@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# Issue template chooser configuration for {{OWNER}}/{{REPO}}
+# Issue template chooser configuration for hyperpolymath/idrisiser
 blank_issues_enabled: true
 contact_links:
   - name: Discussions
-    url: https://github.com/{{OWNER}}/{{REPO}}/discussions
+    url: https://github.com/hyperpolymath/idrisiser/discussions
     about: Ask questions, share ideas, or start a conversation in Discussions.
   - name: Security Vulnerabilities
-    url: https://github.com/{{OWNER}}/{{REPO}}/security/advisories/new
+    url: https://github.com/hyperpolymath/idrisiser/security/advisories/new
     about: Report security vulnerabilities privately via GitHub Security Advisories.

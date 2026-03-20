@@ -1,22 +1,32 @@
 // SPDX-License-Identifier: PMPL-1.0-or-later
-= YOUR Template Repo Roadmap
+= idrisiser Roadmap
+:toc:
+:icons: font
 
-== Current Status
+== Phase 0: Scaffold (COMPLETE)
+* [x] RSR template with full CI/CD
+* [x] CLI with subcommands
+* [x] Manifest parser
+* [x] Codegen stubs
+* [x] ABI module stubs
+* [x] README with architecture
 
-Initial development phase.
+== Phase 1: Core Implementation
+* [ ] Implement target-language-specific code generation
+* [ ] Write Idris2 ABI proofs for core invariants
+* [ ] Build Zig FFI bridge
+* [ ] First working end-to-end example
+* [ ] Integration tests
 
-== Milestones
+== Phase 2: Polish
+* [ ] Error messages and diagnostics
+* [ ] Shell completions (bash, zsh, fish)
+* [ ] CI/CD for the generated artifacts
+* [ ] Performance benchmarks
+* [ ] Additional examples
 
-=== v0.1.0 - Foundation
-* [ ] Core functionality
-* [ ] Basic documentation
-* [ ] CI/CD pipeline
-
-=== v1.0.0 - Stable Release
-* [ ] Full feature set
-* [ ] Comprehensive tests
-* [ ] Production ready
-
-== Future Directions
-
-_To be determined based on community feedback._
+== Phase 3: Ecosystem
+* [ ] PanLL panel integration
+* [ ] BoJ-server cartridge
+* [ ] VeriSimDB backing store for results
+* [ ] Publish to crates.io

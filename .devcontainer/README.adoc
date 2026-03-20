@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: PMPL-1.0-or-later
 = Dev Container Usage
-:author: {{AUTHOR}} <{{AUTHOR_EMAIL}}>
+:author: Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 
 == Overview
 

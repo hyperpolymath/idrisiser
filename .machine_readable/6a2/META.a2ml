@@ -1,53 +1,41 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
-# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-#
-# META.a2ml — Project meta-level information
-# Architecture decisions, design rationale, governance.
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+;; META.a2ml — Meta-level information for idrisiser
 
-[metadata]
-version = "0.1.0"
-last-updated = "{{CURRENT_DATE}}"
+(meta
+  (version "0.1.0")
+  (last-updated "2026-03-20")
 
-[project-info]
-type = "{{PROJECT_TYPE}}"  # library | binary | monorepo | service | website
-languages = []             # e.g. ["rust", "zig", "idris2"]
-license = "PMPL-1.0-or-later"
-author = "{{AUTHOR}} ({{OWNER}})"
+  (architecture-decisions
+    (adr "001-iser-pattern"
+      (status "accepted")
+      (context "Need to make powerful languages accessible without steep learning curves")
+      (decision "Use manifest-driven code generation: user describes WHAT, tool generates HOW")
+      (consequences "Users write zero target language code; all complexity in the -iser"))
 
-[architecture-decisions]
-# ADR format: status = proposed | accepted | deprecated | superseded | rejected
-# - { id = "ADR-001", title = "Use Zig for FFI", status = "accepted", date = "2026-02-14" }
+    (adr "002-abi-ffi-standard"
+      (status "accepted")
+      (context "Need verified interop between Rust CLI, target language, and user code")
+      (decision "Idris2 ABI for formal proofs, Zig FFI for C-ABI bridge")
+      (consequences "Compile-time correctness guarantees; zero runtime overhead from proofs"))
 
-[development-practices]
-build-tool = "just"
-container-runtime = "podman"
-ci-platform = "github-actions"
-package-manager = "guix"  # guix | nix | cargo | mix
+    (adr "003-rsr-template"
+      (status "accepted")
+      (context "Need consistent project structure across 29+ -iser repos")
+      (decision "All repos cloned from rsr-template-repo with full CI/CD and governance")
+      (consequences "17 workflows, SECURITY.md, CONTRIBUTING, bot directives from day one")))
 
-[maintenance-axes]
-scoping-first = true
-execution-order = "axis-1 > axis-2 > axis-3"
-axis-1 = "must > intend > like"
-axis-2 = "corrective > adaptive > perfective"
-axis-3 = "systems > compliance > effects"
+  (development-practices
+    (language "Rust" (purpose "CLI and orchestration"))
+    (language "Idris2" (purpose "ABI formal proofs"))
+    (language "Zig" (purpose "FFI C-ABI bridge"))
+    (build-tool "cargo")
+    (ci "GitHub Actions (17 workflows)"))
 
-[scoping]
-sources = "README, roadmap, status docs, maintenance checklist, CI/security docs"
-marker-scan = "TODO/FIXME/XXX/HACK/STUB/PARTIAL"
-idris-unsound-scan = "believe_me/assert_total"
-
-[axis-2-maintenance-rules]
-corrective-first = true
-adaptive-second = true
-adaptive-focus = "scope-change reconciliation, stale-reference removal, obsolete-work culling"
-perfective-third = true
-perfective-source = "axis-1 honest state after corrective/adaptive updates"
-
-[axis-3-audit-rules]
-audit-focus = "systems in place, documentation explains actual state, safety/security accounted for, observed effects reviewed"
-compliance-focus = "seams/compromises/exception register, bounded exceptions, anti-drift checks"
-drift-risk-example = "single exception broadening into policy violation (e.g. ReScript->TypeScript spread)"
-effects-evidence = "benchmark execution/results and maintainer status dialogue/review"
-
-[design-rationale]
-# Key design decisions and their reasoning
+  (design-rationale
+    (principle "Manifest-driven"
+      (explanation "User intent captured in TOML; all generation is deterministic and reproducible"))
+    (principle "Formally verified bridges"
+      (explanation "Idris2 dependent types prove interface correctness at compile time"))
+    (principle "Zero target language exposure"
+      (explanation "Users never write Chapel/Julia/Futhark/etc. — the -iser handles everything"))))

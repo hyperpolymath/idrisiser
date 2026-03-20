@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# SPDX-FileCopyrightText: {{CURRENT_YEAR}} {{AUTHOR}}
+# SPDX-FileCopyrightText: 2026 Jonathan D.A. Jewell
 name: Mirror to Git Forges
 
 on:

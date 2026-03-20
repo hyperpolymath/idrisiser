@@ -1,5 +1,5 @@
 ;; SPDX-License-Identifier: PMPL-1.0-or-later
-;; Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+;; Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 ;;
 ;; Guix package definition for {{PROJECT_NAME}}
 ;;
@@ -63,7 +63,7 @@
    (list
     ;; TODO: Add runtime dependencies
     ))
-  (home-page "https://github.com/{{OWNER}}/{{PROJECT_NAME}}")
+  (home-page "https://github.com/hyperpolymath/{{PROJECT_NAME}}")
   (synopsis "{{PROJECT_PURPOSE}}")
   (description "RSR-compliant project. See README.adoc for details.")
   (license (list

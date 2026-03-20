@@ -30,7 +30,7 @@ jobs:
         id: install
         run: |
           # Try to fetch the latest release binary from the org
-          PA_URL="https://github.com/{{OWNER}}/panic-attack/releases/latest/download/panic-attack-linux-x86_64"
+          PA_URL="https://github.com/hyperpolymath/panic-attack/releases/latest/download/panic-attack-linux-x86_64"
           if curl -fsSL --head "$PA_URL" >/dev/null 2>&1; then
             curl -fsSL -o /usr/local/bin/panic-attack "$PA_URL"
             chmod +x /usr/local/bin/panic-attack
@@ -142,7 +142,7 @@ jobs:
         id: build
         continue-on-error: true
         run: |
-          git clone https://github.com/{{OWNER}}/hypatia.git "$HOME/hypatia" 2>/dev/null || true
+          git clone https://github.com/hyperpolymath/hypatia.git "$HOME/hypatia" 2>/dev/null || true
           if [ -d "$HOME/hypatia/scanner" ]; then
             cd "$HOME/hypatia"
             if [ ! -f hypatia-v2 ]; then

@@ -1,26 +1,38 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
-# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-#
-# ECOSYSTEM.a2ml — Project ecosystem position
-# Relationships, dependencies, integration points.
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+;; ECOSYSTEM.a2ml — Ecosystem position for idrisiser
 
-[metadata]
-version = "0.1.0"
-last-updated = "{{CURRENT_DATE}}"
+(ecosystem
+  (version "0.1.0")
+  (name "idrisiser")
+  (type "tool")
+  (purpose "Generate proven-correct wrappers using Idris2 dependent types")
 
-[project]
-name = "{{PROJECT_NAME}}"
-purpose = "{{PROJECT_PURPOSE}}"
-role = "{{PROJECT_ROLE}}"  # e.g. ffi-infrastructure, cli-tool, library, service
+  (position-in-ecosystem
+    (family "-iser acceleration frameworks")
+    (meta-framework "iseriser")
+    (relationship "sibling")
+    (top-3 ("typedqliser" "chapeliser" "verisimiser")))
 
-[position-in-ecosystem]
-tier = "infrastructure"  # 1 | 2 | infrastructure
-
-[related-projects]
-# relationship types: sibling-standard, dependency, dependent, inspiration, potential-consumer
-# - { name = "language-bridges", relationship = "sibling-standard" }
-# - { name = "hypatia", relationship = "potential-consumer" }
-
-[integration-points]
-# External systems this project connects to
-# - { system = "gitbot-fleet", direction = "outbound", protocol = "repository_dispatch" }
+  (related-projects
+    (project "iseriser"
+      (relationship "meta-framework")
+      (description "Generates new -iser project scaffolding"))
+    (project "typedqliser"
+      (relationship "sibling-priority-1")
+      (description "Formal type safety for any query language"))
+    (project "chapeliser"
+      (relationship "sibling-priority-2")
+      (description "Chapel distributed computing acceleration"))
+    (project "verisimiser"
+      (relationship "sibling-priority-3")
+      (description "VeriSimDB octad database augmentation"))
+    (project "squeakwell"
+      (relationship "sibling")
+      (description "Database recovery via constraint propagation"))
+    (project "proven"
+      (relationship "dependency")
+      (description "Shared Idris2 verified library"))
+    (project "typell"
+      (relationship "dependency")
+      (description "Type theory engine"))))
