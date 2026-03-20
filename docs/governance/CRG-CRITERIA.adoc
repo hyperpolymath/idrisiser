@@ -1,0 +1,39 @@
+= Component Readiness Grades (CRG) Criteria
+:toc: preamble
+:icons: font
+
+This document defines the quality assessment criteria for individual project components.
+
+== Grade Definitions
+
+[cols="1,2,3,4",options="header"]
+|===
+| Grade | Name | Release Stage | Meaning
+
+| **A** | Field-Proven | Stable | Real-world feedback amassed; no harm in wild.
+| **B** | Broadly Validated | Release Candidate | Tested on 6+ diverse external targets.
+| **C** | Self-Validated | Beta | Reliable in home context (dogfooded).
+| **D** | Partial | Alpha | Works on some inputs/cases but not systematically.
+| **E** | Minimal | Pre-alpha | Barely functional; needs major work.
+| **F** | Harmful/Wasteful | Reject/Delegate | Redundant or negative value.
+| **X** | Untested | — | Status completely unknown.
+|===
+
+== Core Principles
+
+1. **Assess components, not projects:** Each feature gets its own grade.
+2. **Evidence over intuition:** Every grade above X requires documented evidence.
+3. **Honest assessment:** Grade the component as it is today, not as you hope it will be.
+4. **Grades are earned and can be lost:** Regressions lead to demotion.
+
+== Assessment Checklist
+
+1. Has it been tested at all? (No → **X**)
+2. Does it cause harm or duplicate something better? (Yes → **F**)
+3. Does it do something, however slight? (Barely → **E**)
+4. Does it work on some things but not others? (Partial → **D**)
+5. Does it work reliably on our own project? (Dogfooded → **C**)
+6. Has it been tested on 6+ diverse external targets? (Broad → **B**)
+7. Do external users confirm it works and is useful? (Field-proven → **A**)
+
+See link:READINESS.adoc[READINESS.adoc] for the current project assessment.

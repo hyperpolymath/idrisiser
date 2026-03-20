@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Clade declaration — part of the gv-clade-index registry
+# See: https://github.com/hyperpolymath/gv-clade-index
+
+[identity]
+uuid = "a5ea1382-a34c-5334-8a46-a2ebe904c810"
+primary-forge = "github"
+primary-owner = "hyperpolymath"
+canonical-name = "rsr-template-repo"
+prefixed-name = "rm-rsr-template-repo"
+
+[clade]
+primary = "rm"
+secondary = ["gv"]
+assigned = "2026-03-16"
+rationale = ""
+
+[forges]
+github = "hyperpolymath/rsr-template-repo"
+gitlab = "hyperpolymath/rsr-template-repo"
+bitbucket = "hyperpolymath/rsr-template-repo"
+
+[lineage]
+type = "standalone"
+parent = "RSR template — scaffold for new repos"
+born = "2026-03-16"

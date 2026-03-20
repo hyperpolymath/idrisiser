@@ -1,0 +1,63 @@
+= Software Development Approach (General)
+:toc: left
+:toclevels: 2
+
+This is the general operating policy for software development across repositories.
+
+== Core Sequence
+
+Always run work in this order:
+
+1. Scope first (Axis 1)
+2. Maintenance second (Axis 2)
+3. Audit third (Axis 3)
+
+== Axis Definitions
+
+=== Axis 1: Scope
+
+Priority order: `must > intend > like`
+
+Axis 1 output is a scoped assembly of work based on:
+
+* README, roadmap, status, CI/security docs
+* marker scans (`TODO`, `FIXME`, `XXX`, `HACK`, `STUB`, `PARTIAL`)
+* Idris unsoundness scan when Idris exists (`believe_me`, `assert_total`)
+* docs honesty check (intent vs actual implementation)
+
+=== Axis 2: Maintenance
+
+Priority order: `corrective > adaptive > perfective`
+
+* Corrective: fix defects, regressions, breakage, security/safety failures
+* Adaptive: reconcile scope changes, remove stale references, cull obsolete work
+* Perfective: improve quality/clarity/performance only from the honest Axis 1 state
+
+=== Axis 3: Audit
+
+Priority order: `systems > compliance > effects`
+
+* Systems: required mechanisms exist and are operating
+* Compliance: seams/compromises/exceptions are explicit, bounded, and do not drift
+* Effects: benchmark and operational impact evidence is captured and reviewed
+
+Compliance scanner baseline: `panic-attack` +
+Effects/ecological baseline: sustainabot-guided ecological checking
+
+== Generic Cleanup And Finish-Off
+
+At cycle end:
+
+* reduce root clutter to required control/entry files
+* archive/remove stale or superseded work
+* synchronize human and machine docs
+* run compliance and effects audits with evidence capture
+* produce Must/Should/Could summary and immediate next-actions list
+
+== Collaboration Rule
+
+Effects review must include explicit maintainer dialogue:
+
+* what changed
+* why it changed
+* what risks remain

@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "generated-logic"
+level: 3
+parent: "../0.2-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Specialised Level 3 logic for generated.

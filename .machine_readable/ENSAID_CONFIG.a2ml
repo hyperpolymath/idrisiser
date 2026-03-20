@@ -1,0 +1,96 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+#
+# ENSAID_CONFIG.a2ml — eNSAID Environment Configuration
+# Per-repo configuration for PanLL and eNSAID-compatible tools.
+#
+# Canonical location: .machine_readable/ENSAID_CONFIG.a2ml
+# Spec: https://github.com/hyperpolymath/standards/tree/main/ensaid-config
+#
+# Naming convention:
+#   - UPPERCASE + underscore = non-executable machine-readable file
+#   - Lives in .machine_readable/ alongside STATE.a2ml, META.a2ml, etc.
+
+# ─────────────────────────────────────────────────────────────────
+# [ensaid] — Core eNSAID identity and version
+# ─────────────────────────────────────────────────────────────────
+[ensaid]
+version = "1.0.0"
+tool = "panll"
+
+# ─────────────────────────────────────────────────────────────────
+# [workspace] — Workspace mode, protection, and execution policy
+# ─────────────────────────────────────────────────────────────────
+[workspace]
+mode = "rhodium"           # rhodium | gold | silver | bronze
+protection = "open"        # open | guarded | locked
+execution = "live"         # live | dry-run | approval-required
+
+# ─────────────────────────────────────────────────────────────────
+# [preferences] — User/repo-level display and behaviour preferences
+# ─────────────────────────────────────────────────────────────────
+[preferences]
+humidity = "medium"                      # high | medium | low (drift aura intensity)
+default-arrangement = "default-3-panel"  # workspace arrangement ID
+auto-connect = true                      # auto-connect panels to backends on load
+
+# ─────────────────────────────────────────────────────────────────
+# [panels] — Panel visibility, enablement, and isolation overrides
+# ─────────────────────────────────────────────────────────────────
+[panels]
+version = "1.0.0"
+
+# By default, all panels are available. Uncomment to restrict:
+# [[panels.enabled]]
+# id = "valence-shell"
+# isolation = "native"
+# auto-connect = true
+#
+# [[panels.enabled]]
+# id = "editor-bridge"
+# isolation = "native"
+# auto-connect = true
+
+# Panels to hide for this repo context:
+# [panels.disabled]
+# ids = []
+
+# ─────────────────────────────────────────────────────────────────
+# [workflows] — Automation Router event-driven cross-panel rules
+# ─────────────────────────────────────────────────────────────────
+[workflows]
+version = "1.0.0"
+
+# Example: rebuild on file save
+# [[workflows.rule]]
+# name = "build-on-save"
+# trigger = { event = "file-changed", pattern = "src/**/*.res" }
+# condition = { panel = "build-dashboard", field = "watchMode", equals = true }
+# action = { panel = "build-dashboard", message = "TriggerBuild", args = { target = "game" } }
+# approval = "auto-fire"  # auto-fire | require-approval | approve-once | dry-run-first
+
+# ─────────────────────────────────────────────────────────────────
+# [clades] — Panel clade trait and capability overrides
+# ─────────────────────────────────────────────────────────────────
+[clades]
+version = "1.0.0"
+
+# Example: add a custom capability to a panel clade
+# [[clades.override]]
+# id = "build-dashboard"
+# traits = { has-work-items = true }
+# capabilities-add = ["CustomCheck"]
+
+# ─────────────────────────────────────────────────────────────────
+# [portfolios] — Custom panel bundles for this repo's workflow
+# ─────────────────────────────────────────────────────────────────
+[portfolios]
+version = "1.0.0"
+
+# Example: a custom portfolio for this project
+# [[portfolios.custom]]
+# id = "{{project}}-dev"
+# name = "{{PROJECT_NAME}} Development"
+# description = "Panels for {{PROJECT_NAME}} development"
+# panels = ["valence-shell", "editor-bridge", "build-dashboard"]
+# default-isolation = "native"

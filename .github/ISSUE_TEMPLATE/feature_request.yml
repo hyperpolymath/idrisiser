@@ -1,0 +1,87 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Feature request issue template for {{OWNER}}/{{REPO}}
+name: Feature Request
+description: Suggest an idea or enhancement for this project
+title: "[Feature]: "
+labels: ["enhancement", "priority: unset", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature. Please describe your idea clearly so we can
+        evaluate and prioritize it.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: Is your feature request related to a problem? Describe the pain point.
+      placeholder: "I'm always frustrated when [...]. Currently there is no way to [...]."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: A clear and concise description of what you want to happen.
+      placeholder: "I'd like a command/option/feature that [...]."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any alternative solutions or features you have considered.
+      placeholder: "I considered using X, but it doesn't work because [...]."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: What area does this feature relate to?
+      options:
+        - Core functionality
+        - Developer experience
+        - Performance
+        - Documentation
+        - CI/CD / Tooling
+        - Integration / Interop
+        - Security
+        - Accessibility
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Importance to you
+      description: How important is this feature for your use case?
+      options:
+        - Nice to have
+        - Important (would improve my workflow)
+        - Critical (blocking my use case)
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context, screenshots, mockups, or references about the feature request.
+      placeholder: Links, screenshots, related projects, etc.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I would be willing to submit a PR to implement this feature
+          required: false

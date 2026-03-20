@@ -1,0 +1,86 @@
+= Architecture Decision Record: 0001-adopt-rsr-standard
+<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
+<!-- Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}> -->
+
+# 1. Adopt Rhodium Standard Repository (RSR) Template
+
+Date: 2026-02-14
+
+## Status
+
+Accepted
+
+## Context
+
+Managing multiple repositories with an ad-hoc approach led to significant
+inconsistencies across the ecosystem. Common problems included:
+
+- Missing or incomplete configuration files (SECURITY.md, CONTRIBUTING.md,
+  .editorconfig, etc.)
+- State files (STATE.a2ml, META.a2ml, ECOSYSTEM.a2ml) placed in the repository
+  root instead of the canonical `.machine_readable/` directory
+- Duplicate or conflicting workflow definitions across repos
+- No standardized entry point for AI agents interacting with repositories
+- Inconsistent bot directive configurations leading to unreliable automation
+- No contractile enforcement or Justfile automation
+
+Without a single source of truth for repository structure, each new repo
+required manual setup and inevitably drifted from best practices over time.
+
+## Decision
+
+Adopt the Rhodium Standard Repository (RSR) template (`rsr-template-repo`) as
+the canonical starting point for all new repositories. Existing repositories
+will migrate incrementally as they receive active development.
+
+The RSR template provides:
+
+- **Machine-readable state files** in `.machine_readable/` (STATE.a2ml,
+  ECOSYSTEM.a2ml, META.a2ml, AGENTIC.a2ml, NEUROSYM.a2ml, PLAYBOOK.a2ml)
+- **AI manifest** (`0-AI-MANIFEST.a2ml`) as a universal entry point for all
+  AI agents
+- **Bot directives** in `.machine_readable/bot_directives/` for bot orchestration integration
+- **Contractiles** in `.machine_readable/contractiles/` (k9, dust, lust, must, trust) for
+  policy enforcement
+- **Standardized workflows** (16+ GitHub Actions workflows, all SHA-pinned)
+- **Justfile automation** with standard recipes for common tasks
+- **Security and governance files**: SECURITY.md, CONTRIBUTING.md,
+  CODE_OF_CONDUCT.md, LICENSE (PMPL-1.0-or-later)
+- **Architecture Decision Records** in `docs/decisions/`
+
+New repositories are created by cloning the template:
+
+```bash
+git clone https://github.com/{{OWNER}}/rsr-template-repo new-repo-name
+cd new-repo-name
+rm -rf .git && git init
+```
+
+## Consequences
+
+### Positive
+
+- Consistency across all repositories, enforced from creation
+- Automated compliance checking via `rsr-antipattern.yml` workflow
+- Bot fleet can operate reliably across all repos with predictable structure
+- AI agents (Claude, Gemini, etc.) have a standardized entry point via
+  `0-AI-MANIFEST.a2ml`
+- New contributors can onboard faster with familiar, documented structure
+- Reduced maintenance burden: fix once in template, propagate to all repos
+- Machine-readable state enables tooling and automation pipelines
+
+### Negative
+
+- Migration effort for existing repos requires time and attention
+- Learning curve for contributors unfamiliar with RSR conventions
+- Template updates need propagation mechanism to existing repos
+- Some repos may have unique needs that do not fit the standard template
+  without customization
+
+### Neutral
+
+- Existing CI/CD pipelines continue to work; RSR workflows are additive
+- Third-party dependencies retain their original licenses regardless of
+  repo structure
+- ADR process itself is part of the template, enabling future decisions
+  to be recorded consistently

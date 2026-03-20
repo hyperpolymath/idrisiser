@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "reports-unit"
+level: 2
+parent: "../0.1-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Documentation unit for all automated and manual audit reports. Classified
+  by domain.
+
+canonical_locations:
+  maintenance: "maintenance/"
+  security: "security/"
+  performance: "performance/"
+  compliance: "compliance/"
+  quality: "quality/"

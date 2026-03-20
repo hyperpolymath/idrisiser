@@ -1,0 +1,16 @@
+
+# AI Assistant Instructions
+
+## Repository Focus
+- `rsr-template-repo` is treated as a Rhodium Standard Repository; obey the Rhodium policies and keep `.machine_readable/` authoritative.
+- All machine-readable content lives under `.machine_readable/` — state files (a2ml), bot directives, and contractiles.
+- Prefer to keep generated files out of source control, and regenerate them with the documented commands before committing.
+
+## Workflow
+1. Inspect `.machine_readable/STATE.a2ml` for blockers and next actions.
+2. Respect any constraints listed inside `.machine_readable/AGENTIC.a2ml` when tooling changes are requested.
+3. After finishing edits, update STATE with your outcomes and commit with a concise, imperative message.
+
+## Delivery Promises
+- Mention in summaries whether STATE, `.machine_readable/contractiles/`, or `.machine_readable/bot_directives/` changed.
+- Keep this file in sync with the repository's status; update it if the governance changes.

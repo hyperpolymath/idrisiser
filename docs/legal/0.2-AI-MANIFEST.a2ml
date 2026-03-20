@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "legal-track"
+level: 2
+parent: "../0.1-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Sub-unit for legal and licensing documentation. Contains framework
+  exhibits and archival license texts.
+
+canonical_locations:
+  exhibits: "exhibits/"
+  texts: "texts/"

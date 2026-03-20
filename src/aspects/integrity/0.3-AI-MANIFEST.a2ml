@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "aspect-unit-integrity"
+level: 3
+parent: "../0.2-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Implementation logic for the integrity aspect.

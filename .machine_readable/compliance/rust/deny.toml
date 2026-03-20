@@ -1,0 +1,65 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# cargo-deny configuration for RSR-compliant repositories
+# Run: cargo deny check
+# Docs: https://embarkstudios.github.io/cargo-deny/
+
+[graph]
+targets = []
+all-features = true
+
+# --- Advisory database ---------------------------------------------------
+[advisories]
+db-path = "~/.cargo/advisory-db"
+db-urls = ["https://github.com/rustsec/advisory-db"]
+# Fail on any known vulnerability
+vulnerability = "deny"
+unmaintained = "warn"
+yanked = "warn"
+notice = "warn"
+
+# --- License policy -------------------------------------------------------
+[licenses]
+unlicensed = "deny"
+confidence-threshold = 0.8
+
+allow = [
+    "PMPL-1.0-or-later",
+    "MPL-2.0",
+    "MIT",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "Unicode-3.0",
+    "Unicode-DFS-2016",
+]
+
+deny = [
+    "AGPL-3.0-only",
+    "AGPL-3.0-or-later",
+]
+
+copyleft = "warn"
+
+[[licenses.exceptions]]
+allow = ["OpenSSL"]
+name = "ring"
+
+# --- Crate bans ------------------------------------------------------------
+[bans]
+multiple-versions = "warn"
+wildcards = "allow"
+highlight = "all"
+
+deny = [
+    # Known-bad crates
+    { name = "openssl", wrappers = ["openssl-sys"] },
+]
+
+# --- Source restrictions ----------------------------------------------------
+[sources]
+unknown-registry = "deny"
+unknown-git = "warn"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

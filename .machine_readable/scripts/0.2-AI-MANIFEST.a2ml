@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "automation-scripts-unit"
+level: 2
+parent: "../0.1-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Internal automation logic for the project lifecycle, forge sync,
+  verification triggers, and maintenance.
+
+canonical_locations:
+  maintenance: "maintenance/"
+  lifecycle: "lifecycle/"
+  forge: "forge/"
+  verification: "verification/"

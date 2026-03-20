@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+#
+# ANCHOR.a2ml - authoritative anchor for this repository
+
+[metadata]
+version = "1.0.0"
+last-updated = "{{CURRENT_DATE}}"
+
+[anchor]
+schema = "hyperpolymath.anchor/1"
+repo = "{{OWNER}}/{{REPO}}"
+authority = "upstream-canonical"
+
+purpose = [
+  "Define canonical semantics and policy boundaries for this repository.",
+  "Declare what downstream/satellite repos can extend but not redefine.",
+  "Provide a stable golden path and invariant contract for release readiness.",
+]
+
+[identity]
+project = "{{PROJECT_NAME}}"
+kind = "{{PROJECT_KIND}}"                # language | library | service | tool
+one-sentence = "{{PROJECT_PURPOSE}}"
+domain = "{{PROJECT_DOMAIN}}"
+
+[semantic-authority]
+policy = "canonical"
+
+owns = [
+  "Project semantics and specification",
+  "Invariant definitions and contractiles",
+  "Reference implementation behavior",
+]
+
+[implementation-policy]
+allowed = ["Rust", "Idris2", "Zig", "Scheme", "Shell", "Just", "AsciiDoc", "Markdown"]
+forbidden = ["Node.js", "npm"]
+
+[golden-path]
+smoke-test-command = [
+  "just test",
+  "just quality",
+]
+
+success-criteria = [
+  "Core tests pass",
+  "Quality gates pass",
+  "No unresolved critical security findings",
+]
+
+[satellite-policy]
+must-pin-upstream = true
+must-declare-authority = true
+must-have-anchor = true
+must-have-golden-path = true
+
+[semantic-authority-files]
+language-spec = "SPECIFICATION.md"
+formal-proofs = "docs/proofs/PROOFS.adoc"
+type-theory = "docs/theory/THEORY.adoc"
+algorithms = "docs/theory/ALGORITHMS.adoc"

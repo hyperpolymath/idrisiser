@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "docs-pillar"
+level: 1
+parent: "../0-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Technical documentation hub. The root contains high-level orientation
+  (README, Quickstart, State-Visualizer). Specialized tracks live in
+  subdirectories.
+
+canonical_locations:
+  quickstart: "QUICKSTART.adoc"
+  state_visualizer: "STATE-VISUALIZER.adoc"
+  governance: "governance/"
+  architecture: "architecture/"
+  decisions: "decisions/"
+  theory: "theory/"
+  practice: "practice/"
+  developer: "developer/"
+  attribution: "attribution/"
+  reports: "reports/"
+  whitepapers: "whitepapers/"
+  standards: "standards/"
+  legal: "legal/"
+  wikis: "wikis/"
+
+invariants:
+  - "Primary documentation format MUST be AsciiDoc (.adoc)"
+  - "Root docs/ MUST only contain pillar entry points"

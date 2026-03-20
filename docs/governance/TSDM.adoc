@@ -1,0 +1,26 @@
+= Triaxial Software Development Methodology (TSDM)
+:toc: preamble
+:icons: font
+
+TSDM is a three-dimensional governance framework designed for high-assurance, long-lived software systems. It ensures that every project decision is mapped across three critical axes: Planning, Maintenance, and Audit.
+
+== The Three Axes
+
+=== Axis 1: Planning (Scope Priority)
+* **Must:** Non-negotiable core invariants and safety requirements.
+* **Should:** Essential features and planned improvements.
+* **Could:** Desired enhancements and future-proofing.
+
+=== Axis 2: Maintenance (Execution Type)
+* **Corrective:** Fixing bugs, vulnerabilities, and failures.
+* **Adaptive:** Responding to environment or dependency changes.
+* **Perfective:** Improving performance, refactoring, and documentation.
+
+=== Axis 3: Audit (Verification Focus)
+* **Systems:** Integrity of tools, infrastructure, and automation.
+* **Compliance:** Adherence to standards, licenses, and verified seams.
+* **Effects:** Real-world impact, ecological footprint, and user feedback.
+
+== Integration
+
+TSDM is the operational core of the Rhodium Standard. Every task in the `Justfile` and every state change in `STATE.a2ml` should be justifiable within this framework.

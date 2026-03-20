@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "interface-seams-unit"
+level: 2
+parent: "../0.1-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Consolidated "Verified Interface Seams" unit. This directory unifies the
+  formal specification (ABI), the bridge implementation (FFI), and the
+  resulting artifacts (Generated).
+
+canonical_locations:
+  abi: "abi/"
+  ffi: "ffi/"
+  generated: "generated/"
+
+invariants:
+  - "ABI MUST be Idris2 (.idr)"
+  - "FFI MUST be Zig (.zig)"
+  - "Generated artifacts MUST be C-compatible"
+  - "The 'Truth' lives in abi/; the 'Implementation' lives in ffi/"

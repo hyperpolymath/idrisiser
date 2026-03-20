@@ -1,0 +1,19 @@
+= Code Ownership
+:icons: font
+
+This project utilizes a formally defined code ownership structure to ensure that specific components are reviewed by domain experts.
+
+== Authority Model
+
+Our ownership model is based on the "Perimeter" architecture:
+* **Perimeter 1 (Core):** Strictly controlled by Lead Maintainers.
+* **Perimeter 2 (Extensions):** Maintained by component owners.
+* **Perimeter 3 (Community):** Open for broader community participation.
+
+== Automated Enforcement
+
+The technical rules for automatic review assignments are maintained in the machine-readable link:../../.github/CODEOWNERS[.github/CODEOWNERS] file. GitHub uses this to automatically notify owners when changes are proposed to their sections.
+
+== Component Owners
+
+A full list of maintainers and their contact information can be found in link:MAINTAINERS.adoc[MAINTAINERS.adoc].

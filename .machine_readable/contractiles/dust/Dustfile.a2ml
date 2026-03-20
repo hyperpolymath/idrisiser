@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Dustfile — Cleanup and hygiene contract
+# Author: Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+
+@abstract:
+What should be cleaned up or removed from this repository.
+These are housekeeping items, not blockers.
+@end
+
+## Stale Files
+
+### no-stale-snapshots
+- description: No dated status/completion files in root
+- run: "! ls *-STATUS-*.md *-COMPLETION-*.md *-COMPLETE.md *-VERIFIED-*.md 2>/dev/null | head -1 | grep -q ."
+- severity: info
+
+### no-ai-djot
+- description: AI.djot is superseded by 0-AI-MANIFEST.a2ml
+- run: test ! -f AI.djot
+- severity: warning
+
+### no-next-steps
+- description: NEXT_STEPS.md superseded by ROADMAP
+- run: test ! -f NEXT_STEPS.md
+- severity: info
+
+## Build Artifacts
+
+### no-tracked-artifacts
+- description: No build artifacts tracked in git
+- run: "! git ls-files lib/bs/ lib/ocaml/ target/release/ _build/ 2>/dev/null | head -1 | grep -q ."
+- severity: warning
+
+## Format Duplicates
+
+### no-duplicate-contributing
+- description: Only one CONTRIBUTING format (keep .md)
+- run: "! (test -f CONTRIBUTING.md && test -f CONTRIBUTING.adoc)"
+- severity: warning
+
+### no-duplicate-readme
+- description: Only one README format
+- run: "! (test -f README.md && test -f README.adoc && [ $(wc -l < README.md) -gt 5 ])"
+- severity: warning

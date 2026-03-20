@@ -1,0 +1,175 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Primary CI/CD - GitLab is the source of truth
+
+stages:
+  - security
+  - lint
+  - test
+  - build
+
+variables:
+  CARGO_HOME: ${CI_PROJECT_DIR}/.cargo
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .cargo/
+    - target/
+
+# ==================
+# Security Scanning
+# ==================
+
+trivy:
+  stage: security
+  image: aquasec/trivy:latest
+  script:
+    - trivy fs --exit-code 0 --severity HIGH,CRITICAL --format table .
+    - trivy fs --exit-code 1 --severity CRITICAL .
+  allow_failure: false
+
+gitleaks:
+  stage: security
+  image: zricethezav/gitleaks:latest
+  script:
+    - gitleaks detect --source . --verbose --redact
+  allow_failure: false
+
+semgrep:
+  stage: security
+  image: returntocorp/semgrep
+  script:
+    - semgrep --config auto --error .
+  allow_failure: true
+
+cargo-audit:
+  stage: security
+  image: rust:latest
+  script:
+    - cargo install cargo-audit
+    - cargo audit
+  rules:
+    - exists:
+        - Cargo.toml
+
+cargo-deny:
+  stage: security
+  image: rust:latest
+  script:
+    - cargo install cargo-deny
+    - cargo deny check
+  rules:
+    - exists:
+        - Cargo.toml
+  allow_failure: true
+
+mix-audit:
+  stage: security
+  image: elixir:latest
+  script:
+    - mix local.hex --force
+    - mix archive.install hex mix_audit --force
+    - mix deps.get
+    - mix deps.audit
+  rules:
+    - exists:
+        - mix.exs
+  allow_failure: true
+
+# ==================
+# Linting
+# ==================
+
+rustfmt:
+  stage: lint
+  image: rust:latest
+  script:
+    - rustup component add rustfmt
+    - cargo fmt -- --check
+  rules:
+    - exists:
+        - Cargo.toml
+
+clippy:
+  stage: lint
+  image: rust:latest
+  script:
+    - rustup component add clippy
+    - cargo clippy -- -D warnings
+  rules:
+    - exists:
+        - Cargo.toml
+  allow_failure: true
+
+mix-format:
+  stage: lint
+  image: elixir:latest
+  script:
+    - mix format --check-formatted
+  rules:
+    - exists:
+        - mix.exs
+
+credo:
+  stage: lint
+  image: elixir:latest
+  script:
+    - mix local.hex --force
+    - mix deps.get
+    - mix credo --strict
+  rules:
+    - exists:
+        - mix.exs
+  allow_failure: true
+
+# ==================
+# Testing
+# ==================
+
+cargo-test:
+  stage: test
+  image: rust:latest
+  script:
+    - cargo test --all-features
+  rules:
+    - exists:
+        - Cargo.toml
+
+mix-test:
+  stage: test
+  image: elixir:latest
+  script:
+    - mix local.hex --force
+    - mix deps.get
+    - mix test
+  rules:
+    - exists:
+        - mix.exs
+
+# ==================
+# Build
+# ==================
+
+cargo-build:
+  stage: build
+  image: rust:latest
+  script:
+    - cargo build --release
+  artifacts:
+    paths:
+      - target/release/
+    expire_in: 1 week
+  rules:
+    - exists:
+        - Cargo.toml
+
+mix-build:
+  stage: build
+  image: elixir:latest
+  script:
+    - mix local.hex --force
+    - mix deps.get
+    - MIX_ENV=prod mix compile
+  rules:
+    - exists:
+        - mix.exs

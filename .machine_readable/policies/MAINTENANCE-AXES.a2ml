@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+#
+# Canonical maintenance governance model
+
+[metadata]
+version = "1.0.0"
+last-updated = "{{CURRENT_DATE}}"
+scope = "repo"
+
+[discovery]
+human-entrypoints = [
+  "README.adoc",
+  "docs/maintenance/MAINTENANCE-CHECKLIST.md",
+  "docs/practice/SOFTWARE-DEVELOPMENT-APPROACH.adoc",
+]
+machine-entrypoints = [
+  ".machine_readable/policies/MAINTENANCE-AXES.a2ml",
+  ".machine_readable/policies/MAINTENANCE-CHECKLIST.a2ml",
+  ".machine_readable/policies/SOFTWARE-DEVELOPMENT-APPROACH.a2ml",
+  ".machine_readable/META.a2ml",
+  ".machine_readable/ai/README.adoc",
+  ".machine_readable/bot_directives/README.scm",
+]
+bots = ["hypatia", "gitbot-fleet", "repo visitors"]
+
+[axes]
+axis-1 = "must > intend > like"
+axis-2 = "corrective > adaptive > perfective"
+axis-3 = "systems > compliance > effects"
+execution-order = "axis-1 > axis-2 > axis-3"
+
+[axis-1-scoping]
+required = true
+sources = "README, roadmap, status docs, maintenance checklist, CI/security docs"
+markers = "TODO/FIXME/XXX/HACK/STUB/PARTIAL"
+idris-unsound-markers = "believe_me/assert_total"
+output = "scoped work assembly in must/intend/like buckets"
+
+[axis-2-maintenance]
+corrective-first = true
+adaptive-second = true
+adaptive-focus = "scope changes, stale references, obsolete work culling"
+perfective-third = true
+perfective-source = "honest state from axis-1 after corrective/adaptive updates"
+
+[axis-3-audit]
+systems-check = true
+compliance-check = true
+effects-check = true
+compliance-focus = "seams/compromises/exception register and anti-drift"
+compliance-tooling = "panic-attack"
+effects-tooling = "ecological checking with sustainabot guidance"
+effects-evidence = "benchmark evidence and maintainer dialogue/status review"

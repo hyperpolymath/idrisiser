@@ -1,0 +1,70 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+#
+# {{PROJECT_NAME}} selur-compose configuration
+#
+# Orchestrates the container stack as verified container bundles (.ctp).
+# Uses selur zero-copy IPC between services on the same host.
+#
+# Usage:
+#   selur-compose up                     # Start all services
+#   selur-compose up --detach            # Start in background
+#   selur-compose verify                 # Verify all .ctp signatures
+#   selur-compose ps                     # Check status
+#   selur-compose logs -f {{SERVICE_NAME}}  # Stream logs
+#   selur-compose down                   # Stop all services
+#
+# Fallback (when selur is not installed):
+#   podman compose --file compose.toml up --detach
+
+version = "1.0"
+
+# ============================================================================
+# Services
+# ============================================================================
+
+# Primary application service
+[services.{{SERVICE_NAME}}]
+image = "{{REGISTRY}}/{{SERVICE_NAME}}:latest.ctp"
+ports = ["{{PORT}}:{{PORT}}"]
+environment = {
+  APP_HOST = "[::]",
+  APP_PORT = "{{PORT}}",
+  APP_LOG_FORMAT = "json",
+  APP_DATA_DIR = "/data",
+}
+volumes = ["{{SERVICE_NAME}}-data:/data"]
+restart = "always"
+healthcheck = { test = "curl -sf http://localhost:{{PORT}}/health", interval = "30s", timeout = "5s", retries = 3 }
+
+# Svalinn edge gateway: validates requests, enforces policies, TLS termination
+[services.svalinn]
+image = "ghcr.io/hyperpolymath/svalinn:latest.ctp"
+ports = ["443:443", "80:80"]
+environment = {
+  SVALINN_BACKEND = "http://{{SERVICE_NAME}}:{{PORT}}",
+  SVALINN_POLICY_FILE = "/etc/svalinn/gatekeeper.yaml",
+  SVALINN_TLS_AUTO = "true",
+}
+volumes = ["svalinn-config:/etc/svalinn:ro"]
+depends_on = ["{{SERVICE_NAME}}"]
+restart = "always"
+healthcheck = { test = "curl -sf http://localhost:80/health", interval = "30s", timeout = "5s", retries = 3 }
+
+# ============================================================================
+# Volumes
+# ============================================================================
+
+[volumes.{{SERVICE_NAME}}-data]
+driver = "local"
+
+[volumes.svalinn-config]
+driver = "local"
+
+# ============================================================================
+# Networks
+# ============================================================================
+
+# Use selur zero-copy IPC for inter-service communication on the same host.
+# Falls back to standard bridge networking when selur driver is unavailable.
+[networks.default]
+driver = "selur"

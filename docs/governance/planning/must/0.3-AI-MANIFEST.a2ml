@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "governance-unit-must"
+level: 3
+parent: "../0.2-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  TSDM must unit within the Planning axis.

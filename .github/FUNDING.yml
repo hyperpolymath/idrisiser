@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Funding platforms for {{OWNER}} projects
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository
+
+github: {{OWNER}}
+ko_fi: {{OWNER}}
+liberapay: {{OWNER}}

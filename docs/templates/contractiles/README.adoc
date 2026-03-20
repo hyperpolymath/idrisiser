@@ -1,0 +1,11 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Contractile Templates
+
+Blank templates for projects that want to replace the hyperpolymath
+defaults with their own contractile definitions.
+
+Copy the relevant file to `.machine_readable/contractiles/<type>/`
+and fill in your project-specific checks.
+
+The working examples in `.machine_readable/contractiles/` show the
+full hyperpolymath setup — use those as reference.

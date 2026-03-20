@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+#
+# Dev Container image for {{PROJECT_NAME}}
+# Base: Chainguard Wolfi (minimal, supply-chain-secure)
+# Build: podman build -t {{PROJECT_NAME}}-dev -f .devcontainer/Containerfile .
+
+FROM cgr.dev/chainguard/wolfi-base:latest
+
+# Install common development tools
+RUN apk update && apk add --no-cache \
+    bash \
+    curl \
+    git \
+    openssh-client \
+    ca-certificates \
+    build-base \
+    posix-libc-utils \
+    shadow \
+    && rm -rf /var/cache/apk/*
+
+# Create non-root dev user (matches devcontainer.json remoteUser)
+RUN groupadd -g 1000 nonroot || true \
+    && useradd -m -u 1000 -g 1000 -s /bin/bash nonroot || true
+
+# Set workspace directory
+WORKDIR /workspaces/{{PROJECT_NAME}}
+
+# Default shell
+ENV SHELL=/bin/bash
+
+USER nonroot

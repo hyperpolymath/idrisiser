@@ -1,0 +1,22 @@
+;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+;;
+;; Guix channel definition for {{PROJECT_NAME}}
+;;
+;; To use this channel, add to ~/.config/guix/channels.scm:
+;;
+;;   (channel
+;;     (name '{{PROJECT_NAME}})
+;;     (url "https://github.com/{{OWNER}}/{{PROJECT_NAME}}")
+;;     (branch "main"))
+;;
+;; Then: guix pull
+
+(channel
+  (version 0)
+  (url "https://github.com/{{OWNER}}/{{PROJECT_NAME}}")
+  (dependencies
+   (channel
+     (name 'guix)
+     (url "https://git.savannah.gnu.org/git/guix.git")
+     (branch "master"))))

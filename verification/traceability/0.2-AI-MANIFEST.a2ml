@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "verification-unit-traceability"
+level: 2
+parent: "../0.1-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  High-assurance verification unit for traceability. 
+  Critical for safety-of-life and aerospace-grade deployment standards.

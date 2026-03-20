@@ -1,0 +1,159 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Cross-repo maintenance baseline (machine-readable canonical)
+
+[metadata]
+version = "1.1.0"
+last-updated = "2026-02-24"
+scope = "cross-repo"
+source-human = "docs/maintenance/MAINTENANCE-CHECKLIST.adoc"
+companion-human = "docs/practice/SOFTWARE-DEVELOPMENT-APPROACH.adoc"
+companion-machine = ".machine_readable/policies/SOFTWARE-DEVELOPMENT-APPROACH.a2ml"
+
+[policy]
+single-source = true
+notes = "Use this file as canonical machine policy and keep markdown synchronized."
+
+[maintenance-axes]
+scoping-first = true
+execution-order = ["scoping", "axis-1", "axis-2", "axis-3"]
+axis-1 = "must > intend > like"
+axis-2 = "corrective > adaptive > perfective"
+axis-3 = "systems > compliance > effects"
+
+[scoping]
+inputs_required = [
+  "README",
+  "roadmap",
+  "status-docs",
+  "maintenance-checklist",
+  "ci-and-security-docs",
+]
+
+marker_scan_required = [
+  "TODO",
+  "FIXME",
+  "XXX",
+  "HACK",
+  "STUB",
+  "PARTIAL",
+]
+
+idris_unsound_scan_required = [
+  "believe_me",
+  "assert_total",
+]
+
+scope_assembly_buckets = ["must", "intend", "like"]
+
+[axis-2-maintenance-rules]
+corrective-first = true
+adaptive-second = true
+adaptive_examples = [
+  "scope-change reconciliation",
+  "stale-reference removal",
+  "obsolete-work culling",
+]
+perfective-third = true
+perfective_source = "axis-1 honest state after corrective/adaptive updates"
+
+[axis-3-audit-rules]
+systems-check = true
+documentation-honesty-check = true
+safety-security-accounted-check = true
+effects-review-check = true
+benchmark-evidence-required = true
+maintainer-dialogue-review-required = true
+compliance-seams-check = true
+exception-register-required = true
+exception-bounded-scope-required = true
+policy-drift-contamination-check = true
+example-drift-risk = "single TypeScript exception causing broad ReScript->TypeScript migration"
+compliance-tooling = "panic-attack"
+effects-tooling = "ecological checking with sustainabot guidance"
+
+[generic-cleanup-finish-off]
+root-cleanup-required = true
+stale-work-cull-required = true
+docs-parity-required = true
+machine-human-sync-required = true
+compliance-finish-off-required = true
+effects-finish-off-required = true
+release-prep-summary-required = true
+next-actions-required = ["corrective", "adaptive", "perfective"]
+
+[must]
+root_control_files = [
+  ".gitignore",
+  ".gitattributes",
+  ".editorconfig",
+  ".tool-versions",
+  "Containerfile",
+  "Justfile",
+]
+
+root_hosting_files = [
+  "CNAME",
+  ".nojekyll",
+]
+
+ownership_files = [
+  "MAINTAINER",
+  ".github/CODEOWNERS",
+]
+
+machine_readable_required = [
+  ".machine_readable/anchors/ANCHOR.a2ml",
+  ".machine_readable/contractiles/",
+  ".machine_readable/ai/",
+  ".machine_readable/bot_directives/",
+]
+
+contractiles_required = [
+  "Mustfile",
+  "Trustfile",
+  "Intentfile",
+]
+
+security_required = [
+  ".well-known/security.txt",
+  "ci-security-scan",
+]
+
+quality_gate_required = [
+  "format",
+  "lint",
+  "unit-tests",
+  "integration-tests",
+  "p2p-tests",
+  "e2e-tests",
+  "bench-smoke",
+  "docs-check",
+  "security-scan",
+]
+
+abi_ffi_policy = [
+  "ABI Idris2 in src/interface/abi/*.idr",
+  "FFI Zig in ffi/**/*.zig",
+]
+
+[should]
+docs_primary_format = "adoc"
+docs_structure = [
+  "docs/theory",
+  "docs/practice",
+  "docs/whitepapers/academic",
+  "docs/whitepapers/industry",
+  "docs/proofs",
+  "docs/reports",
+]
+
+root_minimization = true
+well_known_metadata = true
+roadmap_honesty_with_dates = true
+ci_doc_format_policy = true
+
+[could]
+generate_human_from_machine = true
+mode_aware_bots = ["corrective", "adaptive", "perfective", "audit"]
+topology_dashboard = true
+exception_registry = true

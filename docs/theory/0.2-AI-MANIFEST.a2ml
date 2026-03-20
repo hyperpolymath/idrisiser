@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "theory-track"
+level: 2
+parent: "../0.1-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Documentation track for domain-specific theory and research foundations.
+  Categorised by discipline.
+
+canonical_locations:
+  ontologies: "ontologies/"
+  mathematics: "mathematics/"
+  computing: "computing/"
+  socio_technical: "socio-technical/"
+  formalisms: "formalisms/"
+  other: "other/"
+
+invariants:
+  - "Theoretical claims MUST reference established academic or technical formalisms"

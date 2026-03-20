@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "whitepapers-track-outreach"
+level: 3
+parent: "../0.2-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Documentation track for outreach, education, and general-audience
+  engagement. Focuses on accessibility and high-level conceptual clarity.
+
+invariants:
+  - "Language MUST be accessible to non-technical audiences"
+  - "Avoid deep technical jargon without providing clear definitions"

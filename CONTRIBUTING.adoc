@@ -1,0 +1,26 @@
+= Contributing to {project-name}
+:toc: preamble
+:icons: font
+
+This document explains how to contribute to the project. We follow a "Dual-Track" architecture where human-readable documentation lives in the root and machine-readable policies live in `.machine_readable/`.
+
+== How to Contribute
+
+We welcome contributions in many forms:
+* **Code:** Improving the core verified stack or extensions.
+* **Documentation:** Enhancing AsciiDoc manuals or AI manifests.
+* **Testing:** Adding property-based tests or formal proofs.
+
+== Getting Started
+
+1. **Read the AI Manifest:** Start with `0-AI-MANIFEST.a2ml` to understand the repository structure.
+2. **Environment:** Use `nix develop` or `direnv allow` to set up your tools (Idris2, Zig, Rust).
+3. **Task Runner:** Use `just` to see available commands (`just --list`).
+
+== Contribution Policies
+
+For detailed rules on branch naming, commit messages, and the PR process, please refer to the machine-readable manual at link:.github/CONTRIBUTING.md[CONTRIBUTING.adoc].
+
+== Code of Conduct
+
+All contributors are expected to adhere to our ethical standards. See link:.github/CODE_OF_CONDUCT.md[CODE_OF_CONDUCT.adoc] for details.

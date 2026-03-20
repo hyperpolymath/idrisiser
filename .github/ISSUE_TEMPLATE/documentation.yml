@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Documentation issue template for {{OWNER}}/{{REPO}}
+name: Documentation
+description: Report unclear, missing, or incorrect documentation
+title: "[Docs]: "
+labels: ["documentation", "priority: unset", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us improve our documentation by reporting issues or gaps.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Documentation issue type
+      description: What kind of documentation problem is this?
+      options:
+        - Missing (documentation doesn't exist)
+        - Incorrect (information is wrong)
+        - Unclear (confusing or hard to follow)
+        - Outdated (no longer accurate)
+        - Incomplete (partially documented)
+        - Typo or grammar
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: Where is this documentation? (URL, file path, or section name)
+      placeholder: "README.adoc, section \"Installation\""
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What is the problem with the current documentation?
+      placeholder: Describe what is wrong or missing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      description: How should the documentation be fixed or improved?
+      placeholder: "The documentation should say..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I have searched existing issues to ensure this is not a duplicate
+          required: true
+        - label: I would be willing to submit a PR to fix this
+          required: false

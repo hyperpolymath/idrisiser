@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Dev Container Usage
+:author: {{AUTHOR}} <{{AUTHOR_EMAIL}}>
+
+== Overview
+
+This dev container uses `cgr.dev/chainguard/wolfi-base` with git, curl, bash, and just pre-installed. Dev container features add git, just, and nickel automatically.
+
+== VS Code (Local)
+
+. Install the *Dev Containers* extension (`ms-vscode-remote.remote-containers`).
+. Set `dev.containers.dockerPath` to `podman` in VS Code settings.
+. Open the repo folder, then choose **Reopen in Container** from the command palette.
+
+== GitHub Codespaces
+
+. From the repository on GitHub, click **Code > Codespaces > New codespace**.
+. The container builds automatically from this configuration.
+
+== Gitpod
+
+. Prefix the repo URL with `https://gitpod.io/#` to launch a workspace.
+. Gitpod reads `devcontainer.json` and builds the environment.
+
+== Customization
+
+Replace `{{PROJECT_NAME}}` placeholders in both `devcontainer.json` and `Containerfile` with your actual project name. Run `just deps` to verify the environment after first launch.

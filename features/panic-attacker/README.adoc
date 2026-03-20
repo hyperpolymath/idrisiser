@@ -1,0 +1,25 @@
+= Panic Attacker Feature
+:icons: font
+
+This unit integrates the **Panic-Attacker** high-rigor stress testing tool into the project lifecycle.
+
+== Value Proposition
+
+Panic-Attacker goes beyond unit testing by applying:
+* **Static Analysis (Assail):** Detecting logic-based bug signatures.
+* **Multi-Axis Dynamic Attacks (Assault):** Stressing CPU, Memory, Disk, and Network boundaries.
+
+== Usage in this Template
+
+This template includes a pre-configured maintenance trigger:
+
+[source,bash]
+----
+just maint-assault
+----
+
+This runs a medium-intensity assault on the project binary and emits a report to `docs/reports/security/`.
+
+== Related Repository
+
+https://github.com/hyperpolymath/panic-attacker

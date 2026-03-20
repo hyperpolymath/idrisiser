@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+# Authoritative source: docs/AI-CONVENTIONS.md
+
+# Read 0-AI-MANIFEST.a2ml in the repo root FIRST for canonical file locations.
+
+# LICENSE
+# All original code: PMPL-1.0-or-later (SPDX header required on every file).
+# Never use AGPL-3.0. Fallback to MPL-2.0 only when platform requires it.
+# Copyright: {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+
+# STATE FILES
+# .a2ml metadata files go in .machine_readable/ ONLY.
+# Never create STATE.a2ml, META.a2ml, ECOSYSTEM.a2ml, AGENTIC.a2ml,
+# NEUROSYM.a2ml, or PLAYBOOK.a2ml in the repository root.
+
+# BANNED PATTERNS
+# Idris2: believe_me, assert_total, assert_smaller, unsafePerformIO
+# Haskell: unsafeCoerce, unsafePerformIO, undefined, error
+# OCaml: Obj.magic, Obj.repr, Obj.obj
+# Coq: Admitted
+# Lean: sorry
+# Rust: transmute (unless FFI with // SAFETY: comment)
+
+# BANNED LANGUAGES
+# TypeScript -> use ReScript
+# Node.js / npm / bun -> use Deno
+# Go -> use Rust
+# Python -> use Julia or Rust
+
+# CONTAINERS
+# Runtime: Podman (never Docker)
+# File: Containerfile (never Dockerfile)
+# Base: cgr.dev/chainguard/wolfi-base:latest
+
+# ABI/FFI STANDARD
+# ABI definitions: Idris2 with dependent types (src/interface/abi/)
+# FFI implementation: Zig with C ABI (src/interface/ffi/)
+# Generated C headers: src/interface/generated/
+
+# BUILD SYSTEM
+# Use just (justfile) for all build, test, lint, and format tasks.
+
+# CODE STYLE
+# Use descriptive variable names.
+# Annotate and document all files.
+# Add SPDX-License-Identifier header to every source file.

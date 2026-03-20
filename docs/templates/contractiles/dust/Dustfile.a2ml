@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Dustfile.a2ml — BLANK TEMPLATE
+# Replace this with your project's contractile.
+# See .machine_readable/contractiles/ for a working example.
+#
+# Copy this file to .machine_readable/contractiles/dust/Dustfile.a2ml
+# and fill in your project-specific checks.
+
+@abstract:
+[Your project's DUST contract goes here]
+@end

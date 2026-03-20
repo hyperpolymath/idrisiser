@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "verification-pillar"
+level: 1
+parent: "../0-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Primary verification pillar. Contains evidence for correctness,
+  performance, formal proofs, randomized testing, and aerospace-grade
+  high-assurance metrics (MC/DC coverage, traceability, safety cases).
+
+canonical_locations:
+  tests: "tests/"
+  benchmarks: "benchmarks/"
+  proofs: "proofs/"
+  fuzzing: "fuzzing/"
+  simulations: "simulations/"
+  coverage: "coverage/"
+  traceability: "traceability/"
+  safety_case: "safety_case/"
+
+invariants:
+  - "Evidence MUST be reproducible and documented"
+  - "High-assurance deployments MUST satisfy traceability and safety_case requirements"

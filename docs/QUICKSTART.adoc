@@ -1,0 +1,24 @@
+= Quickstart
+:toc: preamble
+
+Get up and running in 60 seconds.
+
+== Prerequisites
+
+* Git 2.40+
+* just (command runner)
+* Your language toolchain (see Justfile for details)
+
+== From Template (New Project)
+
+[source,bash]
+----
+git clone https://github.com/{{OWNER}}/rsr-template-repo my-project
+cd my-project
+rm -rf .git && git init -b main
+just init       # interactive placeholder replacement
+----
+
+== Project Structure
+
+See README.adoc in the root for the Dual-Track architecture summary.

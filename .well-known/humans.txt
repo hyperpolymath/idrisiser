@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# humanstxt.org
+
+/* TEAM */
+Maintainer: {{AUTHOR}} ({{OWNER}})
+Contact: {{AUTHOR_EMAIL}}
+From: United Kingdom
+
+/* SITE */
+Last update: {{CURRENT_DATE}}
+Standards: RSR (Rhodium Standard Repository)
+License: PMPL-1.0-or-later (Palimpsest MPL)
+Components: Idris2 ABI, Zig FFI
+Tools: just, Podman, Guix

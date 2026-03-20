@@ -1,0 +1,68 @@
+SPDX-License-Identifier: PMPL-1.0-or-later
+
+================================================================================
+EXHIBIT A — ETHICAL USE GUIDELINES
+Palimpsest-MPL License Version 1.0
+================================================================================
+
+1. PURPOSE
+
+   These guidelines define ethical use expectations for software distributed
+   under the Palimpsest-MPL License. They are not legally binding restrictions
+   but represent the community's shared values and expectations.
+
+2. PRINCIPLES
+
+   2.1. Respect for Emotional Lineage
+        Users and distributors should acknowledge and preserve the cultural,
+        narrative, and symbolic meaning embedded in Covered Software. This
+        includes protest traditions, cultural heritage, trauma narratives,
+        and community stories where documented.
+
+   2.2. Transparency in Automated Processing
+        When Covered Software is processed by Non-Interpretive Systems
+        (AI training, content aggregation, automated summarization), such
+        use should be documented publicly and not misrepresent the
+        provenance of outputs.
+
+   2.3. Good Faith Attribution
+        Contributors should be credited accurately. Derivative works should
+        maintain the attribution chain and not obscure the origins of
+        contributions.
+
+   2.4. Community Benefit
+        Commercial use of Covered Software should contribute to the broader
+        community through bug fixes, documentation, or other improvements
+        where feasible.
+
+3. SPECIFIC GUIDANCE
+
+   3.1. AI and Machine Learning
+        - Training on Covered Software requires disclosure
+        - Generated outputs must not claim Emotional Lineage of the original
+        - Model cards should reference source materials
+
+   3.2. Content Aggregation
+        - Aggregators must link back to original sources
+        - Context must not be stripped in ways that distort meaning
+        - Cultural and narrative context should be preserved
+
+   3.3. Commercial Products
+        - Products built on Covered Software should acknowledge it
+        - Pricing should not exploit communities that created the work
+        - Support and improvements should flow back to the community
+
+4. ENFORCEMENT
+
+   These guidelines are enforced through community norms, not legal action.
+   Disputes should be raised with the Palimpsest Stewardship Council for
+   non-binding guidance.
+
+5. AMENDMENTS
+
+   These guidelines may be updated by the Palimpsest Stewardship Council.
+   Updates apply to new distributions, not retroactively.
+
+================================================================================
+END OF EXHIBIT A
+================================================================================

@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+# Authoritative source: docs/AI-CONVENTIONS.md
+
+# STARTUP: Read 0-AI-MANIFEST.a2ml first, then .machine_readable/STATE.a2ml.
+
+# LICENSE
+# All original code: PMPL-1.0-or-later.
+# Never AGPL-3.0. MPL-2.0 only as platform-required fallback.
+# SPDX header required on every source file.
+# Copyright: {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+
+# STATE FILES (.machine_readable/ ONLY)
+# Never create in repo root: STATE.a2ml, META.a2ml, ECOSYSTEM.a2ml,
+# AGENTIC.a2ml, NEUROSYM.a2ml, PLAYBOOK.a2ml.
+# The .machine_readable/ directory is the single source of truth.
+
+# BANNED PATTERNS
+# Idris2: believe_me, assert_total, assert_smaller, unsafePerformIO
+# Haskell: unsafeCoerce, unsafePerformIO, undefined, error
+# OCaml: Obj.magic, Obj.repr, Obj.obj
+# Coq: Admitted
+# Lean: sorry
+# Rust: transmute (unless FFI with // SAFETY: comment)
+
+# BANNED LANGUAGES
+# TypeScript -> ReScript
+# Node.js / npm / bun -> Deno
+# Go -> Rust
+# Python -> Julia or Rust
+
+# CONTAINERS
+# Runtime: Podman (never Docker).
+# File: Containerfile (never Dockerfile).
+# Base: cgr.dev/chainguard/wolfi-base:latest or cgr.dev/chainguard/static:latest.
+
+# ABI/FFI
+# ABI: Idris2 with dependent types (src/interface/abi/).
+# FFI: Zig with C ABI (src/interface/ffi/).
+# Headers: src/interface/generated/.
+
+# BUILD: Use just (justfile) for all tasks.
+# STYLE: Descriptive names. Document all files. SPDX headers everywhere.

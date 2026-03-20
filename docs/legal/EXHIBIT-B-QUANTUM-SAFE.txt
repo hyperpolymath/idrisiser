@@ -1,0 +1,102 @@
+SPDX-License-Identifier: PMPL-1.0-or-later
+
+================================================================================
+EXHIBIT B — QUANTUM-SAFE PROVENANCE SPECIFICATION
+Palimpsest-MPL License Version 1.0
+================================================================================
+
+1. PURPOSE
+
+   This exhibit specifies the cryptographic algorithms and procedures for
+   quantum-safe provenance in software distributed under the Palimpsest-MPL
+   License.
+
+2. APPROVED ALGORITHMS
+
+   The following post-quantum cryptographic algorithms are approved for
+   signing Provenance Metadata:
+
+   2.1. Digital Signatures
+        - ML-DSA (FIPS 204, formerly CRYSTALS-Dilithium)
+          Recommended: ML-DSA-65 (security level 3) or ML-DSA-87 (level 5)
+        - SLH-DSA (FIPS 205, formerly SPHINCS+)
+          Recommended: SLH-DSA-SHA2-256f or SLH-DSA-SHAKE-256f
+        - FALCON (NIST Round 3 finalist)
+          Recommended: FALCON-1024
+
+   2.2. Key Encapsulation (for encrypted provenance)
+        - ML-KEM (FIPS 203, formerly CRYSTALS-Kyber)
+          Recommended: ML-KEM-1024
+
+   2.3. Hash Functions
+        - SHA-3 (FIPS 202)
+          Recommended: SHA3-256 or SHA3-512
+        - SHAKE (FIPS 202 extendable output)
+          Recommended: SHAKE-256
+
+   2.4. Key Derivation
+        - Argon2id (RFC 9106)
+          Parameters: t=3, m=65536, p=4 (minimum)
+
+3. PROVENANCE METADATA FORMAT
+
+   Provenance Metadata should include:
+
+   3.1. Required Fields
+        - author-identity: Contributor name and contact
+        - timestamp: ISO 8601 with timezone
+        - content-hash: SHA3-256 hash of the contribution
+        - signature: Quantum-safe signature over all fields
+
+   3.2. Optional Fields
+        - parent-hash: Hash of the previous contribution in the chain
+        - emotional-lineage: Narrative context markers
+        - platform: Build/development environment
+        - witnesses: Third-party attestation signatures
+
+4. SIGNATURE PROCEDURE
+
+   4.1. Signing
+        a. Compute SHA3-256 hash of the contribution content
+        b. Construct metadata record with all required fields
+        c. Serialize metadata in canonical JSON form
+        d. Sign with ML-DSA-65 (or approved alternative)
+        e. Attach signature to distribution
+
+   4.2. Verification
+        a. Extract metadata and signature from distribution
+        b. Verify signature against contributor's public key
+        c. Verify content hash matches actual content
+        d. Verify timestamp is within acceptable range
+        e. Verify parent-hash chain if present
+
+5. KEY MANAGEMENT
+
+   5.1. Contributors should publish quantum-safe public keys via:
+        - OpenPGP keyservers (with PQ algorithm support)
+        - Repository .well-known/keys/ directory
+        - Contributor's personal website
+
+   5.2. Key rotation should occur:
+        - At least annually
+        - When algorithm recommendations change
+        - When key compromise is suspected
+
+6. TRANSITION PERIOD
+
+   During the transition to quantum-safe cryptography:
+
+   6.1. Classical signatures (Ed25519, RSA) remain valid
+   6.2. Hybrid signatures (classical + PQ) are encouraged
+   6.3. Pure PQ signatures are preferred for new contributions
+   6.4. Classical-only signatures will be deprecated in a future version
+
+7. COMPLIANCE
+
+   Quantum-safe provenance is OPTIONAL under PMPL-1.0. When present,
+   it must follow this specification. Stripping quantum-safe signatures
+   from distributions is prohibited per Section 4.1 of the License.
+
+================================================================================
+END OF EXHIBIT B
+================================================================================

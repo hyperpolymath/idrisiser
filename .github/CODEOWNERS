@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# CODEOWNERS - Define code review assignments
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Replace {{OWNER}} with your GitHub username or team
+
+# Default owners for everything
+* @{{OWNER}}
+
+# Security-sensitive files require explicit review
+SECURITY.md @{{OWNER}}
+.github/workflows/ @{{OWNER}}
+Trustfile.a2ml @{{OWNER}}
+.machine_readable/ @{{OWNER}}

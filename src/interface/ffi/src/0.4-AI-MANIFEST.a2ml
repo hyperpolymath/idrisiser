@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "src-unit"
+level: 4
+parent: "../0.3-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Src logic at level 4.

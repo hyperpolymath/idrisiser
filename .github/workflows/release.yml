@@ -1,0 +1,129 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+#
+# Release workflow — triggered by version tags (v*).
+# Builds artifacts, generates changelog via git-cliff, creates a GitHub Release,
+# and produces SLSA provenance attestations.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Artifacts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Build
+        run: |
+          echo "Build your artifacts here"
+          # TODO: Replace with your build commands
+          # Examples:
+          #   cargo build --release
+          #   zig build -Doptimize=ReleaseFast
+          #   gleam build
+          #   mix release
+
+      # TODO: Upload build artifacts if needed
+      # - uses: actions/upload-artifact@v4
+      #   with:
+      #     name: release-artifacts
+      #     path: target/release/
+
+  changelog:
+    name: Generate Changelog
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      changelog: ${{ steps.cliff.outputs.content }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Install git-cliff
+        run: |
+          curl -sSfL https://github.com/orhun/git-cliff/releases/latest/download/git-cliff-$(uname -m)-unknown-linux-gnu.tar.gz \
+            | tar -xz --strip-components=1 -C /usr/local/bin/ git-cliff-*/git-cliff
+
+      - name: Generate changelog for this release
+        id: cliff
+        run: |
+          # Generate changelog for the current tag only
+          CHANGELOG=$(git cliff --latest --strip header)
+          # Write to output using delimiter to handle multiline
+          {
+            echo "content<<CLIFF_EOF"
+            echo "$CHANGELOG"
+            echo "CLIFF_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Update full CHANGELOG.md
+        run: |
+          git cliff --output CHANGELOG.md
+
+      - name: Upload updated CHANGELOG.md
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: changelog
+          path: CHANGELOG.md
+          retention-days: 5
+
+  release:
+    name: Create GitHub Release
+    needs: [build, changelog]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      # TODO: Download build artifacts if uploading to the release
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #     name: release-artifacts
+      #     path: artifacts/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2
+        with:
+          body: ${{ needs.changelog.outputs.changelog }}
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
+          generate_release_notes: false
+          # TODO: Add artifact files to the release
+          # files: |
+          #   artifacts/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  provenance:
+    name: SLSA Provenance
+    needs: [build]
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    # SLSA generator must run in a separate, isolated workflow
+    # See: https://slsa.dev/spec/v1.0/requirements#build-l3
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@f7dd8c54c2067bafc12ca7a55595d5ee9b75204a # v2.1.0
+    with:
+      base64-subjects: ""
+      # TODO: Replace with actual artifact hashes
+      # Generate with: sha256sum artifact | base64 -w0
+      # base64-subjects: "${{ needs.build.outputs.hashes }}"

@@ -1,0 +1,17 @@
+= Outreach & Education
+:toc: preamble
+:icons: font
+
+This directory contains whitepapers, guides, and presentations tailored for a general audience, including schools, corporate partners, and special interest groups.
+
+== Target Audiences
+
+* **Schools & Education:** Introductory material on formal verification and sovereign systems.
+* **Corporate:** High-level business value and compliance summaries.
+* **Special Interest Groups:** Community-specific impact and ethical use cases.
+
+== Goals
+
+* De-mystify high-rigor engineering.
+* Promote the adoption of the Rhodium Standard.
+* Provide accessible entry points for non-technical stakeholders.

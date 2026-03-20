@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+#
+# Cerro Torre manifest for {{PROJECT_NAME}} .ctp bundle
+#
+# This manifest describes the container image for verified
+# container packaging. Used by `ct pack` to create .ctp bundles.
+
+[metadata]
+name = "{{SERVICE_NAME}}"
+version = "{{VERSION}}"
+revision = 1
+summary = "{{PROJECT_DESCRIPTION}}"
+description = """
+{{PROJECT_NAME}} — containerised service packaged as a verified
+cerro-torre .ctp bundle with Ed25519 signing and full provenance
+tracking.
+"""
+license = "{{LICENSE}}"
+homepage = "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
+maintainer = "{{AUTHOR}} <{{EMAIL}}>"
+
+[provenance]
+upstream = "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
+import_date = {{CURRENT_DATE}}T00:00:00Z
+
+[dependencies]
+runtime = ["ca-certificates", "curl"]
+build = []
+
+[build]
+system = "podman"
+
+[build.environment]
+APP_HOST = "[::]"
+APP_PORT = "{{PORT}}"
+
+[outputs]
+primary = "{{SERVICE_NAME}}"
+split = []
+
+[attestations]
+require = ["source-signature", "sbom-complete"]
+recommend = ["security-audit", "reproducible-build"]
+
+# Runtime security profile
+[security]
+user = "appuser"
+group = "appuser"
+read_only_root = false
+no_new_privileges = true
+
+[security.capabilities]
+drop = ["ALL"]
+add = ["NET_BIND_SERVICE"]
+
+[security.network]
+listen_tcp = [{{PORT}}]
+
+[security.filesystem]
+read = ["/app/", "/data/"]
+write = ["/data/", "/tmp/"]
+execute = ["/app/entrypoint.sh"]

@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+#
+# Svalinn gatekeeper policy for {{PROJECT_NAME}}
+#
+# Controls which operations are permitted through the edge gateway.
+# This template provides moderate security defaults — not wide-open test
+# mode, but not production-hardened either. Tighten the values below
+# before deploying to production.
+#
+# See: stapeln/container-stack/svalinn/
+
+version: "1.0"
+
+# ============================================================================
+# Authentication
+# ============================================================================
+#
+# Define which endpoints require authentication and at what level.
+
+auth:
+  # Public endpoints — no authentication required.
+  # Health and readiness probes must always be public so that
+  # orchestrators (selur, Podman, k8s) can check service status.
+  public:
+    - path: "/health"
+      methods: ["GET"]
+    - path: "/ready"
+      methods: ["GET"]
+    - path: "/metrics"
+      methods: ["GET"]
+
+  # Endpoints requiring JWT or OAuth2 authentication.
+  # Svalinn validates the token before forwarding the request.
+  authenticated:
+    - path: "/api/v1/*"
+      methods: ["GET", "POST", "PUT", "DELETE"]
+
+# ============================================================================
+# Rate Limiting
+# ============================================================================
+#
+# Protects backend services from overload. Values here are moderate
+# defaults — adjust based on your service capacity.
+
+rate_limits:
+  # Global limit: applied to all authenticated clients.
+  global:
+    requests_per_second: 500
+    burst: 1000
+
+  # Write operations: stricter limit to protect data stores.
+  writes:
+    paths: ["/api/v1/*"]
+    methods: ["POST", "PUT", "DELETE"]
+    requests_per_second: 100
+    burst: 200
+
+# ============================================================================
+# Container Trust
+# ============================================================================
+#
+# Svalinn verifies that all .ctp bundles in the stack are signed by
+# trusted keys and carry the required attestations.
+
+trust:
+  # Only accept .ctp bundles signed by these keys.
+  trusted_signers:
+    - key_id: "{{SERVICE_NAME}}-release"
+      algorithm: "Ed25519"
+      public_key_file: "/etc/svalinn/keys/{{SERVICE_NAME}}-release.pub"
+
+  # Require these attestations on all .ctp bundles.
+  required_attestations:
+    - "source-signature"
+    - "sbom-complete"
+
+  # Reject unsigned or untrusted images.
+  reject_unsigned: true
+
+# ============================================================================
+# Request Validation
+# ============================================================================
+#
+# Input validation at the gateway layer — catches malformed requests
+# before they reach the application.
+
+validation:
+  # Maximum request body size.
+  max_body_size: "8MB"
+
+  # Reject requests with NaN or Infinity in numeric fields.
+  reject_nan_inf: true
+
+  # Maximum result limit per list/search query.
+  max_result_limit: 500
+
+# ============================================================================
+# CORS
+# ============================================================================
+#
+# Cross-Origin Resource Sharing policy. The defaults below allow all
+# origins — restrict to your frontend domain(s) in production.
+
+cors:
+  allow_origins: ["*"]
+  allow_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+  allow_headers: ["Content-Type", "Authorization"]
+  max_age: 3600
+
+# ============================================================================
+# Logging
+# ============================================================================
+#
+# Structured logging for svalinn itself. Audit paths log all requests
+# (including body hashes) for post-incident investigation.
+
+logging:
+  format: "json"
+  level: "info"
+  # Log all write operations for audit trail.
+  audit_paths:
+    - "/api/v1/*"

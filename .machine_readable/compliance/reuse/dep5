@@ -1,0 +1,54 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: {{PROJECT_NAME}}
+Upstream-Contact: {{AUTHOR}} <{{AUTHOR_EMAIL}}>
+Source: https://github.com/{{OWNER}}/{{REPO}}
+
+# Default: all files are PMPL-1.0-or-later
+Files: *
+Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+License: PMPL-1.0-or-later
+
+# Configuration files that cannot carry headers
+Files: .editorconfig .gitignore .gitattributes .tool-versions .mailmap
+Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+License: PMPL-1.0-or-later
+
+# Machine-readable state files
+Files: .machine_readable/*.a2ml
+Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+License: PMPL-1.0-or-later
+
+# Bot directives
+Files: .machine_readable/bot_directives/*
+Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+License: PMPL-1.0-or-later
+
+# Contractiles
+Files: .machine_readable/contractiles/*
+Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+License: PMPL-1.0-or-later
+
+# GitHub/CI configuration
+Files: .github/* .github/**/*
+Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+License: PMPL-1.0-or-later
+
+# Generated files
+Files: generated/*
+Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+License: PMPL-1.0-or-later
+
+# Lockfiles and auto-generated
+Files: *.lock Cargo.lock flake.lock
+Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+License: PMPL-1.0-or-later
+
+# Devcontainer config (JSON, no comments)
+Files: .devcontainer/*.json
+Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+License: PMPL-1.0-or-later
+
+# Git-cliff config
+Files: cliff.toml
+Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+License: PMPL-1.0-or-later

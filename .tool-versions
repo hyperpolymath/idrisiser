@@ -1,0 +1,9 @@
+# Uncomment and customize for your project
+# rust nightly
+# just 1.40.0
+# nickel 1.10.0
+# gleam 1.8.0
+# elixir 1.18.0
+# erlang 27.2
+# zig 0.14.0
+# idris2 0.7.0

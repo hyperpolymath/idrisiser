@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Custom issue template for {{OWNER}}/{{REPO}}
+name: Other
+description: Report an issue that does not fit the other categories
+title: ""
+labels: ["triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for issues that do not fit into bug reports, feature requests,
+        documentation, or questions. Please provide as much detail as possible.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Issue category
+      description: What best describes this issue?
+      options:
+        - Refactoring
+        - Technical debt
+        - Build / CI issue
+        - Dependency update
+        - Security concern
+        - Licensing question
+        - Ecosystem integration
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Clearly describe what this issue is about.
+      placeholder: Provide a detailed description of the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why is this important? What is the impact of not addressing it?
+      placeholder: "This matters because..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: If you have a plan or approach in mind, describe it here.
+      placeholder: "I suggest we..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context, links, or references.
+      placeholder: Any supplementary information.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I have searched existing issues to ensure this is not a duplicate
+          required: true
+        - label: I would be willing to submit a PR to address this
+          required: false

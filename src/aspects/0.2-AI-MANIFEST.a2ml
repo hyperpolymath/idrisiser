@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "source-unit-aspects"
+level: 2
+parent: "../0.1-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Cross-cutting concerns and domain-specific aspects (Security,
+  Observability, Integrity).
+
+canonical_locations:
+  security: "security/"
+  observability: "observability/"
+  integrity: "integrity/"

@@ -1,0 +1,22 @@
+= AI Guidance Directory
+
+Put AI-facing instructions in this folder.
+
+Examples:
+
+* `CLAUDE.md`
+* `COPILOT.md`
+* `GEMINI.md`
+* `AI.a2ml`
+* `AI.djot`
+
+Avoid scattering agent instruction files around the repo root.
+
+Recommended machine read order:
+
+* `.machine_readable/anchors/ANCHOR.a2ml`
+* `.machine_readable/policies/MAINTENANCE-AXES.a2ml`
+* `.machine_readable/policies/MAINTENANCE-CHECKLIST.a2ml`
+* `.machine_readable/policies/SOFTWARE-DEVELOPMENT-APPROACH.a2ml`
+* `.machine_readable/STATE.a2ml`
+* `.machine_readable/META.a2ml`

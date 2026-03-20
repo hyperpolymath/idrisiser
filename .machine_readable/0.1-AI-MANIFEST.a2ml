@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "machine-readable-pillar"
+level: 1
+parent: "../0-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Registry for all machine-readable metadata, policies, and internal
+  automation scripts.
+
+canonical_locations:
+  state: "STATE.a2ml"
+  meta: "META.a2ml"
+  ecosystem: "ECOSYSTEM.a2ml"
+  agentic: "AGENTIC.a2ml"
+  neurosym: "NEUROSYM.a2ml"
+  playbook: "PLAYBOOK.a2ml"
+  anchors: "anchors/"
+  policies: "policies/"
+  ai_configs: "ai/"
+  compliance: "compliance/"
+  scripts: "scripts/"
+
+invariants:
+  - "Metadata files MUST follow a2ml format"
+  - "Internal automation MUST live in scripts/ subfolder"

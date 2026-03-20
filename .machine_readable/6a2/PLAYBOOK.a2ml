@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+#
+# PLAYBOOK.a2ml — Operational playbook
+# Runbooks, incident response, deployment procedures.
+
+[metadata]
+version = "0.1.0"
+last-updated = "{{CURRENT_DATE}}"
+
+[deployment]
+# method = "gitops"  # gitops | manual | ci-triggered
+# target = "container"  # container | binary | library | wasm
+
+[incident-response]
+# 1. Check .machine_readable/STATE.a2ml for current status
+# 2. Review recent commits and CI results
+# 3. Run `just validate` to check compliance
+# 4. Run `just security` to audit for vulnerabilities
+
+[release-process]
+# 1. Update version in STATE.a2ml, META.a2ml, Justfile
+# 2. Run `just release-preflight` (validate + quality + security + maint-hard-pass)
+# 3. Optional local permission hardening: `just perms-snapshot && just perms-lock`
+# 4. Tag and push
+# 5. Restore local permissions if needed: `just perms-restore`
+# 6. Run `just container-push` if applicable
+
+[maintenance-operations]
+# Baseline audit:
+#   just maint-audit
+# Hard release gate:
+#   just maint-hard-pass
+# Permission audit:
+#   just perms-audit

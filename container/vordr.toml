@@ -1,0 +1,100 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+#
+# Vordr runtime monitoring configuration for {{PROJECT_NAME}}
+#
+# Vordr watches container health, detects crashes, tracks resource usage,
+# and emits structured logs. It runs alongside the application stack and
+# provides runtime observability without requiring in-process agents.
+#
+# Usage:
+#   vordr watch --config container/vordr.toml
+#   vordr status
+#   vordr report
+
+[metadata]
+name = "{{SERVICE_NAME}}"
+version = "{{VERSION}}"
+
+# ============================================================================
+# Health Monitoring
+# ============================================================================
+#
+# Vordr periodically probes these endpoints. If a probe fails beyond the
+# failure_threshold, vordr emits an alert and (optionally) restarts the
+# container via Podman.
+
+[health]
+# Primary health endpoint — must return 2xx.
+endpoint = "http://localhost:{{PORT}}/health"
+interval = "30s"
+timeout = "5s"
+failure_threshold = 3
+
+# Readiness endpoint — checked during startup and after restarts.
+readiness_endpoint = "http://localhost:{{PORT}}/ready"
+readiness_timeout = "10s"
+
+# Action on failure: "alert" (log + notify) or "restart" (alert + podman restart).
+on_failure = "alert"
+
+# ============================================================================
+# Crash Detection
+# ============================================================================
+#
+# Monitors container state via Podman. Detects OOM kills, segfaults,
+# and unexpected exits.
+
+[crash_detection]
+enabled = true
+# Maximum restarts within the window before vordr stops restarting.
+max_restarts = 5
+restart_window = "10m"
+
+# ============================================================================
+# Resource Thresholds
+# ============================================================================
+#
+# Alert when resource usage exceeds these thresholds. Values are percentages
+# of the container's cgroup limits (or host limits if uncapped).
+
+[resources]
+cpu_warn = 80       # Percentage — warn at 80% sustained CPU.
+cpu_critical = 95   # Percentage — critical alert at 95%.
+memory_warn = 75    # Percentage of memory limit.
+memory_critical = 90
+disk_warn = 80      # Percentage of volume usage.
+disk_critical = 95
+
+# Sample interval for resource metrics.
+sample_interval = "15s"
+
+# ============================================================================
+# Log Output
+# ============================================================================
+#
+# Vordr emits its own logs (not the application's) in structured format.
+
+[logging]
+format = "json"
+level = "info"
+# Write vordr logs to stdout (captured by Podman) and optionally to file.
+output = "stdout"
+# file = "/var/log/vordr/{{SERVICE_NAME}}.log"
+
+# ============================================================================
+# Notifications (optional)
+# ============================================================================
+#
+# Uncomment and configure to receive alerts via webhook or email.
+
+# [notifications.webhook]
+# url = "https://example.com/hooks/vordr"
+# method = "POST"
+# headers = { "Content-Type" = "application/json" }
+# on = ["failure", "recovery", "resource_critical"]
+
+# [notifications.email]
+# to = "{{EMAIL}}"
+# from = "vordr@{{SERVICE_NAME}}.local"
+# smtp = "smtp://localhost:25"
+# on = ["failure", "resource_critical"]

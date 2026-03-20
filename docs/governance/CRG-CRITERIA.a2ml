@@ -1,0 +1,108 @@
+; SPDX-License-Identifier: PMPL-1.0-or-later
+; Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+
+; Component Readiness Grades (CRG) — Machine-readable specification
+; Format: A2ML (AI-to-Machine Language)
+; Standard: CRG v1.0
+
+(standard
+  (name "Component Readiness Grades")
+  (abbreviation "CRG")
+  (version "1.0")
+  (date "2026-02-28")
+  (author "Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>")
+  (license "PMPL-1.0-or-later")
+  (family "RSR"))
+
+(grades
+  (grade
+    (code X)
+    (name "Untested")
+    (release-stage #f)
+    (ordinal 0)
+    (description "No testing has been performed. Status unknown.")
+    (evidence-required "none")
+    (minimum-for #f))
+  (grade
+    (code F)
+    (name "Harmful / Wasteful")
+    (release-stage #f)
+    (ordinal 1)
+    (description "Actively harmful, wasteful, or better handled externally. Reject, deprecate, or delegate.")
+    (evidence-required "documented test results showing harm, waste, or redundancy; comparison with alternatives")
+    (minimum-for #f))
+  (grade
+    (code E)
+    (name "Minimal / Salvageable")
+    (release-stage "pre-alpha")
+    (ordinal 2)
+    (description "Does something slight. Barely functional. Needs redesign or major work.")
+    (evidence-required "at least one successful test case; documented failures and limitations")
+    (minimum-for #f))
+  (grade
+    (code D)
+    (name "Partial / Inconsistent")
+    (release-stage "alpha")
+    (ordinal 3)
+    (description "Works on some things but not systematically.")
+    (evidence-required "matrix of tested scenarios; documented scope vs actual capabilities")
+    (minimum-for "alpha"))
+  (grade
+    (code C)
+    (name "Self-Validated")
+    (release-stage "beta")
+    (ordinal 4)
+    (description "Tested on the tool/project itself (dogfooding). Reliable in home context.")
+    (evidence-required "active dogfooding; CI integration or equivalent; no known failures in home context")
+    (minimum-for "beta"))
+  (grade
+    (code B)
+    (name "Broadly Validated")
+    (release-stage "release-candidate")
+    (ordinal 5)
+    (description "Tested on at least 6 disparate, unrelated targets.")
+    (evidence-required "list of 6+ diverse targets with test results; evidence of feedback incorporation")
+    (minimum-for "release-candidate"))
+  (grade
+    (code A)
+    (name "Field-Proven")
+    (release-stage "stable")
+    (ordinal 6)
+    (description "Real-world external feedback confirms value. Does no harm in the wild.")
+    (evidence-required "real-world usage data; feedback incorporation evidence; no unresolved harm reports")
+    (minimum-for "stable")))
+
+(transitions
+  (promotion
+    (from X) (to E) (requirement "Run at least one test. Document results."))
+  (promotion
+    (from X) (to F) (requirement "Evaluate and determine harmful or wasteful."))
+  (promotion
+    (from E) (to D) (requirement "Fix critical failures. Document scope."))
+  (promotion
+    (from D) (to C) (requirement "Dogfood on own project. Fix what breaks."))
+  (promotion
+    (from C) (to B) (requirement "Test on 6+ diverse external targets. Fix what breaks."))
+  (promotion
+    (from B) (to A) (requirement "Ship. Collect external feedback. Demonstrate no harm."))
+  (demotion
+    (from A) (to B) (trigger "External feedback dries up or reveals no longer useful."))
+  (demotion
+    (from A) (to F) (trigger "External feedback reveals component causes harm."))
+  (demotion
+    (from B) (to C) (trigger "Broad validation reveals unfixed failures."))
+  (demotion
+    (from C) (to D) (trigger "Home context changes and component no longer reliable."))
+  (demotion
+    (from C) (to F) (trigger "Dogfooding reveals net negative."))
+  (demotion
+    (from D) (to E) (trigger "Scope narrows to barely functional."))
+  (demotion
+    (from any) (to F) (trigger "Better external alternative makes this pure opportunity cost.")))
+
+(conformance
+  (rule "Each assessable component MUST have a grade from {X, F, E, D, C, B, A}.")
+  (rule "Each grade above X MUST be supported by evidence per section 4.")
+  (rule "Assessments MUST be recorded in a version-controlled location.")
+  (rule "Assessments MUST be reviewed at least once per release cycle.")
+  (rule "Release stages MUST respect minimum grade thresholds."))

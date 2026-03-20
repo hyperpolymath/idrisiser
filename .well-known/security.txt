@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# RFC 9116 - security.txt
+# https://securitytxt.org/
+
+Contact: mailto:{{SECURITY_EMAIL}}
+Expires: {{CURRENT_YEAR}}-12-31T23:59:59.000Z
+Encryption: {{PGP_KEY_URL}}
+Preferred-Languages: en
+Canonical: https://{{FORGE}}/{{OWNER}}/{{REPO}}/.well-known/security.txt
+Policy: https://{{FORGE}}/{{OWNER}}/{{REPO}}/blob/main/SECURITY.md
+Hiring: https://{{WEBSITE}}/careers

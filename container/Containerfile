@@ -1,0 +1,136 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# {{PROJECT_NAME}} Container Image
+#
+# Multi-stage build template for Chainguard Wolfi base images.
+# Customise the builder stage for your language and copy the
+# resulting binary/release into the minimal runtime stage.
+#
+# Build with Podman:
+#   podman build -t {{SERVICE_NAME}}:latest -f container/Containerfile .
+#
+# Run:
+#   podman run -p {{PORT}}:{{PORT}} {{SERVICE_NAME}}:latest
+#
+# Run with persistent volume:
+#   podman run -p {{PORT}}:{{PORT}} -v {{SERVICE_NAME}}-data:/data {{SERVICE_NAME}}:latest
+
+# ============================================================================
+# Stage 1: Builder
+# ============================================================================
+#
+# Install build tools and compile the application.
+# This stage is discarded after the build — only the compiled output
+# is copied into the runtime stage.
+#
+# Language-specific examples (uncomment the one you need):
+#
+# --- Rust ---
+#   RUN apk add --no-cache rust pkgconf build-base
+#   COPY Cargo.toml Cargo.lock ./
+#   COPY src/ ./src/
+#   RUN cargo build --release
+#   # Output: /build/target/release/{{SERVICE_NAME}}
+#
+# --- Elixir ---
+#   RUN apk add --no-cache erl27-elixir-1.18 erlang-27 erlang-27-dev git build-base
+#   COPY mix.exs mix.lock ./
+#   COPY lib/ ./lib/
+#   COPY config/ ./config/
+#   ENV MIX_ENV=prod
+#   RUN mix local.hex --force && mix local.rebar --force && \
+#       mix deps.get --only prod && mix compile && mix release
+#   # Output: /build/_build/prod/rel/{{SERVICE_NAME}}/
+#
+# --- Zig ---
+#   RUN apk add --no-cache zig build-base
+#   COPY build.zig build.zig.zon ./
+#   COPY src/ ./src/
+#   RUN zig build -Doptimize=ReleaseFast
+#   # Output: /build/zig-out/bin/{{SERVICE_NAME}}
+#
+FROM cgr.dev/chainguard/wolfi-base:latest AS builder
+
+# TODO: Install your language toolchain
+RUN apk add --no-cache build-base
+
+WORKDIR /build
+
+# TODO: Copy source files and build
+COPY . .
+# RUN <your-build-command>
+
+# ============================================================================
+# Stage 2: Runtime
+# ============================================================================
+#
+# Minimal production image. Only the compiled binary/release and runtime
+# dependencies are included. No compilers, no source code, no build tools.
+#
+FROM cgr.dev/chainguard/wolfi-base:latest
+
+# OCI image labels (compatible with cerro-torre .ctp bundle metadata)
+LABEL org.opencontainers.image.title="{{PROJECT_NAME}}" \
+      org.opencontainers.image.description="{{PROJECT_DESCRIPTION}}" \
+      org.opencontainers.image.url="https://{{FORGE}}/{{OWNER}}/{{REPO}}" \
+      org.opencontainers.image.source="https://{{FORGE}}/{{OWNER}}/{{REPO}}" \
+      org.opencontainers.image.vendor="{{OWNER}}" \
+      org.opencontainers.image.licenses="{{LICENSE}}" \
+      org.opencontainers.image.authors="{{AUTHOR}} <{{AUTHOR_EMAIL}}>" \
+      dev.cerrotorre.manifest="container/manifest.toml" \
+      dev.cerrotorre.gatekeeper="container/.gatekeeper.yaml" \
+      dev.stapeln.compose="container/compose.toml"
+
+# Install minimal runtime dependencies.
+# Adjust this list for your application:
+#   - ca-certificates: TLS root certificates
+#   - curl: health check probe
+#   - libstdc++: C++ standard library (if needed by native deps)
+#   - ncurses: terminal UI (if needed, e.g. Elixir IEx)
+RUN apk add --no-cache ca-certificates curl
+
+# Create non-root user for the application.
+# Running as root inside containers is a security anti-pattern.
+RUN addgroup -S appuser && adduser -S appuser -G appuser
+
+WORKDIR /app
+
+# TODO: Copy compiled binary/release from builder stage.
+# Examples:
+#   COPY --from=builder /build/target/release/{{SERVICE_NAME}} /app/{{SERVICE_NAME}}
+#   COPY --from=builder /build/_build/prod/rel/{{SERVICE_NAME}} /app/release/
+#   COPY --from=builder /build/zig-out/bin/{{SERVICE_NAME}} /app/{{SERVICE_NAME}}
+
+# Copy entrypoint script
+COPY container/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+# Copy stapeln integration files (svalinn gatekeeper policy, cerro-torre manifest)
+COPY container/.gatekeeper.yaml /etc/svalinn/gatekeeper.yaml
+COPY container/manifest.toml /app/manifest.toml
+
+# Create data directory for persistent storage (mountable volume)
+RUN mkdir -p /data && chown appuser:appuser /data
+
+# Set ownership of the application directory
+RUN chown -R appuser:appuser /app
+
+# Environment variables — customise for your application
+ENV APP_HOST=[::]
+ENV APP_PORT={{PORT}}
+ENV APP_LOG_FORMAT=json
+ENV APP_DATA_DIR=/data
+
+# Declare /data as a volume for persistent storage
+VOLUME ["/data"]
+
+# Run as non-root
+USER appuser
+
+# Expose the application port
+EXPOSE {{PORT}}
+
+# Health check — the application must respond 2xx at /health
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -sf http://localhost:${APP_PORT}/health || exit 1
+
+ENTRYPOINT ["/app/entrypoint.sh"]

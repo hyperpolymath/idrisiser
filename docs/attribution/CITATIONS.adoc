@@ -1,0 +1,35 @@
+= {{PROJECT_NAME}} - Citation Guide
+:toc:
+
+== BibTeX
+
+[source,bibtex]
+----
+@software{{{PROJECT_NAME}}_{{CURRENT_YEAR}},
+  author = {{{AUTHOR_LAST}}, {{AUTHOR_FIRST}}},
+  title = {{{PROJECT_NAME}}},
+  year = {{{CURRENT_YEAR}}},
+  url = {https://github.com/{{OWNER}}/{{PROJECT_NAME}}},
+  license = {PMPL-1.0-or-later}
+}
+----
+
+== Harvard Style
+
+{{AUTHOR_LAST}}, {{AUTHOR_INITIALS}} ({{CURRENT_YEAR}}) _{{PROJECT_NAME}}_ [Computer software]. Available at: https://github.com/{{OWNER}}/{{PROJECT_NAME}}
+
+== OSCOLA
+
+{{AUTHOR}}, '{{PROJECT_NAME}}' ({{CURRENT_YEAR}}) <https://github.com/{{OWNER}}/{{PROJECT_NAME}}>
+
+== MLA
+
+{{AUTHOR_LAST}}, {{AUTHOR_FIRST}} "{{PROJECT_NAME}}." {{CURRENT_YEAR}}, github.com/{{OWNER}}/{{PROJECT_NAME}}.
+
+== APA 7
+
+{{AUTHOR_LAST}}, {{AUTHOR_INITIALS}} ({{CURRENT_YEAR}}). _{{PROJECT_NAME}}_ [Computer software]. GitHub. https://github.com/{{OWNER}}/{{PROJECT_NAME}}
+
+== See Also
+
+* link:CITATION.cff[CITATION.cff]

@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Issue template chooser configuration for {{OWNER}}/{{REPO}}
+blank_issues_enabled: true
+contact_links:
+  - name: Discussions
+    url: https://github.com/{{OWNER}}/{{REPO}}/discussions
+    about: Ask questions, share ideas, or start a conversation in Discussions.
+  - name: Security Vulnerabilities
+    url: https://github.com/{{OWNER}}/{{REPO}}/security/advisories/new
+    about: Report security vulnerabilities privately via GitHub Security Advisories.

@@ -1,0 +1,52 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+// Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+= Idrisiser
+Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+:toc: left
+:icons: font
+
+== What Is This?
+
+Idrisiser generates **proven-correct wrappers** from annotated interfaces
+using Idris2 dependent types — letting normal developers get formal
+guarantees without a PhD in type theory.
+
+Idris2 can prove code correct at compile time, but the learning curve is
+brutal. Idrisiser makes dependent-type proofs accessible.
+
+== How It Works
+
+Describe your interface contract in `idrisiser.toml`. Idrisiser:
+
+1. Generates Idris2 type definitions with dependent type proofs
+2. Proves properties: totality, termination, invariant preservation
+3. Generates a Zig FFI bridge to your existing code
+4. Wraps your functions so they can only be called when proofs hold
+
+== Key Value
+
+* **Formal verification without learning Idris2**
+* **Impossible states become impossible** — dependent types enforce contracts
+* **Zero runtime cost** — proofs are erased at compile time
+
+== Architecture
+
+Follows the hyperpolymath -iser pattern (same as https://github.com/hyperpolymath/chapeliser[Chapeliser]):
+
+* **Manifest** (`idrisiser.toml`) — describe WHAT you want
+* **Idris2 ABI** (`src/abi/`) — formal proofs of interface correctness
+* **Zig FFI** (`ffi/zig/`) — C-ABI bridge to target language runtime
+* **Codegen** (`src/codegen/`) — generates target language wrapper code
+* **Rust CLI** — parses manifest, validates, generates, builds, runs
+
+User writes zero target language code. Idrisiser generates everything.
+
+Part of the https://github.com/hyperpolymath/iseriser[-iser family] of acceleration frameworks.
+
+== Status
+
+**Pre-alpha.** Architecture defined, scaffolding in place, codegen pending.
+
+== License
+
+SPDX-License-Identifier: PMPL-1.0-or-later

@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Intentfile.a2ml — BLANK TEMPLATE
+# Replace this with your project's contractile.
+# See .machine_readable/contractiles/ for a working example.
+#
+# Copy this file to .machine_readable/contractiles/lust/Intentfile.a2ml
+# and fill in your project-specific checks.
+
+@abstract:
+[Your project's LUST contract goes here]
+@end

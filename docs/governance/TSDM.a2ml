@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [TSDM_SPEC]
+id: "tsdm-standard"
+version: "1.0.0"
+
+axes:
+  axis_1:
+    name: "Planning"
+    levels: ["must", "should", "could"]
+  axis_2:
+    name: "Maintenance"
+    levels: ["corrective", "adaptive", "perfective"]
+  axis_3:
+    name: "Audit"
+    levels: ["systems", "compliance", "effects"]
+
+invariants:
+  - "Every task MUST map to at least one TSDM coordinate"
+  - "Axis 1 priority governs resource allocation"
+  - "Axis 2 type governs commit categorisation"
+  - "Axis 3 focus governs audit depth"

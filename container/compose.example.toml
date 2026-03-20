@@ -1,0 +1,135 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+#
+# Example selur-compose configuration — multi-service stack
+#
+# This is a concrete, fully-commented example showing a Rust API + Elixir
+# worker + svalinn gateway deployment. Copy this file to compose.toml and
+# customise for your project.
+#
+# Usage:
+#   cp compose.example.toml compose.toml
+#   # Edit service names, ports, images
+#   selur-compose up --detach
+
+version = "1.0"
+
+# ============================================================================
+# Services
+# ============================================================================
+
+# Rust API service — the primary HTTP/gRPC backend.
+# Handles incoming requests, data storage, and core business logic.
+[services.rust-api]
+image = "ghcr.io/hyperpolymath/myproject-api:latest.ctp"
+
+# Map host port 8080 to container port 8080.
+# Use ["[::]:8080:8080"] for explicit IPv6 binding.
+ports = ["8080:8080"]
+
+# Environment variables passed into the container at startup.
+# These override defaults in the Containerfile ENV directives.
+environment = {
+  RUST_LOG = "info",                  # Rust log level (trace, debug, info, warn, error)
+  APP_HOST = "[::]",                  # Listen on all interfaces (IPv4 + IPv6)
+  APP_PORT = "8080",                  # Internal container port
+  APP_LOG_FORMAT = "json",            # Structured logging for selur/vordr
+  APP_DATA_DIR = "/data",             # Persistent data directory (matches VOLUME)
+}
+
+# Bind-mount a named volume for persistent data.
+# Format: "volume-name:/container/path"
+volumes = ["api-data:/data"]
+
+# Restart policy: "always" ensures the service comes back after crashes.
+# Other options: "no", "on-failure", "unless-stopped"
+restart = "always"
+
+# Health check: selur/Podman uses this to determine if the service is ready.
+# The service must respond 2xx to this endpoint within the timeout.
+healthcheck = { test = "curl -sf http://localhost:8080/health", interval = "30s", timeout = "5s", retries = 3 }
+
+# ---
+
+# Elixir worker service — background processing, event handling, coordination.
+# Runs as an OTP release with supervision trees for fault tolerance.
+[services.elixir-worker]
+image = "ghcr.io/hyperpolymath/myproject-worker:latest.ctp"
+
+# Separate port for the worker's admin/metrics endpoint.
+ports = ["4000:4000"]
+
+# The worker connects to the Rust API over the internal selur network.
+# Service names resolve as hostnames within the compose network.
+environment = {
+  API_URL = "http://rust-api:8080/api/v1",   # Internal service discovery
+  MIX_ENV = "prod",                           # Elixir release mode
+  APP_LOG_FORMAT = "json",                    # Match structured logging format
+  POOL_SIZE = "10",                           # DB connection pool size
+}
+
+# depends_on ensures the Rust API starts before the worker.
+# Note: This only waits for the container to start, not for the health check.
+# Use healthcheck + startup probes for true readiness gating.
+depends_on = ["rust-api"]
+
+restart = "always"
+healthcheck = { test = "curl -sf http://localhost:4000/health", interval = "30s", timeout = "5s", retries = 3 }
+
+# ---
+
+# Svalinn edge gateway — reverse proxy with policy enforcement.
+# All external traffic enters through svalinn, which:
+#   1. Terminates TLS (auto-provisioned certificates)
+#   2. Validates JWT/OAuth2 authentication
+#   3. Enforces rate limits from .gatekeeper.yaml
+#   4. Routes requests to the appropriate backend service
+#   5. Logs all write operations for audit
+[services.svalinn]
+image = "ghcr.io/hyperpolymath/svalinn:latest.ctp"
+
+# External-facing ports: HTTPS (443) and HTTP->HTTPS redirect (80).
+ports = ["443:443", "80:80"]
+
+environment = {
+  # Backend routing: svalinn proxies to internal services.
+  SVALINN_BACKEND = "http://rust-api:8080",
+  SVALINN_WORKER_BACKEND = "http://elixir-worker:4000",
+
+  # Policy file: mounted from the svalinn-config volume.
+  SVALINN_POLICY_FILE = "/etc/svalinn/gatekeeper.yaml",
+
+  # Auto-provision TLS certificates (Let's Encrypt).
+  SVALINN_TLS_AUTO = "true",
+}
+
+# Mount .gatekeeper.yaml as read-only policy configuration.
+volumes = ["svalinn-config:/etc/svalinn:ro"]
+
+# Svalinn starts last — it needs both backends to be running.
+depends_on = ["rust-api", "elixir-worker"]
+restart = "always"
+healthcheck = { test = "curl -sf http://localhost:80/health", interval = "30s", timeout = "5s", retries = 3 }
+
+# ============================================================================
+# Volumes
+# ============================================================================
+
+# Persistent storage for the Rust API (database files, indexes, WAL).
+[volumes.api-data]
+driver = "local"
+
+# Read-only policy configuration for svalinn gateway.
+# Populate with: cp .gatekeeper.yaml /path/to/svalinn-config/gatekeeper.yaml
+[volumes.svalinn-config]
+driver = "local"
+
+# ============================================================================
+# Networks
+# ============================================================================
+
+# selur network: zero-copy IPC between services on the same host.
+# When the selur driver is not installed, falls back to standard bridge
+# networking (TCP over localhost). Performance is slightly lower but
+# functionality is identical.
+[networks.default]
+driver = "selur"

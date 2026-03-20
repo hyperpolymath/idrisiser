@@ -1,0 +1,14 @@
+= BoJ Server Integration
+:icons: font
+
+This unit provides a "starting hand" for integrating with the **BoJ-Server** (Box of Justice) ecosystem — a high-rigor, verified server infrastructure.
+
+== Integration Options
+
+* **Core:** Use BoJ-Server as the primary verified backend for this project.
+* **Bridge:** Utilize the BoJ-Server IPC bridge for cross-boundary communication.
+
+== Related Repository
+
+For the full specification and source, visit:
+https://github.com/hyperpolymath/boj-server

@@ -1,0 +1,569 @@
+= Maintenance Checklist
+# Maintenance Checklist (Cross-Repo)
+
+Use this as a repeatable maintenance runbook for any repo.
+
+Companion policy:
+
+- `docs/practice/SOFTWARE-DEVELOPMENT-APPROACH.adoc` (human-readable)
+- `.machine_readable/policies/SOFTWARE-DEVELOPMENT-APPROACH.a2ml` (machine-readable)
+
+## Canonical Repo Baseline (Final)
+
+Apply this baseline to every repo unless an explicit exception is recorded.
+
+### Three-Axis Default Model
+
+- [ ] Axis 1 (scope priority, runs first): `must > intend > like`
+- [ ] Axis 2 (maintenance priority): `corrective > adaptive > perfective`
+- [ ] Axis 3 (audit priority): `systems > compliance > effects`
+- [ ] Perfective items are derived from Axis 1 honest state (not started independently).
+
+### Axis 1 Scoping Pass (Mandatory)
+
+Before Axis 2/3 execution, assemble a scoped worklist from evidence:
+
+- [ ] Read and reconcile: `README`, roadmap, status docs, maintenance checklist, and current CI/security docs.
+- [ ] Scan for unfinished markers: `TODO`, `FIXME`, `XXX`, `HACK`, `STUB`, `PARTIAL`.
+- [ ] If Idris is present, scan unsoundness markers: `believe_me`, `assert_total`.
+- [ ] Identify declared intent vs actual implementation (docs honesty check).
+- [ ] Produce a scope assembly artifact with prioritized entries under:
+  - `must` (release blockers / safety / correctness)
+  - `intend` (planned near-term)
+  - `like` (nice-to-have)
+
+### Axis 2 Maintenance Execution Rules
+
+- [ ] Corrective first: fix breakage, defects, regressions, safety issues.
+- [ ] Adaptive second: reconcile changed scope, remove stale references, cull no-longer-relevant work.
+- [ ] Perfective third: only from current honest state established by Axis 1 and updated by corrective/adaptive actions.
+
+### Axis 3 Audit Rules
+
+- [ ] Verify systems are in place and actually operating.
+- [ ] Verify documentation explains the real/current state (not aspirational-only), including documented exceptions.
+- [ ] Verify safety and security controls are present, active, and evidenced.
+- [ ] Verify observed effects/impacts are captured and reviewed.
+- [ ] Effects audit includes:
+  - benchmark execution and recorded results (with before/after where relevant)
+  - explicit maintainer dialogue/status review on what changed, why, and next risks
+- [ ] Audit compliance seams/compromises explicitly:
+  - policy exceptions are recorded with rationale, scope, and expiry/review
+  - exception does not silently broaden into general policy drift
+  - language-policy contamination checks run (example: a single TS exception must not trigger broad TypeScript conversion)
+  - run `panic-attack` as the compliance-audit scanner
+  - run ecological checking under effects (using sustainabot guidance as current baseline)
+
+### Generic Cleanup And Finish-Off Pass
+
+Run this pass at the end of a corrective/adaptive/perfective cycle:
+
+- [ ] Root cleanup:
+  - keep only required control/entry files in root
+  - move non-essential docs/reports/fixtures to canonical folders
+- [ ] Remove or archive stale work:
+  - close out completed TODO/STUB/PARTIAL items
+  - cull obsolete references, dead files, and superseded plans
+- [ ] Documentation finish-off:
+  - ensure README, roadmap, status, and wiki match actual implementation state
+  - ensure machine-readable policy/state files match human docs
+- [ ] Security/compliance finish-off:
+  - run compliance scanner (`panic-attack`) and resolve high-priority findings
+  - verify exception register and seams/compromises are explicitly bounded
+- [ ] Effects finish-off:
+  - run benchmark/effects checks and record evidence
+  - conduct explicit maintainer review dialogue (what changed, why, remaining risks)
+- [ ] Release-prep finish-off:
+  - produce Must/Should/Could summary
+  - produce immediate corrective/adaptive/perfective next-actions list
+
+### Must
+
+- [ ] Keep required control files at repository root:
+  - `.gitignore`, `.gitattributes`, `.editorconfig`, `.tool-versions`
+  - `Containerfile`
+  - `.containerignore` (or `.dockerignore` only when required for compatibility)
+  - `CNAME` and `.nojekyll` when using GitHub Pages/custom domain
+  - `Justfile` (root by convention)
+- [ ] Keep ownership/governance files present:
+  - `MAINTAINER` in root
+  - `.github/CODEOWNERS`
+- [ ] Keep machine-readable canonical structure under `.machine_readable/`:
+  - state/meta/ecosystem files (`*.a2ml` or repo standard)
+  - `anchors/ANCHOR.a2ml`
+  - `contractiles/` (`must`, `trust`, `lust`, and related)
+  - `ai/` for AI guidance files
+  - `bot_directives/` for bot control files
+- [ ] Keep contractiles/invariants present and wired:
+  - root `Mustfile` (or equivalent) with enforceable checks
+  - `Trustfile` and `Intentfile` present
+- [ ] Keep security metadata present:
+  - `.well-known/security.txt` and relevant policy metadata
+  - CI security scanning configured and runnable
+- [ ] Keep docs and navigation coherent:
+  - single navigation entry point in root (`NAVIGATION.adoc` or equivalent)
+  - no duplicate conflicting docs for same purpose (for example both `.md` and `.adoc` in root unless intentionally required)
+- [ ] Enforce ABI/FFI purity where the policy applies:
+  - ABI definitions in Idris2 (`src/abi/*.idr`)
+  - FFI implementations in Zig (`ffi/**/*.zig`)
+- [ ] Ensure quality gate includes: formatting, lint, unit/integration tests, p2p/e2e checks, benchmark smoke, docs checks, security scan.
+
+### Should
+
+- [ ] Keep human docs primarily in AsciiDoc (`.adoc`) except where ecosystem rules require other formats (GitHub/community health, legal text, tool-specific files).
+- [ ] Keep non-essential root files moved into structured folders:
+  - `docs/` (theory/practice/whitepapers/proofs/reports)
+  - `tests/` (fixtures/outputs)
+  - `docs/legal/` (while retaining root `LICENSE` when forge detection needs it)
+- [ ] Maintain `.well-known/` for public metadata where applicable (`security.txt`, `humans.txt`, `ads.txt` mirrors if used).
+- [ ] Keep CI policy checks for doc-format conventions and canonical file placement.
+- [ ] Keep roadmap/status docs honest with dated evidence.
+
+### Could
+
+- [ ] Maintain both human and machine views of maintenance policy from a single source (generate one from the other).
+- [ ] Add policy bots for corrective/adaptive/perfective/audit modes.
+- [ ] Add repo-level architecture map (`TOPOLOGY.md`) and release-readiness dashboards.
+- [ ] Add per-repo exception registry for approved policy deviations.
+
+### Explicit Root-Placement Rule
+
+Do **not** move the following out of root if you want default tool behavior:
+
+- `.gitignore`, `.gitattributes`, `.editorconfig`, `.tool-versions`
+- `Containerfile` and ignore file (`.containerignore`/`.dockerignore`)
+- `CNAME` and `.nojekyll` for GitHub Pages
+- `Justfile`
+
+## Quick Automated Run (Script)
+
+Use the helper script first, then use the checklist for deeper/manual follow-up.
+
+Script locations:
+- `/var/mnt/eclipse/repos/run-maintenance.sh`
+- `~/Desktop/run-maintenance.sh`
+
+```bash
+~/Desktop/run-maintenance.sh --repo /absolute/path/to/repo --output /tmp/maintenance-report.json
+jq . /tmp/maintenance-report.json
+```
+
+Useful flags:
+
+```bash
+# Strict mode: fail process on failed checks
+~/Desktop/run-maintenance.sh --repo /absolute/path/to/repo --strict
+
+# Skip expensive checks when needed
+~/Desktop/run-maintenance.sh --repo /absolute/path/to/repo --skip-panic
+
+# Explicit language selection
+~/Desktop/run-maintenance.sh --repo /absolute/path/to/repo --rust --python
+
+# Release hard-pass mode (fails on warnings or failures)
+~/Desktop/run-maintenance.sh --repo /absolute/path/to/repo --fail-on-warn
+```
+
+Permission policy in script:
+- Flags `g+w/o+w` files/dirs
+- Flags suspicious executable files
+- Flags shebang scripts missing executable bit
+- Supports repo-local exceptions via `.maintenance-perms-ignore` (regex per line)
+- **Audit-first by default** (non-mutating)
+- `--fix-perms` is explicit opt-in only (never implicit)
+- For reversible local hardening, pair snapshot/restore scripts where available:
+  - `scripts/maintenance/perms-state.sh snapshot`
+  - `scripts/maintenance/perms-state.sh lock`
+  - `scripts/maintenance/perms-state.sh restore`
+
+Important git behavior:
+- Git generally tracks execute bit, not full UNIX mode matrix.
+- Permission hardening audits do not force collaborators to re-unlock every file on pull.
+- Keep lock mode opt-in, with restore path documented.
+
+```bash
+# Audit-only (recommended default)
+~/Desktop/run-maintenance.sh --repo /absolute/path/to/repo
+
+# Opt-in permission fixes (review output before commit)
+~/Desktop/run-maintenance.sh --repo /absolute/path/to/repo --fix-perms
+```
+
+## 0) Setup
+
+```bash
+REPO="/absolute/path/to/repo"
+cd "$REPO"
+```
+
+```bash
+date -u
+git rev-parse --abbrev-ref HEAD
+git rev-parse HEAD
+git status --porcelain
+```
+
+## 1) Preflight
+
+- [ ] Confirm clean intent: note existing unrelated dirty files before edits.
+- [ ] Confirm runtime/toolchain versions.
+- [ ] Confirm container mode expectation (`podman`/`podman-compose`) if required.
+
+```bash
+command -v rg git jq || true
+command -v podman podman-compose || true
+```
+
+## 2) Dependency/Env Prereqs
+
+- [ ] Python deps in active interpreter (for Python paths).
+- [ ] Language-specific tooling installed.
+
+```bash
+python -c "import sys; print(sys.executable)"
+python -c "import pydantic; print(pydantic.__version__)" || echo "pydantic missing"
+```
+
+## 3) Corrective Maintenance First
+
+- [ ] Fix regressions, runtime errors, panics, broken commands, failing tests.
+- [ ] Re-run failing checks immediately after each fix.
+
+## 4) Code Health Scans
+
+- [ ] `TODO/FIXME/XXX/HACK/STUB/PARTIAL` scan.
+- [ ] Permission policy scan (`g+w/o+w`, executable hygiene).
+- [ ] ABI/FFI policy scan (if applicable: Idris2 ABI, Zig FFI).
+
+```bash
+rg -n "TODO|FIXME|XXX|HACK|STUB|PARTIAL" -g '!**/.git/**' -g '!**/target/**' .
+```
+
+```bash
+# Optional per-repo exceptions (regex per line):
+# .maintenance-perms-ignore
+# ^vendor/
+# ^third_party/
+```
+
+```bash
+# Adjust paths for your repo layout
+find . -type f \( -name '*.idr' -o -name '*.idris2' -o -name '*.zig' \)
+```
+
+## 5) Panic/Safety/Security Pass
+
+- [ ] Run `panic-attacker` assail/assault.
+- [ ] Triage findings by severity.
+- [ ] Fix high first, then medium.
+- [ ] Re-run until acceptable.
+
+```bash
+PANIC_BIN="/var/mnt/eclipse/repos/panic-attacker/target/release/panic-attack"
+"$PANIC_BIN" assail "$REPO" --output /tmp/assail.json --output-format json --quiet
+jq -r '.weak_points | length' /tmp/assail.json
+jq -r '.weak_points[] | "\(.severity)|\(.location)|\(.description)"' /tmp/assail.json
+```
+
+```bash
+# If repo has production-only source builder, prefer this for baseline checks:
+./scripts/ci/build-panic-assail-source.sh /tmp/panic-src
+"$PANIC_BIN" assail /tmp/panic-src --output /tmp/assail-prod.json --output-format json --quiet
+```
+
+## 6) Language-Specific Validation
+
+### Rust
+
+- [ ] Format
+- [ ] Lint
+- [ ] Tests
+- [ ] Doc tests
+- [ ] Benches (where relevant)
+
+```bash
+cargo fmt --all --check
+cargo clippy --workspace --all-targets -- -D warnings
+cargo test --workspace
+cargo test --workspace --doc
+# Optional targeted benchmarks:
+cargo bench
+```
+
+### Python
+
+- [ ] Format/lint
+- [ ] Type check
+- [ ] Tests
+
+```bash
+ruff check .
+ruff format --check .
+mypy .
+pytest -q
+```
+
+### Elixir
+
+- [ ] Format check
+- [ ] Lint/static checks
+- [ ] Tests
+
+```bash
+mix format --check-formatted
+mix credo --strict
+mix test
+```
+
+## 7) Container/Runtime Checks (Podman)
+
+- [ ] Build container path.
+- [ ] Run smoke tests inside containerized flow.
+- [ ] Compare host vs container behavior for parity.
+
+```bash
+podman --version
+podman compose version || podman-compose --version
+```
+
+## 8) Benchmark + Regression Check
+
+- [ ] Capture before/after metrics for touched hot paths.
+- [ ] Record command + sample size + output.
+- [ ] Fail change if critical path regresses beyond threshold.
+
+## 9) Adaptive and Perfective Maintenance
+
+- [ ] Adaptive: compatibility updates (tooling/API/deprecations/config flags).
+- [ ] Perfective: clarity, docs parity, developer workflow improvements.
+- [ ] Update roadmap/checklist/docs to match actual implementation state.
+
+## 10) Final QA and Release Hygiene
+
+- [ ] Re-run full relevant checks one final time.
+- [ ] Confirm no unintended file changes.
+- [ ] Commit scoped changes with clear message.
+- [ ] Push and capture commit SHA.
+
+```bash
+git status --short
+git diff --stat
+git add <scoped-files>
+git commit -m "maint: <summary>"
+git push
+```
+
+## 11) Maintenance Report Template
+
+Copy this block per repo run:
+
+```text
+Repo:
+Branch:
+Start UTC:
+End UTC:
+
+Scope:
+- Corrective:
+- Adaptive:
+- Perfective:
+
+Checks Run:
+- TODO/FIXME scan:
+- Panic-attacker:
+- Rust/Python/Elixir checks:
+- Container checks:
+- Benchmark checks:
+
+Findings:
+- High:
+- Medium:
+- Low:
+
+Fixes Applied:
+1.
+2.
+3.
+
+Validation Results:
+- Tests:
+- Benchmarks:
+- Panic-attacker rerun:
+
+Artifacts:
+- assail report:
+- benchmark output:
+- logs:
+
+Commit(s):
+- SHA:
+
+Remaining Risks / Follow-ups:
+1.
+2.
+```
+
+## 12) Language-Repo Additions (Eclexia-Specific)
+
+Add these checks for language/compiler repositories with formal ABI/FFI constraints:
+
+- [x] README structure restored (index/TOC, audience paths, quickstart sanity).
+- [x] Wiki split by audience (laypeople/users/developers) and linked from docs index.
+- [x] Root-level clutter reduced (archive, analysis, reports relegated to `docs/` subtrees).
+- [x] Machine-readable docs synchronized (`STATE.a2ml`, `META.a2ml`, `ECOSYSTEM.a2ml`, contractiles).
+- [x] Human-readable docs synchronized (`README`, `QUICK_STATUS`, roadmap, wiki home).
+- [x] `Mustfile` invariants present and enforceable in CI.
+- [x] `Trustfile` and `Intentfile` present and complete.
+- [x] FFI/ABI purity policy enforced (`*.zig` for FFI, `*.idr`/Idris2 for ABI).
+- [x] `panic-attack` findings triaged with explicit severity budget for release.
+- [x] Point-to-point, end-to-end, and benchmark checks wired in one quality gate.
+- [x] CI workflows include quality + security + docs checks with explicit policy.
+- [x] Release audit includes corrective/adaptive/perfective + Must/Should/Could.
+- [x] Roadmap/status honesty pass completed (dates and current evidence updated).
+
+## 13) Latest Execution Record (Eclexia, 2026-02-24)
+
+Repo: `/tmp/eclexia-releaseprep` (branch `release-prep`, base `533ec9e9447f374135cc9e2e81021624ddb3c0ad`)
+
+### 13.1 Setup/Preflight
+
+- [x] Captured UTC timestamp and git state.
+- [x] Tooling presence verified (`rg`, `git`, `jq`, `cargo`, `rustc`, `just`).
+- [x] Runtime/toolchain versions captured.
+- [x] Container tooling checked (`podman`, `podman-compose`).
+
+### 13.2 Corrective Maintenance
+
+- [x] Fixed `panic-attack` script path handling (`mktemp` output + local fallback binary detection).
+- [x] Removed Idris `believe_me` usage from ABI wrappers.
+- [x] Fixed conformance crash-noise path by skipping known intentional stack-overflow case in default runner.
+- [x] Re-ran affected checks after each fix.
+
+### 13.3 Code-Health Scans
+
+- [x] TODO/FIXME/STUB/PARTIAL scan run on active code paths.
+- [x] ABI/FFI file inventory run (`*.idr`, `*.zig`).
+- [x] Active-code marker count reduced/triaged; remaining items tracked in release audit.
+
+### 13.4 Security/Panic Pass
+
+- [x] `panic-attack` run and triaged.
+- [x] Critical findings cleared (Idris unsoundness markers removed).
+- [x] Current baseline: 0 weak points (Critical 0, High 0, Medium 0, Low 0).
+- [x] High/Medium backlog fully eliminated.
+
+### 13.5 Language Validation
+
+- [x] Final `just quality-gate` pass completed (docs, fmt, lint, unit, conformance, integration, p2p, e2e, bench).
+- [x] Additional targeted reruns completed (`just test-conformance`, `just panic-attack`, `just docs-check`).
+
+### 13.6 Adaptive/Perfective/Docs
+
+- [x] README/wiki/docs structure and indexing restored.
+- [x] Root tidy/relegation pass executed.
+- [x] Roadmap/status honesty update performed with current date and evidence links.
+- [x] Release audit created with corrective/adaptive/perfective + Must/Should/Could.
+- [x] Full quality-gate rerun passed after hardening updates.
+- [x] ABI/FFI extension lane added without breaking stable symbols (`ecl_abi_get_info`, `ecl_tracker_create_ex`, `ecl_tracker_snapshot`).
+- [x] CI quality workflow now validates sibling `proven` repo presence and critical binding files.
+- [x] Proven roadmap now includes explicit "critical core, not full rewrite" adoption guidance and flowchart.
+
+### 13.7 Outstanding Items (Explicit)
+
+- [x] Stable `v1.0.0` technical gate readiness met (quality + panic scan clean).
+- [x] Parser/codegen/runtime panic-path hardening completed for scanner-flagged paths.
+- [x] Non-eclexia `proven` library checked: already Idris2-first with Zig ABI bridge; no additional integration changes required in this run.
+- [ ] Remote push blocked by token scope: GitHub rejected branch updates (`release-prep`, `release-prep-pushable`) due missing `workflow` OAuth scope.
+
+### 13.8 Artifacts
+
+- Release audit: `docs/reports/V1-READINESS-AUDIT-2026-02-24.md`
+- Panic report: `/tmp/eclexia-panic-attack.KZ1jpC.json` (0 weak points)
+- Final quality gate log: `/tmp/eclexia-quality-gate-final2.log` (plus post-change reruns via terminal sessions)
+- Local commits: `88fa2af` (`release-prep`), `baa3d1c` (`release-prep-pushable`) + pending new commit from this pass
+
+## 12) LLM Operator Instructions
+
+Use this prompt with an LLM agent when you want the process run end-to-end:
+
+```text
+Run the maintenance workflow for this repo using MAINTENANCE-CHECKLIST.md.
+
+Required behavior:
+1. Run ~/Desktop/run-maintenance.sh first and collect the JSON report.
+2. Triage report results by severity: fail > warn > pass.
+3. Execute corrective maintenance first (fix regressions, panics, broken tests/commands).
+4. Run TODO/FIXME/stub scan and address relevant items.
+5. Run panic-attacker and fix findings in priority order; rerun to confirm.
+6. Run language-specific checks (Rust/Python/Elixir) relevant to this repo.
+7. Run benchmark/regression checks for touched hot paths.
+8. Enforce permission policy:
+   - no group/world writable source files unless justified
+   - executable bit only where intended
+   - use .maintenance-perms-ignore for justified exceptions
+9. Update docs/roadmap/checklist entries to reflect actual state.
+10. Produce a final report using the template in MAINTENANCE-CHECKLIST.md.
+
+Constraints:
+- Do not revert unrelated existing dirty changes.
+- Stage and commit only scoped intended files.
+- If blocked, state exactly what is blocked and why.
+```
+
+## 13) AI Execution Integrity Contract (Mandatory)
+
+Use this when delegating maintenance to any AI (Gemini/Claude/ChatGPT/etc.).
+
+```text
+You must execute this maintenance run with strict integrity.
+
+Non-negotiable rules:
+1. Do not claim any step is complete unless you actually ran it.
+2. Do not silently skip checklist items. If skipped, state SKIPPED + exact reason.
+3. For every check, provide evidence:
+   - command executed
+   - pass/fail/warn
+   - key output summary
+   - artifact/log path
+4. If a command fails, stop claiming success and report the failure clearly.
+5. After each fix, re-run the relevant failing check and report the rerun result.
+6. Do not hide uncertainty. If unsure, say so and run additional verification.
+7. Never mark “all done” while any fail/warn remains unexplained.
+8. Do not make destructive or broad permission changes by default.
+   - permission changes must be audit-first
+   - use --fix-perms only with explicit intent
+9. Final output must include:
+   - checklist coverage matrix (each item: PASS/FAIL/WARN/SKIPPED)
+   - unresolved risks
+   - exact next actions
+10. Prioritize user safety and reputation: no “looks fine” claims without evidence.
+```
+
+Recommended enforcement line for AI prompts:
+
+```text
+Fail closed: if evidence is missing for any checklist item, treat that item as NOT DONE.
+```
+
+## 14) Fleet Enrollment Automation (Gitbot + Hypatia)
+
+For centralized coverage across existing and new repos:
+
+```bash
+cd /var/mnt/eclipse/repos/gitbot-fleet
+just enroll-repos
+```
+
+Optional directive write-back to repos that already have `.machine_readable/`:
+
+```bash
+cd /var/mnt/eclipse/repos/gitbot-fleet
+just enroll-repos /var/mnt/eclipse/repos true
+```
+
+Release hard gate from fleet:
+
+```bash
+cd /var/mnt/eclipse/repos/gitbot-fleet
+just maintenance-hard-pass /absolute/path/to/repo
+```

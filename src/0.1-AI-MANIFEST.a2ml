@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "source-pillar"
+level: 1
+parent: "../0-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Primary source code directory. Organized by role and architectural
+  aspect.
+
+canonical_locations:
+  core: "core/"
+  interface: "interface/"
+  bridges: "bridges/"
+  contracts: "contracts/"
+  errors: "errors/"
+  definitions: "definitions/"
+  aspects: "aspects/"
+
+invariants:
+  - "Core logic MUST reside in core/"
+  - "Verified seams MUST reside in interface/"
+  - "Safety constraints MUST reside in contracts/"
+  - "Failure dictionaries MUST reside in errors/"

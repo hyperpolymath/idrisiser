@@ -1,0 +1,69 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Mustfile — Physical state contract
+# Author: Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+
+@abstract:
+What MUST be true about this repository's files and configuration.
+These are hard requirements — CI fails if any check fails.
+@end
+
+## File Presence
+
+### license-present
+- description: LICENSE file must exist
+- run: test -f LICENSE
+- severity: critical
+
+### readme-present
+- description: README.adoc or README.md must exist
+- run: test -f README.adoc || test -f README.md
+- severity: critical
+
+### security-policy
+- description: SECURITY.md must exist
+- run: test -f SECURITY.md
+- severity: critical
+
+### ai-manifest
+- description: 0-AI-MANIFEST.a2ml must exist
+- run: test -f 0-AI-MANIFEST.a2ml
+- severity: critical
+
+### contributing
+- description: CONTRIBUTING.md must exist (GitHub community health)
+- run: test -f CONTRIBUTING.md
+- severity: warning
+
+### editorconfig
+- description: .editorconfig must exist
+- run: test -f .editorconfig
+- severity: warning
+
+## SPDX Compliance
+
+### spdx-headers
+- description: All source files must have SPDX-License-Identifier
+- run: "! find src/ -name '*.rs' -o -name '*.res' -o -name '*.idr' -o -name '*.zig' 2>/dev/null | head -20 | xargs grep -L 'SPDX-License-Identifier' 2>/dev/null | head -1 | grep -q ."
+- severity: warning
+
+### no-agpl
+- description: No AGPL-3.0 references in dotfiles
+- run: "! grep -r 'AGPL-3.0' .gitignore .gitattributes .editorconfig 2>/dev/null | head -1 | grep -q ."
+- severity: critical
+
+## Dangerous Patterns
+
+### no-believe-me
+- description: No believe_me in Idris2 code
+- run: "! grep -r 'believe_me' --include='*.idr' . 2>/dev/null | grep -v node_modules | head -1 | grep -q ."
+- severity: critical
+
+### no-sorry
+- description: No sorry in Lean code
+- run: "! grep -r 'sorry' --include='*.lean' . 2>/dev/null | grep -v node_modules | head -1 | grep -q ."
+- severity: critical
+
+### no-admitted
+- description: No Admitted in Coq code
+- run: "! grep -r 'Admitted' --include='*.v' . 2>/dev/null | grep -v node_modules | head -1 | grep -q ."
+- severity: critical

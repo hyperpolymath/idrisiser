@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# General software development approach (machine-readable)
+
+[metadata]
+version = "1.0.0"
+last-updated = "2026-02-24"
+scope = "cross-repo"
+source-human = "docs/practice/SOFTWARE-DEVELOPMENT-APPROACH.adoc"
+
+[execution]
+order = ["axis-1", "axis-2", "axis-3"]
+
+[axis-1]
+name = "scope"
+priority = "must > intend > like"
+inputs = [
+  "README",
+  "roadmap",
+  "status-docs",
+  "ci-and-security-docs",
+]
+marker-scan = ["TODO", "FIXME", "XXX", "HACK", "STUB", "PARTIAL"]
+idris-unsound-scan = ["believe_me", "assert_total"]
+output = "scoped-work-assembly"
+
+[axis-2]
+name = "maintenance"
+priority = "corrective > adaptive > perfective"
+corrective = "defect/regression/safety/security fixes"
+adaptive = "scope reconciliation, stale-reference removal, obsolete-work culling"
+perfective = "quality improvements derived from axis-1 honest state"
+
+[axis-3]
+name = "audit"
+priority = "systems > compliance > effects"
+systems = "required systems present and operating"
+compliance = "exceptions explicit, bounded, and drift-resistant"
+effects = "benchmark/operational impact evidence captured and reviewed"
+compliance-tooling = "panic-attack"
+effects-tooling = "ecological checking with sustainabot guidance"
+
+[cleanup-finish-off]
+root-cleanup = true
+stale-work-cull = true
+docs-sync-human-machine = true
+compliance-audit = true
+effects-audit = true
+release-summary = ["must", "should", "could"]
+next-actions = ["corrective", "adaptive", "perfective"]
+
+[collaboration]
+maintainer-dialogue-required = true
+dialogue-topics = ["what changed", "why", "remaining risks"]

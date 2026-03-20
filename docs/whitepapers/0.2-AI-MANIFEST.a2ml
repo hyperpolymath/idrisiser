@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "whitepapers-track"
+level: 2
+parent: "../0.1-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Unit for strategic publications and whitepapers. Categorised by target
+  audience: Academic, Industry, and Outreach.
+
+canonical_locations:
+  academic: "academic/"
+  industry: "industry/"
+  outreach: "outreach/"
+
+invariants:
+  - "Each sub-track MUST have a clear audience definition in its README"

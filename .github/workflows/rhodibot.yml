@@ -1,0 +1,234 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# rhodibot.yml — Automated RSR compliance enforcement
+#
+# Reads root-hygiene rules and auto-fixes what it can:
+#   - Delete banned files (AI.djot, duplicate CONTRIBUTING.adoc, stale snapshots)
+#   - Rename misnamed files (AI.a2ml → 0-AI-MANIFEST.a2ml)
+#   - Fix SPDX headers (AGPL → PMPL in dotfiles)
+#   - Create missing required files (SECURITY.md, CONTRIBUTING.md)
+#   - Report unfixable issues as PR comments
+#
+# Runs weekly and on Hypatia scan completion.
+
+name: "🤖 Rhodibot — RSR Auto-Fix"
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Every Monday at 06:00 UTC
+  workflow_dispatch:       # Manual trigger
+  workflow_run:
+    workflows: ["Hypatia Neurosymbolic Analysis"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  rhodibot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 1
+
+      - name: Rhodibot — Scan and Fix
+        id: fix
+        run: |
+          set -euo pipefail
+          FIXES=""
+          ISSUES=""
+          CHANGED=false
+
+          # --- 1. Delete banned files ---
+          for pattern in "AI.djot" "NEXT_STEPS.md" "TODO.md" "NOTES.md" "TASKS.md"; do
+            if [ -f "$pattern" ]; then
+              rm "$pattern"
+              FIXES="$FIXES\n- Deleted \`$pattern\` (superseded)"
+              CHANGED=true
+            fi
+          done
+
+          # Delete stale snapshot files
+          for f in *-STATUS-*.md *-COMPLETION-*.md *-COMPLETE.md *-VERIFIED-*.md; do
+            if [ -f "$f" ]; then
+              rm "$f"
+              FIXES="$FIXES\n- Deleted stale snapshot \`$f\`"
+              CHANGED=true
+            fi
+          done
+
+          # --- 2. Rename misnamed files ---
+          if [ -f "AI.a2ml" ] && [ ! -f "0-AI-MANIFEST.a2ml" ]; then
+            mv AI.a2ml 0-AI-MANIFEST.a2ml
+            FIXES="$FIXES\n- Renamed \`AI.a2ml\` → \`0-AI-MANIFEST.a2ml\`"
+            CHANGED=true
+          fi
+
+          # --- 3. Delete duplicate format files ---
+          if [ -f "CONTRIBUTING.md" ] && [ -f "CONTRIBUTING.adoc" ]; then
+            rm CONTRIBUTING.adoc
+            FIXES="$FIXES\n- Deleted duplicate \`CONTRIBUTING.adoc\` (keeping .md for GitHub)"
+            CHANGED=true
+          fi
+
+          if [ -f "README.md" ] && [ -f "README.adoc" ]; then
+            # Only delete README.md if it's a stub (<5 lines)
+            lines=$(wc -l < README.md)
+            if [ "$lines" -lt 5 ]; then
+              rm README.md
+              FIXES="$FIXES\n- Deleted stub \`README.md\` (keeping .adoc)"
+              CHANGED=true
+            fi
+          fi
+
+          # --- 4. Fix SPDX headers in dotfiles ---
+          for dotfile in .gitignore .gitattributes .editorconfig; do
+            if [ -f "$dotfile" ] && grep -q "AGPL-3.0" "$dotfile" 2>/dev/null; then
+              sed -i 's/AGPL-3.0-or-later/PMPL-1.0-or-later/g; s/AGPL-3.0/PMPL-1.0-or-later/g' "$dotfile"
+              FIXES="$FIXES\n- Fixed SPDX header in \`$dotfile\` (AGPL → PMPL)"
+              CHANGED=true
+            fi
+          done
+
+          # --- 5. Create missing required files ---
+          if [ ! -f "SECURITY.md" ]; then
+            cat > SECURITY.md << 'SECEOF'
+          <!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
+          # Security Policy
+
+          ## Reporting a Vulnerability
+
+          **Email:** j.d.a.jewell@open.ac.uk
+
+          **Response timeline:**
+          - Acknowledgement within 48 hours
+          - Initial assessment within 7 days
+          - Fix or mitigation within 90 days
+
+          **Safe harbour:** We will not pursue legal action against security researchers who follow responsible disclosure.
+          SECEOF
+            FIXES="$FIXES\n- Created missing \`SECURITY.md\`"
+            CHANGED=true
+          fi
+
+          if [ ! -f "CONTRIBUTING.md" ]; then
+            cat > CONTRIBUTING.md << 'CONTEOF'
+          <!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
+          # Contributing
+
+          1. Fork the repository
+          2. Create a feature branch
+          3. Ensure SPDX headers on all files
+          4. Submit a pull request
+
+          **Author:** Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+          CONTEOF
+            FIXES="$FIXES\n- Created missing \`CONTRIBUTING.md\`"
+            CHANGED=true
+          fi
+
+          # --- 6. Check for issues we can't auto-fix ---
+          if [ ! -f "0-AI-MANIFEST.a2ml" ] && [ ! -f "AI.a2ml" ]; then
+            ISSUES="$ISSUES\n- Missing AI manifest (0-AI-MANIFEST.a2ml)"
+          fi
+
+          if [ ! -f "LICENSE" ] && [ ! -f "LICENSE.md" ] && [ ! -f "LICENSE.txt" ]; then
+            ISSUES="$ISSUES\n- Missing LICENSE file"
+          fi
+
+          if [ ! -f "README.adoc" ] && [ ! -f "README.md" ]; then
+            ISSUES="$ISSUES\n- Missing README"
+          fi
+
+          # Check for third-party fork (skip SPDX enforcement)
+          if [ -f "LICENSE" ] && grep -q "multiple licenses\|LGPL\|Apache" LICENSE 2>/dev/null; then
+            echo "FORK=true" >> $GITHUB_OUTPUT
+          fi
+
+          # --- 7. Check dangerous patterns ---
+          DANGEROUS=""
+          for pattern in "believe_me" "assert_total" "Admitted" "sorry" "unsafeCoerce" "Obj.magic"; do
+            count=$(grep -r "$pattern" --include='*.idr' --include='*.v' --include='*.lean' --include='*.hs' --include='*.ml' --include='*.res' . 2>/dev/null | grep -v node_modules | wc -l || echo 0)
+            if [ "$count" -gt 0 ]; then
+              DANGEROUS="$DANGEROUS\n- \`$pattern\`: $count occurrences"
+            fi
+          done
+
+          # Output results
+          echo "CHANGED=$CHANGED" >> $GITHUB_OUTPUT
+          {
+            echo "FIXES<<EOF"
+            echo -e "$FIXES"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+          {
+            echo "ISSUES<<EOF"
+            echo -e "$ISSUES"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+          {
+            echo "DANGEROUS<<EOF"
+            echo -e "$DANGEROUS"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Create PR with fixes
+        if: steps.fix.outputs.CHANGED == 'true'
+        run: |
+          git config user.name "rhodibot"
+          git config user.email "rhodibot@hyperpolymath.dev"
+          BRANCH="rhodibot/rsr-compliance-$(date +%Y%m%d)"
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "fix(rhodibot): automated RSR compliance fixes
+
+          ${{ steps.fix.outputs.FIXES }}
+
+          Co-Authored-By: rhodibot <rhodibot@hyperpolymath.dev>"
+
+          git push origin "$BRANCH"
+
+          BODY="## 🤖 Rhodibot — RSR Compliance Fixes
+
+          ### Changes Made
+          ${{ steps.fix.outputs.FIXES }}
+          "
+
+          if [ -n "${{ steps.fix.outputs.ISSUES }}" ]; then
+            BODY="$BODY
+          ### Issues Found (manual fix needed)
+          ${{ steps.fix.outputs.ISSUES }}
+          "
+          fi
+
+          if [ -n "${{ steps.fix.outputs.DANGEROUS }}" ]; then
+            BODY="$BODY
+          ### ⚠️ Dangerous Patterns Detected
+          ${{ steps.fix.outputs.DANGEROUS }}
+
+          _These bypass formal verification. See \`proven\` repo for alternatives._
+          "
+          fi
+
+          gh pr create \
+            --title "🤖 Rhodibot: RSR compliance fixes" \
+            --body "$BODY" \
+            --base main \
+            --head "$BRANCH"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Report (no changes needed)
+        if: steps.fix.outputs.CHANGED != 'true'
+        run: |
+          echo "✅ Repository is RSR-compliant. No fixes needed."
+          if [ -n "${{ steps.fix.outputs.ISSUES }}" ]; then
+            echo "⚠️ Issues found (manual fix needed):"
+            echo -e "${{ steps.fix.outputs.ISSUES }}"
+          fi
+          if [ -n "${{ steps.fix.outputs.DANGEROUS }}" ]; then
+            echo "⚠️ Dangerous patterns:"
+            echo -e "${{ steps.fix.outputs.DANGEROUS }}"
+          fi

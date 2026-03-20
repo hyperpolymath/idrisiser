@@ -1,0 +1,330 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Static Analysis Gate — Required by branch protection rules.
+# Runs panic-attack and hypatia, deposits findings for gitbot-fleet learning.
+name: Static Analysis Gate
+
+on:
+  pull_request:
+    branches: ['**']
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Job 1: panic-attack assail
+  # ---------------------------------------------------------------------------
+  panic-attack-assail:
+    name: panic-attack assail
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Install panic-attack (if available)
+        id: install
+        run: |
+          # Try to fetch the latest release binary from the org
+          PA_URL="https://github.com/{{OWNER}}/panic-attack/releases/latest/download/panic-attack-linux-x86_64"
+          if curl -fsSL --head "$PA_URL" >/dev/null 2>&1; then
+            curl -fsSL -o /usr/local/bin/panic-attack "$PA_URL"
+            chmod +x /usr/local/bin/panic-attack
+            echo "installed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::panic-attack binary not available — skipping assail"
+            echo "installed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run panic-attack assail
+        id: assail
+        if: steps.install.outputs.installed == 'true'
+        run: |
+          set +e
+          panic-attack assail --format json . > panic-attack-findings.json 2>&1
+          PA_EXIT=$?
+          set -e
+
+          if [ ! -s panic-attack-findings.json ]; then
+            echo "[]" > panic-attack-findings.json
+          fi
+
+          # Parse finding counts
+          TOTAL=$(jq '. | length' panic-attack-findings.json 2>/dev/null || echo 0)
+          CRITICAL=$(jq '[.[] | select(.severity == "critical")] | length' panic-attack-findings.json 2>/dev/null || echo 0)
+          HIGH=$(jq '[.[] | select(.severity == "high")] | length' panic-attack-findings.json 2>/dev/null || echo 0)
+          MEDIUM=$(jq '[.[] | select(.severity == "medium")] | length' panic-attack-findings.json 2>/dev/null || echo 0)
+          LOW=$(jq '[.[] | select(.severity == "low")] | length' panic-attack-findings.json 2>/dev/null || echo 0)
+
+          echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
+          echo "critical=$CRITICAL" >> "$GITHUB_OUTPUT"
+          echo "high=$HIGH" >> "$GITHUB_OUTPUT"
+          echo "medium=$MEDIUM" >> "$GITHUB_OUTPUT"
+          echo "low=$LOW" >> "$GITHUB_OUTPUT"
+          echo "exit_code=$PA_EXIT" >> "$GITHUB_OUTPUT"
+
+      - name: Emit check annotations
+        if: steps.install.outputs.installed == 'true'
+        run: |
+          # Convert JSON findings into GitHub Actions annotations
+          jq -r '.[] | select(.file != null) |
+            if .severity == "critical" then
+              "::error file=\(.file),line=\(.line // 1)::[panic-attack] \(.message)"
+            elif .severity == "high" then
+              "::error file=\(.file),line=\(.line // 1)::[panic-attack] \(.message)"
+            else
+              "::warning file=\(.file),line=\(.line // 1)::[panic-attack] \(.message)"
+            end
+          ' panic-attack-findings.json || true
+
+      - name: Write step summary
+        if: steps.install.outputs.installed == 'true'
+        run: |
+          cat <<EOF >> "$GITHUB_STEP_SUMMARY"
+          ## panic-attack assail Results
+
+          | Severity | Count |
+          |----------|-------|
+          | Critical | ${{ steps.assail.outputs.critical }} |
+          | High     | ${{ steps.assail.outputs.high }} |
+          | Medium   | ${{ steps.assail.outputs.medium }} |
+          | Low      | ${{ steps.assail.outputs.low }} |
+          | **Total**| ${{ steps.assail.outputs.total }} |
+          EOF
+
+      - name: Create stub findings (when panic-attack unavailable)
+        if: steps.install.outputs.installed != 'true'
+        run: |
+          echo "[]" > panic-attack-findings.json
+          echo "## panic-attack assail" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Skipped: panic-attack not available in this environment." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload panic-attack findings
+        uses: actions/upload-artifact@65c79d7f54e76e4e3c7a8f34db0f4ac8b515c478 # v4
+        with:
+          name: panic-attack-findings
+          path: panic-attack-findings.json
+          retention-days: 90
+
+      - name: Fail on critical findings
+        if: steps.install.outputs.installed == 'true' && steps.assail.outputs.critical > 0
+        run: |
+          echo "::error::panic-attack found ${{ steps.assail.outputs.critical }} critical issue(s) — blocking merge"
+          exit 1
+
+  # ---------------------------------------------------------------------------
+  # Job 2: hypatia-scan
+  # ---------------------------------------------------------------------------
+  hypatia-scan:
+    name: Hypatia neurosymbolic scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Elixir for Hypatia scanner
+        id: beam
+        continue-on-error: true
+        uses: erlef/setup-beam@e6d7c94229049569db56a7ad5a540c051a010af9 # v1.18.2
+        with:
+          elixir-version: '1.19.4'
+          otp-version: '28.3'
+
+      - name: Clone and build Hypatia
+        id: build
+        continue-on-error: true
+        run: |
+          git clone https://github.com/{{OWNER}}/hypatia.git "$HOME/hypatia" 2>/dev/null || true
+          if [ -d "$HOME/hypatia/scanner" ]; then
+            cd "$HOME/hypatia"
+            if [ ! -f hypatia-v2 ]; then
+              cd scanner
+              mix deps.get
+              mix escript.build
+              mv hypatia ../hypatia-v2
+            fi
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Hypatia scanner not available — skipping scan"
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Hypatia scan
+        id: scan
+        if: steps.build.outputs.ready == 'true'
+        run: |
+          set +e
+          HYPATIA_FORMAT=json "$HOME/hypatia/hypatia-cli.sh" scan . > hypatia-findings.json 2>&1
+          HYP_EXIT=$?
+          set -e
+
+          if [ ! -s hypatia-findings.json ] || ! jq empty hypatia-findings.json 2>/dev/null; then
+            echo "[]" > hypatia-findings.json
+          fi
+
+          TOTAL=$(jq '. | length' hypatia-findings.json 2>/dev/null || echo 0)
+          CRITICAL=$(jq '[.[] | select(.severity == "critical")] | length' hypatia-findings.json 2>/dev/null || echo 0)
+          HIGH=$(jq '[.[] | select(.severity == "high")] | length' hypatia-findings.json 2>/dev/null || echo 0)
+          MEDIUM=$(jq '[.[] | select(.severity == "medium")] | length' hypatia-findings.json 2>/dev/null || echo 0)
+          LOW=$(jq '[.[] | select(.severity == "low")] | length' hypatia-findings.json 2>/dev/null || echo 0)
+
+          echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
+          echo "critical=$CRITICAL" >> "$GITHUB_OUTPUT"
+          echo "high=$HIGH" >> "$GITHUB_OUTPUT"
+          echo "medium=$MEDIUM" >> "$GITHUB_OUTPUT"
+          echo "low=$LOW" >> "$GITHUB_OUTPUT"
+
+      - name: Emit check annotations
+        if: steps.build.outputs.ready == 'true'
+        run: |
+          jq -r '.[] | select(.file != null) |
+            if .severity == "critical" then
+              "::error file=\(.file),line=\(.line // 1)::[hypatia] \(.message)"
+            elif .severity == "high" then
+              "::error file=\(.file),line=\(.line // 1)::[hypatia] \(.message)"
+            else
+              "::warning file=\(.file),line=\(.line // 1)::[hypatia] \(.message)"
+            end
+          ' hypatia-findings.json || true
+
+      - name: Write step summary
+        if: steps.build.outputs.ready == 'true'
+        run: |
+          cat <<EOF >> "$GITHUB_STEP_SUMMARY"
+          ## Hypatia Scan Results
+
+          | Severity | Count |
+          |----------|-------|
+          | Critical | ${{ steps.scan.outputs.critical }} |
+          | High     | ${{ steps.scan.outputs.high }} |
+          | Medium   | ${{ steps.scan.outputs.medium }} |
+          | Low      | ${{ steps.scan.outputs.low }} |
+          | **Total**| ${{ steps.scan.outputs.total }} |
+          EOF
+
+      - name: Create stub findings (when Hypatia unavailable)
+        if: steps.build.outputs.ready != 'true'
+        run: |
+          echo "[]" > hypatia-findings.json
+          echo "## Hypatia Scan" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Skipped: Hypatia scanner not available in this environment." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload hypatia findings
+        uses: actions/upload-artifact@65c79d7f54e76e4e3c7a8f34db0f4ac8b515c478 # v4
+        with:
+          name: hypatia-findings
+          path: hypatia-findings.json
+          retention-days: 90
+
+      - name: Fail on critical security findings
+        if: steps.build.outputs.ready == 'true' && steps.scan.outputs.critical > 0
+        run: |
+          echo "::error::Hypatia found ${{ steps.scan.outputs.critical }} critical security issue(s) — blocking merge"
+          exit 1
+
+  # ---------------------------------------------------------------------------
+  # Job 3: deposit-findings (combines + archives for gitbot-fleet)
+  # ---------------------------------------------------------------------------
+  deposit-findings:
+    name: Deposit findings for gitbot-fleet
+    runs-on: ubuntu-latest
+    needs: [panic-attack-assail, hypatia-scan]
+    if: always()
+
+    steps:
+      - name: Download panic-attack findings
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+        with:
+          name: panic-attack-findings
+          path: findings/
+
+      - name: Download hypatia findings
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+        with:
+          name: hypatia-findings
+          path: findings/
+
+      - name: Combine findings into unified report
+        id: combine
+        run: |
+          PA_FILE="findings/panic-attack-findings.json"
+          HYP_FILE="findings/hypatia-findings.json"
+
+          # Ensure both files exist and are valid JSON arrays
+          for f in "$PA_FILE" "$HYP_FILE"; do
+            if [ ! -s "$f" ] || ! jq empty "$f" 2>/dev/null; then
+              echo "[]" > "$f"
+            fi
+          done
+
+          # Tag each finding with its source scanner
+          jq '[.[] | . + {"scanner": "panic-attack"}]' "$PA_FILE" > /tmp/pa-tagged.json
+          jq '[.[] | . + {"scanner": "hypatia"}]'      "$HYP_FILE" > /tmp/hyp-tagged.json
+
+          # Build unified report envelope
+          jq -n \
+            --arg repo   "${{ github.repository }}" \
+            --arg sha    "${{ github.sha }}" \
+            --arg ref    "${{ github.ref }}" \
+            --arg run_id "${{ github.run_id }}" \
+            --arg ts     "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --slurpfile pa  /tmp/pa-tagged.json \
+            --slurpfile hyp /tmp/hyp-tagged.json \
+            '{
+              schema_version: "1.0.0",
+              repository: $repo,
+              commit_sha: $sha,
+              ref: $ref,
+              run_id: $run_id,
+              timestamp: $ts,
+              findings: ($pa[0] + $hyp[0])
+            }' > findings/unified-findings.json
+
+          TOTAL=$(jq '.findings | length' findings/unified-findings.json)
+          CRITICAL=$(jq '[.findings[] | select(.severity == "critical")] | length' findings/unified-findings.json)
+          HIGH=$(jq '[.findings[] | select(.severity == "high")] | length' findings/unified-findings.json)
+          MEDIUM=$(jq '[.findings[] | select(.severity == "medium")] | length' findings/unified-findings.json)
+          LOW=$(jq '[.findings[] | select(.severity == "low")] | length' findings/unified-findings.json)
+
+          echo "total=$TOTAL"       >> "$GITHUB_OUTPUT"
+          echo "critical=$CRITICAL" >> "$GITHUB_OUTPUT"
+          echo "high=$HIGH"         >> "$GITHUB_OUTPUT"
+          echo "medium=$MEDIUM"     >> "$GITHUB_OUTPUT"
+          echo "low=$LOW"           >> "$GITHUB_OUTPUT"
+
+      - name: Upload unified findings (fleet scanner picks these up)
+        uses: actions/upload-artifact@65c79d7f54e76e4e3c7a8f34db0f4ac8b515c478 # v4
+        with:
+          name: unified-findings
+          path: findings/unified-findings.json
+          retention-days: 90
+
+      - name: Write deposit summary
+        run: |
+          cat <<EOF >> "$GITHUB_STEP_SUMMARY"
+          ## Unified Findings Deposit
+
+          **Repository:** ${{ github.repository }}
+          **Commit:** \`${{ github.sha }}\`
+          **Deposited at:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          | Severity | Count |
+          |----------|-------|
+          | Critical | ${{ steps.combine.outputs.critical }} |
+          | High     | ${{ steps.combine.outputs.high }} |
+          | Medium   | ${{ steps.combine.outputs.medium }} |
+          | Low      | ${{ steps.combine.outputs.low }} |
+          | **Total**| ${{ steps.combine.outputs.total }} |
+
+          Findings saved as \`unified-findings\` artifact.
+          The gitbot-fleet scanner will ingest these on its next pass.
+          EOF

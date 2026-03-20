@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "governance-pillar"
+level: 1
+parent: "../0-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Primary governance pillar implementing the Triaxial Software Development
+  Methodology (TSDM). Contains planning, maintenance, and audit tracks.
+
+canonical_locations:
+  tsdm_spec: "TSDM.adoc"
+  planning: "planning/"
+  maintenance: "maintenance/"
+  audit: "audit/"
+  crg: "CRG-CRITERIA.adoc"
+  checklist: "MAINTENANCE-CHECKLIST.adoc"
+  approach: "SOFTWARE-DEVELOPMENT-APPROACH.adoc"

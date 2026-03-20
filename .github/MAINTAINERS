@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# MAINTAINERS - Project maintainers and contact information
+#
+# Format: Name <email> (role)
+# Replace placeholders with actual maintainer information.
+
+{{AUTHOR}} <{{AUTHOR_EMAIL}}> (Lead Maintainer)
+
+# Additional maintainers:
+# Name <email> (role)

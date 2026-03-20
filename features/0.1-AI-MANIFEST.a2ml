@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "features-pillar"
+level: 1
+parent: "../0-AI-MANIFEST.a2ml"
+
+---
+### [AI_MANIFEST]
+description: |
+  Optional project features and ecosystem integrations. Provides bootstrap
+  guides for high-rigor tools (Panic-Attacker, BoJ-Server, SSGs).
+
+canonical_locations:
+  panic_attacker: "panic-attacker/"
+  boj_server: "boj-server/"
+  ssg: "ssg/"

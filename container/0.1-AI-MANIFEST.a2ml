@@ -1,0 +1,143 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+---
+### [META]
+id: "container-templates"
+version: "1.0.0"
+context:
+  - "https://a2ml.org/ns/v2"
+  - "https://stapeln.dev/ns/v1"
+
+---
+### [AI_MANIFEST]
+description: |
+  Container templates for the stapeln container ecosystem. This directory
+  provides Podman-Chainguard-stapeln templates that are customised via
+  `just container-init` or `just init` during project bootstrap.
+
+  All files use {{PLACEHOLDER}} tokens that are substituted with project-
+  specific values during initialisation.
+
+purpose: |
+  Provide a complete, security-first container deployment story for any
+  RSR-compliant repository. The templates cover the full lifecycle:
+  build, sign, verify, deploy, monitor, and govern.
+
+canonical_locations:
+  compose: "container/compose.toml"
+  containerfile: "container/Containerfile"
+  manifest: "container/manifest.toml"
+  gatekeeper: "container/.gatekeeper.yaml"
+  build_pipeline: "container/ct-build.sh"
+  entrypoint: "container/entrypoint.sh"
+  monitoring: "container/vordr.toml"
+  deployment: "container/deploy.k9.ncl"
+  example: "container/compose.example.toml"
+
+---
+### [FILE_RELATIONSHIPS]
+files:
+  - name: "compose.toml"
+    role: "Orchestration"
+    description: |
+      selur-compose stack definition. Declares services, volumes, networks,
+      and health checks. References the Containerfile for image builds and
+      .gatekeeper.yaml for svalinn policy.
+    depends_on: ["Containerfile", ".gatekeeper.yaml"]
+
+  - name: "Containerfile"
+    role: "Image Build"
+    description: |
+      Multi-stage OCI container build. Stage 1 compiles the application on
+      wolfi-base; Stage 2 copies the binary into a minimal runtime image.
+      Copies entrypoint.sh, .gatekeeper.yaml, and manifest.toml into the
+      final image.
+    depends_on: ["entrypoint.sh", ".gatekeeper.yaml", "manifest.toml"]
+
+  - name: "manifest.toml"
+    role: "Bundle Metadata"
+    description: |
+      Cerro-torre .ctp bundle manifest. Describes provenance, dependencies,
+      attestations, and runtime security profile. Used by `ct pack` and
+      `ct verify`.
+    depends_on: []
+
+  - name: ".gatekeeper.yaml"
+    role: "Gateway Policy"
+    description: |
+      Svalinn edge gateway policy. Controls authentication, rate limiting,
+      container trust, request validation, CORS, and audit logging.
+    depends_on: []
+
+  - name: "ct-build.sh"
+    role: "Build Pipeline"
+    description: |
+      Shell script implementing the 5-stage pipeline: build (Podman),
+      pack (cerro-torre .ctp), sign (Ed25519), verify, push (optional).
+      Degrades gracefully when cerro-torre tools are not installed.
+    depends_on: ["Containerfile", "manifest.toml"]
+
+  - name: "entrypoint.sh"
+    role: "Container Entrypoint"
+    description: |
+      Startup script with signal handling (SIGTERM, SIGINT), logging, and
+      exec into the main application process.
+    depends_on: []
+
+  - name: "vordr.toml"
+    role: "Runtime Monitoring"
+    description: |
+      Vordr monitoring configuration. Health endpoint probing, crash
+      detection, resource thresholds, and structured log output.
+    depends_on: []
+
+  - name: "deploy.k9.ncl"
+    role: "Deployment Component"
+    description: |
+      k9-svc deployment specification at Hunt trust level. Full pedigree
+      (L1-L5), environment configs, container config, and rolling
+      deployment strategy.
+    depends_on: ["compose.toml", "ct-build.sh"]
+
+  - name: "compose.example.toml"
+    role: "Example"
+    description: |
+      Fully-commented multi-service example (Rust API + Elixir worker +
+      svalinn gateway). Copy to compose.toml and customise.
+    depends_on: []
+
+---
+### [STAPELN_ECOSYSTEM]
+overview: |
+  The stapeln container ecosystem comprises six tools:
+
+  selur       — Container orchestration with zero-copy IPC. Reads compose.toml.
+  cerro-torre — Verified container packaging (.ctp bundles), Ed25519 signing.
+  svalinn     — Policy-driven edge gateway (auth, rate limits, CORS, trust).
+  vordr       — Runtime monitoring (health, crashes, resources, logs).
+  rokur       — Secrets management (runtime injection, no baked secrets).
+  k9-svc      — Nickel deployment components (Kennel/Yard/Hunt trust levels).
+
+invariants:
+  - "Base images MUST be cgr.dev/chainguard/wolfi-base or cgr.dev/chainguard/static"
+  - "Container runtime is Podman — never Docker"
+  - "Containerfile — never Dockerfile"
+  - "All images run as non-root (appuser or project-specific user)"
+  - ".ctp bundles are signed with Ed25519 via cerro-torre"
+  - "Health endpoints (/health, /ready) must always be public (no auth)"
+
+---
+### [USAGE]
+initialisation: |
+  Run `just container-init` to substitute all {{PLACEHOLDER}} tokens with
+  project-specific values. This is also run as part of `just init`.
+
+development: |
+  1. `just container-build`   — Build the container image
+  2. `just container-verify`  — Verify compose configuration
+  3. `just container-up`      — Start the stack locally
+  4. `just container-down`    — Stop the stack
+
+production: |
+  1. `just container-sign`    — Build, sign, verify .ctp bundle
+  2. `just container-push`    — Push signed bundle to registry
+  3. `selur-compose up`       — Deploy on target host
