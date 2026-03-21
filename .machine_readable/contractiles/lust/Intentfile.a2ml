@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# Intentfile — Design intent and aspirations
+# Intentfile — Design intent and aspirations for idrisiser
 # Author: Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 
 @abstract:
@@ -11,8 +11,8 @@ design philosophy — not current state, but target state.
 
 ### formal-verification
 - description: All critical code paths should have formal proofs
-- target: Idris2 dependent types for ABI, Coq/Lean for algorithms
-- status: aspiration
+- target: Idris2 dependent types for ABI, Zig FFI for implementation
+- status: in-progress
 
 ### reproducible-builds
 - description: Builds should be bit-for-bit reproducible
@@ -29,9 +29,23 @@ design philosophy — not current state, but target state.
 ### comprehensive-testing
 - description: 80%+ code coverage with meaningful tests
 - target: Unit + integration + conformance + property-based
-- status: aspiration
+- status: in-progress
 
 ### documentation-complete
 - description: Every public API documented, every directory has README
 - target: Full API reference + architecture guide
+- status: in-progress
+
+## Phase 1 Intent
+
+### phase-1-production-ready
+- description: Phase 1 implementation is stable and usable
+- target: Core codegen pipeline works end-to-end for primary use case
+- status: achieved
+
+## Project-Specific Intent
+
+### meta-prover-pipeline
+- description: Full pipeline from interface spec to proven-correct native wrapper
+- target: OpenAPI/C/Protobuf to verified Idris2+Zig
 - status: in-progress

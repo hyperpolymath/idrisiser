@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# Dustfile — Cleanup and hygiene contract
+# Dustfile — Cleanup and hygiene contract for idrisiser
 # Author: Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 
 @abstract:
@@ -34,7 +34,7 @@ These are housekeeping items, not blockers.
 ## Format Duplicates
 
 ### no-duplicate-contributing
-- description: Only one CONTRIBUTING format (keep .md)
+- description: Only one CONTRIBUTING format
 - run: "! (test -f CONTRIBUTING.md && test -f CONTRIBUTING.adoc)"
 - severity: warning
 
@@ -42,3 +42,22 @@ These are housekeeping items, not blockers.
 - description: Only one README format
 - run: "! (test -f README.md && test -f README.adoc && [ $(wc -l < README.md) -gt 5 ])"
 - severity: warning
+
+## Template Remnants
+
+### no-template-placeholders
+- description: No template placeholders remaining in source
+- run: "! grep -rE '\{\{REPO\}\}|\{\{OWNER\}\}|\{\{FORGE\}\}' src/ 2>/dev/null | head -1 | grep -q ."
+- severity: warning
+
+### no-todo-stubs-in-docs
+- description: No TODO stubs in documentation
+- run: "! grep -rE 'TODO.*stub|FIXME.*placeholder' docs/ 2>/dev/null | head -1 | grep -q ."
+- severity: info
+
+## Project-Specific Cleanup
+
+### remove-stub-parsers
+- description: Stub parser implementations should be replaced with real ones
+- run: "! grep -c 'todo!\|unimplemented!' src/codegen/parser.rs 2>/dev/null | grep -qE '^[3-9]|^[0-9]{2,}'"
+- severity: info

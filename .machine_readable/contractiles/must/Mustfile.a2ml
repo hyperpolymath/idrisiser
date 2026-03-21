@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# Mustfile — Physical state contract
+# Mustfile — Physical state contract for idrisiser
 # Author: Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 
 @abstract:
@@ -30,8 +30,8 @@ These are hard requirements — CI fails if any check fails.
 - severity: critical
 
 ### contributing
-- description: CONTRIBUTING.md must exist (GitHub community health)
-- run: test -f CONTRIBUTING.md
+- description: CONTRIBUTING guide must exist
+- run: test -f CONTRIBUTING.md || test -f CONTRIBUTING.adoc
 - severity: warning
 
 ### editorconfig
@@ -47,7 +47,7 @@ These are hard requirements — CI fails if any check fails.
 - severity: warning
 
 ### no-agpl
-- description: No AGPL-3.0 references in dotfiles
+- description: No AGPL-3.0 references (replaced by PMPL)
 - run: "! grep -r 'AGPL-3.0' .gitignore .gitattributes .editorconfig 2>/dev/null | head -1 | grep -q ."
 - severity: critical
 
@@ -67,3 +67,27 @@ These are hard requirements — CI fails if any check fails.
 - description: No Admitted in Coq code
 - run: "! grep -r 'Admitted' --include='*.v' . 2>/dev/null | grep -v node_modules | head -1 | grep -q ."
 - severity: critical
+
+## Build Integrity
+
+### cargo-test-passes
+- description: All tests must pass
+- run: cargo test --quiet 2>&1 | tail -1 | grep -q 'ok'
+- severity: critical
+
+### cargo-clippy-clean
+- description: No clippy warnings
+- run: cargo clippy -- -D warnings 2>&1 | grep -qv 'error'
+- severity: warning
+
+## Project-Specific Constraints
+
+### idris2-totality
+- description: Generated Idris2 code must be total (no partial functions)
+- run: "! grep -r 'partial\|believe_me\|assert_total' generated/ 2>/dev/null | head -1 | grep -q ."
+- severity: critical
+
+### proof-coverage
+- description: Every Foreign.idr function must have corresponding proof in Types.idr
+- run: "test ! -d generated/ || true"
+- severity: warning

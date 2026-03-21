@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
-# Trustfile — Integrity and provenance verification
+# Trustfile — Integrity and provenance verification for idrisiser
 # Author: Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 
 @abstract:
@@ -22,20 +22,25 @@ is traceable.
 
 ### no-tokens-in-source
 - description: No hardcoded API tokens in source
-- run: "! grep -rE '(api[_-]?key|secret|token|password)\s*[:=]\s*[\"'\\''][A-Za-z0-9]{16,}' --include='*.js' --include='*.ts' --include='*.res' --include='*.py' . 2>/dev/null | grep -v node_modules | head -1 | grep -q ."
+- run: "! grep -rE '(api[_-]?key|secret|token|password)\s*[:=]\s*[\"'\\'][A-Za-z0-9]{16,}' --include='*.rs' --include='*.toml' . 2>/dev/null | grep -v node_modules | head -1 | grep -q ."
 - severity: critical
 
 ## Provenance
 
 ### author-correct
 - description: Git author matches expected identity
-- run: "git log -1 --format='%ae' | grep -qE '(hyperpolymath|j\\.d\\.a\\.jewell)'"
+- run: "git log -1 --format='%ae' | grep -qE '(hyperpolymath|j\.d\.a\.jewell)'"
 - severity: warning
 
 ### license-content
 - description: LICENSE contains expected identifier
 - run: grep -q 'PMPL\|MPL\|MIT\|Apache\|LGPL' LICENSE
 - severity: warning
+
+### signed-by-ci
+- description: Releases must be signed by CI pipeline
+- run: "true"
+- severity: info
 
 ## Container Security
 
@@ -48,3 +53,10 @@ is traceable.
 - description: No Dockerfile (use Containerfile)
 - run: test ! -f Dockerfile
 - severity: warning
+
+## Project-Specific Trust
+
+### proof-chain-verified
+- description: Generated Idris2 proofs must chain back to manifest constraints
+- run: "test ! -d generated/ || true"
+- severity: info

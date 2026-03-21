@@ -1,0 +1,30 @@
+= Changelog
+:toc:
+// SPDX-License-Identifier: PMPL-1.0-or-later
+
+All notable changes to idrisiser will be documented in this file.
+
+The format is based on https://keepachangelog.com/en/1.1.0/[Keep a Changelog],
+and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
+
+== [0.1.0] - 2026-03-21
+
+=== Phase 1 Complete
+
+- Interface parsers for OpenAPI 3.x, C headers, and Protocol Buffers
+- Proof obligation engine deriving obligations from parsed contracts
+- Idris2 codegen (Types.idr, Layout.idr, Foreign.idr templates)
+- Zig bridge generator for FFI implementations
+- Bespoke manifest parsing with multi-interface support
+- Integration tests for parser and codegen pipeline
+
+=== Added (scaffold — 2026-03-20)
+
+- Initial project scaffold from rsr-template-repo
+- CLI with subcommands (init, validate, generate, build, run, info)
+- Manifest parser (`idrisiser.toml`)
+- Codegen engine stubs
+- ABI module (Idris2 proof type definitions)
+- Library API for programmatic use
+- Full RSR template (17 CI workflows, governance docs, bot directives)
+- README.adoc with architecture overview

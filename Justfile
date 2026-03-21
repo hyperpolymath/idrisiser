@@ -32,6 +32,10 @@ doc:
 clean:
     cargo clean
 
+# Generate from example manifest
+generate:
+    cargo run -- generate examples/user-api/idrisiser.toml
+
 # Run the CLI
 run *ARGS:
     cargo run -- {{ARGS}}
