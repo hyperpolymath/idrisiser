@@ -1,1 +1,25 @@
-= abi Logic
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Idris2 ABI — Formal Proof Definitions
+
+This directory contains the Idris2 ABI layer for idrisiser.  These `.idr` files
+define the dependent types, proof obligations, and memory layout proofs that
+idrisiser generates for each parsed interface.
+
+== Files
+
+* **Types.idr** — Core types: `InterfaceContract`, `ProofObligation`,
+  `DependentWrapper`, `QuantitativeUsage`, `Totality`.  These flow through
+  the proof generation pipeline.
+* **Layout.idr** — Memory layout proofs: struct field alignment, padding
+  calculation, C ABI compliance, platform-specific layouts.  Also includes
+  `ProofWitnessLayout` for tracking erased proof data.
+* **Foreign.idr** — FFI declarations for the proof engine: init, parse,
+  generate proofs, compile proofs, emit wrapper.  Every function here has
+  a corresponding Zig export in `../ffi/src/main.zig`.
+
+== Invariants
+
+* All modules use `%default total` — no partial functions.
+* No `believe_me`, `assert_total`, or `sorry` — ever.
+* Proof witnesses use 0-multiplicity (QTT erasure) for zero runtime cost.
+* Foreign.idr function names must exactly match Zig FFI exports.

@@ -5,31 +5,38 @@
 (state
   (metadata
     (version "0.1.0")
-    (last-updated "2026-03-20")
+    (last-updated "2026-03-21")
     (author "Jonathan D.A. Jewell"))
 
   (project-context
     (name "idrisiser")
-    (description "Generate proven-correct wrappers using Idris2 dependent types")
-    (status "scaffold")
-    (priority "—")
-    (ecosystem "-iser family (https://github.com/hyperpolymath/iseriser)"))
+    (description "Meta-prover: generates proven-correct wrappers from interface definitions using Idris2 dependent types")
+    (status "scaffold — codebase in progress")
+    (priority "foundational — most critical -iser after iseriser")
+    (ecosystem "-iser family (https://github.com/hyperpolymath/iseriser)")
+    (role "Every -iser needing formal verification routes through idrisiser"))
 
   (current-position
-    (phase "initial-scaffold")
-    (completion-percentage 5)
-    (milestone "Architecture defined, CLI scaffolded, RSR template complete"))
+    (phase "scaffold-complete")
+    (completion-percentage 10)
+    (milestone "Scaffold complete: CLI, manifest parser, ABI/FFI stubs, bespoke documentation"))
 
   (route-to-mvp
-    (step 1 "Replace codegen stubs with target-language-specific generation")
-    (step 2 "Implement Idris2 ABI proofs for core invariants")
-    (step 3 "Build Zig FFI bridge")
-    (step 4 "Integration tests with real-world examples")
-    (step 5 "Documentation and examples"))
+    (step 1 "Interface parser: OpenAPI 3.x spec → intermediate representation")
+    (step 2 "Interface parser: C headers (.h) → intermediate representation")
+    (step 3 "Interface parser: Protocol Buffers (.proto) → intermediate representation")
+    (step 4 "Proof obligation engine: derive proof obligations from parsed contracts")
+    (step 5 "Idris2 code generation: Types.idr with dependent types encoding contracts")
+    (step 6 "Idris2 code generation: Layout.idr with memory layout proofs")
+    (step 7 "Idris2 code generation: Foreign.idr with FFI declarations")
+    (step 8 "Proof compilation: invoke Idris2 totality checker on generated code")
+    (step 9 "Zig FFI code generation: emit main.zig implementing Foreign.idr")
+    (step 10 "End-to-end: OpenAPI spec → proven native wrapper"))
 
   (blockers-and-issues
     (none "Project is in scaffold phase — no blockers yet"))
 
   (critical-next-actions
-    (action "Implement codegen for primary use case")
-    (action "Write first working example end-to-end")))
+    (action "Implement OpenAPI 3.x parser as the first bridge adapter")
+    (action "Define intermediate representation for parsed interface contracts")
+    (action "Build proof obligation derivation from contract IR")))

@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
 # Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 #
-# AGENTIC.a2ml — AI agent constraints and capabilities
+# AGENTIC.a2ml — AI agent constraints and capabilities for idrisiser
 # Defines what AI agents can and cannot do in this repository.
 
 [metadata]
 version = "0.1.0"
-last-updated = "{{CURRENT_DATE}}"
+last-updated = "2026-03-21"
 
 [agent-permissions]
 can-edit-source = true
@@ -16,12 +16,21 @@ can-edit-config = true
 can-create-files = true
 
 [agent-constraints]
-# What AI agents must NOT do:
-# - Never use banned language patterns (believe_me, unsafeCoerce, etc.)
+# What AI agents must NOT do in idrisiser:
+# - Never use believe_me, assert_total, sorry, unsafeCoerce in generated Idris2 code
 # - Never commit secrets or credentials
 # - Never use banned languages (TypeScript, Python, Go, etc.)
 # - Never place state files in repository root (must be in .machine_readable/)
 # - Never use AGPL license (use PMPL-1.0-or-later)
+# - Never generate partial Idris2 functions — all generated code must be total
+# - Never emit a DependentWrapper with undischarged proof obligations
+
+[idrisiser-specific-constraints]
+# Proof soundness is non-negotiable:
+# - All generated Types.idr must use %default total
+# - All proof witnesses must have 0-multiplicity (erased at runtime)
+# - Foreign.idr exports must exactly match Zig FFI function signatures
+# - Layout.idr proofs must cover all target platforms
 
 [maintenance-integrity]
 fail-closed = true
@@ -31,6 +40,6 @@ require-rerun-after-fix = true
 release-claim-requires-hard-pass = true
 
 [automation-hooks]
-# on-enter: Read 0-AI-MANIFEST.a2ml, then STATE.a2ml
+# on-enter: Read 0-AI-MANIFEST.a2ml, then .machine_readable/6a2/STATE.a2ml
 # on-exit: Update STATE.a2ml with session outcomes
 # on-commit: Run just validate-rsr

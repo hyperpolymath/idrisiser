@@ -1,1 +1,24 @@
-= interface Unit
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Verified Interface Seams
+
+This directory contains the verified interface layer for idrisiser, following
+the hyperpolymath ABI-FFI universal standard.
+
+== Structure
+
+* **abi/** — Idris2 ABI definitions (The Spec).  Formal proofs of interface
+  correctness using dependent types.
+* **ffi/** — Zig FFI implementation (The Bridge).  C-ABI exports that
+  implement the functions declared in the Idris2 ABI layer.
+* **generated/** — Auto-generated C headers (The Result).  Produced from
+  proven Idris2 ABI definitions for consumption by downstream code.
+
+== Data Flow
+
+----
+abi/Foreign.idr  →  declares FFI functions with type-safe signatures
+                         ↕  (must match exactly)
+ffi/src/main.zig →  implements those functions as C-ABI exports
+                         ↓
+generated/abi/   →  C headers derived from the proven ABI
+----

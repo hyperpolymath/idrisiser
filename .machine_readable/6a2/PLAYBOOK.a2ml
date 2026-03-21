@@ -1,35 +1,45 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
 # Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 #
-# PLAYBOOK.a2ml — Operational playbook
+# PLAYBOOK.a2ml — Operational playbook for idrisiser
 # Runbooks, incident response, deployment procedures.
 
 [metadata]
 version = "0.1.0"
-last-updated = "{{CURRENT_DATE}}"
+last-updated = "2026-03-21"
 
 [deployment]
-# method = "gitops"  # gitops | manual | ci-triggered
-# target = "container"  # container | binary | library | wasm
+method = "ci-triggered"
+targets = ["binary", "library"]
+# binary: idrisiser CLI (Rust, cargo build --release)
+# library: libidrisiser.so / libidrisiser.a (Zig FFI, zig build)
 
 [incident-response]
-# 1. Check .machine_readable/STATE.a2ml for current status
+# 1. Check .machine_readable/6a2/STATE.a2ml for current status
 # 2. Review recent commits and CI results
-# 3. Run `just validate` to check compliance
-# 4. Run `just security` to audit for vulnerabilities
+# 3. Run `cargo test` to verify Rust CLI
+# 4. Run `cd src/interface/ffi && zig build test` to verify FFI
+# 5. Check that all generated Idris2 code passes `idris2 --check`
+# 6. Run `just validate` to check RSR compliance
 
 [release-process]
-# 1. Update version in STATE.a2ml, META.a2ml, Justfile
+# 1. Update version in STATE.a2ml, META.a2ml, Cargo.toml, build.zig
 # 2. Run `just release-preflight` (validate + quality + security + maint-hard-pass)
-# 3. Optional local permission hardening: `just perms-snapshot && just perms-lock`
-# 4. Tag and push
-# 5. Restore local permissions if needed: `just perms-restore`
+# 3. Run full test suite: cargo test && zig build test && zig build test-integration
+# 4. Verify no holes in generated Idris2: grep -r 'sorry\|believe_me\|assert_total' src/
+# 5. Tag and push
 # 6. Run `just container-push` if applicable
 
+[proof-verification-runbook]
+# When a proof obligation fails to discharge:
+# 1. Check the proof obligation source (which contract clause?)
+# 2. Check the proof kind (totality? termination? invariant?)
+# 3. Examine the generated Types.idr for the failing obligation
+# 4. Verify the interface definition is well-formed
+# 5. If the interface has an inherently unprovable property, report it clearly
+# 6. NEVER work around the failure with believe_me or sorry
+
 [maintenance-operations]
-# Baseline audit:
-#   just maint-audit
-# Hard release gate:
-#   just maint-hard-pass
-# Permission audit:
-#   just perms-audit
+# Baseline audit: just maint-audit
+# Hard release gate: just maint-hard-pass
+# Permission audit: just perms-audit

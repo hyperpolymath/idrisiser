@@ -1,23 +1,34 @@
 # SPDX-License-Identifier: PMPL-1.0-or-later
 # Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 #
-# NEUROSYM.a2ml — Neurosymbolic integration metadata
+# NEUROSYM.a2ml — Neurosymbolic integration metadata for idrisiser
 # Configuration for Hypatia scanning and symbolic reasoning.
 
 [metadata]
 version = "0.1.0"
-last-updated = "{{CURRENT_DATE}}"
+last-updated = "2026-03-21"
 
 [hypatia-config]
 scan-enabled = true
-scan-depth = "standard"  # quick | standard | deep
+scan-depth = "deep"  # deep because proof soundness is critical
 report-format = "logtalk"
 
 [symbolic-rules]
-# Custom symbolic rules for this project
-# - { name = "no-unsafe-ffi", pattern = "believe_me|unsafeCoerce", severity = "critical" }
+# Idrisiser-specific rules for Hypatia scanning:
+# - Detect believe_me, assert_total, sorry in any .idr file
+# - Detect unsafeCoerce, Obj.magic in any generated code
+# - Verify %default total is present in every generated module
+# - Check that all proof witnesses have 0-multiplicity
+# - Verify Foreign.idr function names match Zig FFI exports
+rules = [
+  { name = "no-believe-me", pattern = "believe_me", severity = "critical", scope = "*.idr" },
+  { name = "no-assert-total", pattern = "assert_total", severity = "critical", scope = "*.idr" },
+  { name = "no-sorry", pattern = "\\bsorry\\b", severity = "critical", scope = "*.idr" },
+  { name = "no-unsafe-coerce", pattern = "unsafeCoerce|Obj\\.magic", severity = "critical", scope = "*" },
+  { name = "total-default", pattern = "%default total", severity = "warning", scope = "*.idr", expect = "present" },
+]
 
 [neural-config]
-# Neural pattern detection settings
-# confidence-threshold = 0.85
-# model = "hypatia-v2"
+# Neural pattern detection for proof quality
+confidence-threshold = 0.90
+# Higher threshold because proof soundness errors are catastrophic

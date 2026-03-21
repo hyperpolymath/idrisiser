@@ -1,1 +1,35 @@
-= ffi Logic
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Zig FFI — C-ABI Bridge Implementation
+
+This directory contains the Zig FFI layer for idrisiser.  It implements the
+C-compatible functions declared in `../abi/Foreign.idr`, providing the concrete
+proof engine operations that the Idris2 layer calls through foreign function
+interface.
+
+== Files
+
+* **build.zig** — Build configuration: shared library (`libidrisiser.so`),
+  static library (`libidrisiser.a`), unit tests, integration tests, benchmarks.
+* **src/main.zig** — FFI exports: engine lifecycle (`idrisiser_init`,
+  `idrisiser_free`), interface parsing, proof generation, proof compilation,
+  wrapper emission, error handling, version info.
+* **test/integration_test.zig** — Integration tests verifying that every FFI
+  export matches its Idris2 ABI declaration (null safety, result codes,
+  operation ordering, memory independence).
+
+== Building
+
+[source,bash]
+----
+cd src/interface/ffi
+zig build            # Build shared + static libraries
+zig build test       # Run unit tests in main.zig
+zig build test-integration  # Run ABI↔FFI integration tests
+----
+
+== Invariants
+
+* Every `export fn idrisiser_*` must have a matching `%foreign` declaration in Foreign.idr.
+* Result codes must match the `Result` enum in Types.idr exactly.
+* Null handle arguments must return `null_pointer` (code 4), never crash.
+* Thread-local error storage is used for `idrisiser_last_error`.

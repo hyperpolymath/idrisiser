@@ -1,32 +1,75 @@
 // SPDX-License-Identifier: PMPL-1.0-or-later
-= idrisiser Roadmap
+// Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+= Idrisiser Roadmap
 :toc:
 :icons: font
 
 == Phase 0: Scaffold (COMPLETE)
-* [x] RSR template with full CI/CD
-* [x] CLI with subcommands
-* [x] Manifest parser
+
+* [x] RSR template with full CI/CD (17 workflows)
+* [x] Rust CLI with subcommands (init, validate, generate, build, run, info)
+* [x] Manifest parser (`idrisiser.toml`)
 * [x] Codegen stubs
-* [x] ABI module stubs
+* [x] Idris2 ABI module stubs (Types.idr, Layout.idr, Foreign.idr)
+* [x] Zig FFI bridge stubs
 * [x] README with architecture
+* [x] Machine-readable metadata (STATE, META, ECOSYSTEM, AGENTIC, NEUROSYM, PLAYBOOK)
 
-== Phase 1: Core Implementation
-* [ ] Implement target-language-specific code generation
-* [ ] Write Idris2 ABI proofs for core invariants
-* [ ] Build Zig FFI bridge
-* [ ] First working end-to-end example
-* [ ] Integration tests
+== Phase 1: Interface Parser
 
-== Phase 2: Polish
-* [ ] Error messages and diagnostics
+* [ ] OpenAPI 3.x spec parser — extract endpoints, schemas, auth requirements
+* [ ] C header parser — extract function signatures, struct layouts, typedefs
+* [ ] Protocol Buffers `.proto` parser — extract message types, service definitions, field rules
+* [ ] Type signature parser — bare Haskell/Idris/ML-style type annotations
+* [ ] Intermediate representation (IR) for parsed interface contracts
+* [ ] Contract extraction — preconditions, postconditions, invariants from parsed IR
+* [ ] Parser test suite with real-world interface files
+
+== Phase 2: Idris2 Proof Generation
+
+* [ ] Proof obligation engine — derive what needs proving from parsed contracts
+* [ ] Types.idr generator — dependent type definitions encoding interface contracts
+* [ ] Layout.idr generator — memory layout proofs for FFI-crossing structs
+* [ ] Foreign.idr generator — FFI declarations with safety wrappers
+* [ ] Totality proof generation — prove all generated functions are total
+* [ ] Termination proof generation — prove recursive contracts terminate
+* [ ] Invariant preservation proofs — prove state transitions maintain declared invariants
+* [ ] Elaborator reflection metaprograms — compile-time proof term construction
+* [ ] Quantitative type usage annotations — linear/affine resource tracking where applicable
+
+== Phase 3: Proof Compilation and Native Output
+
+* [ ] Idris2 compiler integration — invoke `idris2` on generated `.idr` files
+* [ ] Proof checking pipeline — compile proofs, fail on any hole or `sorry`
+* [ ] Zig FFI code generation — generate `main.zig` implementing Foreign.idr declarations
+* [ ] C header generation — emit `.h` from proven ABI definitions
+* [ ] Static and shared library output via Zig build system
+* [ ] First end-to-end example: OpenAPI spec -> proven wrapper -> native library
+* [ ] Integration tests with real-world APIs
+
+== Phase 4: Multi-Interface Support
+
+* [ ] Composite manifests — multiple interface sources in one `idrisiser.toml`
+* [ ] Cross-interface proof composition — prove compatibility between two APIs
+* [ ] Incremental re-generation — only regenerate proofs for changed interfaces
+* [ ] Proof caching — avoid re-checking unchanged proof obligations
+* [ ] Error messages and diagnostics — human-readable proof failure explanations
 * [ ] Shell completions (bash, zsh, fish)
-* [ ] CI/CD for the generated artifacts
-* [ ] Performance benchmarks
-* [ ] Additional examples
 
-== Phase 3: Ecosystem
-* [ ] PanLL panel integration
-* [ ] BoJ-server cartridge
-* [ ] VeriSimDB backing store for results
+== Phase 5: Self-Bootstrapping
+
+* [ ] Idrisiser proves its own interface contract correctness
+* [ ] The manifest parser's types are verified by generated Idris2 proofs
+* [ ] The code generation pipeline is proven to preserve semantic equivalence
+* [ ] Proof of proof-soundness — the generated proofs are themselves verified
+* [ ] Regression test: any change to idrisiser that violates its own contract fails CI
+
+== Phase 6: Ecosystem Integration
+
+* [ ] PanLL panel — `idrisiser-panel` for interactive proof exploration
+* [ ] BoJ-server cartridge — expose idrisiser as an MCP tool
+* [ ] VeriSimDB backing store — persist proof results and interface snapshots
+* [ ] Integration with `proven` library — shared verified primitives
+* [ ] Integration with `typedqliser` — formal types for query languages route through idrisiser
 * [ ] Publish to crates.io
+* [ ] Performance benchmarks and proof compilation time tracking

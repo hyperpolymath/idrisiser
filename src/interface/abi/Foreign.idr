@@ -1,86 +1,201 @@
 -- SPDX-License-Identifier: PMPL-1.0-or-later
--- Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+-- Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 --
-||| Foreign Function Interface Declarations
+||| Foreign Function Interface Declarations for Idrisiser
 |||
-||| This module declares all C-compatible functions that will be
-||| implemented in the Zig FFI layer.
+||| This module declares the C-compatible FFI between the Idris2 proof engine
+||| and the Zig implementation layer.  All functions listed here are implemented
+||| in src/interface/ffi/src/main.zig.
 |||
-||| All functions are declared here with type signatures and safety proofs.
-||| Implementations live in ffi/zig/
+||| The FFI surface covers three concerns:
+|||   1. Proof engine lifecycle (init, free, status)
+|||   2. Interface parsing and proof generation (parse, prove, compile)
+|||   3. Proof checking and result retrieval (check, query)
+|||
+||| @see Idrisiser.ABI.Types for type definitions
+||| @see Idrisiser.ABI.Layout for memory layout proofs
 
-module {{PROJECT}}.ABI.Foreign
+module Idrisiser.ABI.Foreign
 
-import {{PROJECT}}.ABI.Types
-import {{PROJECT}}.ABI.Layout
+import Idrisiser.ABI.Types
+import Idrisiser.ABI.Layout
 
 %default total
 
 --------------------------------------------------------------------------------
--- Library Lifecycle
+-- Proof Engine Lifecycle
 --------------------------------------------------------------------------------
 
-||| Initialize the library
-||| Returns a handle to the library instance, or Nothing on failure
+||| Initialise the Idrisiser proof engine.
+||| Allocates internal state for interface parsing and proof generation.
+||| Returns a handle to the engine instance, or Nothing on failure.
 export
-%foreign "C:{{project}}_init, lib{{project}}"
+%foreign "C:idrisiser_init, libidrisiser"
 prim__init : PrimIO Bits64
 
-||| Safe wrapper for library initialization
+||| Safe wrapper for engine initialisation
 export
 init : IO (Maybe Handle)
 init = do
   ptr <- primIO prim__init
   pure (createHandle ptr)
 
-||| Clean up library resources
+||| Shut down the proof engine and release all resources.
 export
-%foreign "C:{{project}}_free, lib{{project}}"
+%foreign "C:idrisiser_free, libidrisiser"
 prim__free : Bits64 -> PrimIO ()
 
-||| Safe wrapper for cleanup
+||| Safe wrapper for engine cleanup
 export
 free : Handle -> IO ()
 free h = primIO (prim__free (handlePtr h))
 
+||| Check whether the engine handle is live and initialised
+export
+%foreign "C:idrisiser_is_initialized, libidrisiser"
+prim__isInitialized : Bits64 -> PrimIO Bits32
+
+||| Safe initialisation check
+export
+isInitialized : Handle -> IO Bool
+isInitialized h = do
+  result <- primIO (prim__isInitialized (handlePtr h))
+  pure (result /= 0)
+
 --------------------------------------------------------------------------------
--- Core Operations
+-- Interface Parsing
 --------------------------------------------------------------------------------
 
-||| Example operation: process data
+||| Parse an interface definition file and load it into the engine.
+||| The format parameter selects the parser (OpenAPI, C header, protobuf, etc.).
+||| Returns 0 on success, non-zero on parse error.
 export
-%foreign "C:{{project}}_process, lib{{project}}"
-prim__process : Bits64 -> Bits32 -> PrimIO Bits32
+%foreign "C:idrisiser_parse_interface, libidrisiser"
+prim__parseInterface : Bits64 -> Bits64 -> Bits32 -> PrimIO Bits32
 
-||| Safe wrapper with error handling
+||| Safe wrapper for interface parsing.
+||| Takes the engine handle, a pointer to the file path string, and the
+||| interface format code (0 = OpenAPI, 1 = CHeader, 2 = ProtoBuf, 3 = TypeSig).
 export
-process : Handle -> Bits32 -> IO (Either Result Bits32)
-process h input = do
-  result <- primIO (prim__process (handlePtr h) input)
+parseInterface : Handle -> (pathPtr : Bits64) -> (format : Bits32) -> IO (Either Result ())
+parseInterface h pathPtr fmt = do
+  result <- primIO (prim__parseInterface (handlePtr h) pathPtr fmt)
   pure $ case result of
-    0 => Left Error
-    n => Right n
+    0 => Right ()
+    n => Left (resultFromCode n)
+  where
+    resultFromCode : Bits32 -> Result
+    resultFromCode 1 = Error
+    resultFromCode 2 = InvalidParam
+    resultFromCode 3 = OutOfMemory
+    resultFromCode 4 = NullPointer
+    resultFromCode 5 = ProofFailure
+    resultFromCode _ = Error
+
+--------------------------------------------------------------------------------
+-- Proof Generation
+--------------------------------------------------------------------------------
+
+||| Generate proof obligations from the currently loaded interface.
+||| Must be called after a successful parseInterface call.
+||| Returns the number of proof obligations generated, or 0 on failure.
+export
+%foreign "C:idrisiser_generate_proofs, libidrisiser"
+prim__generateProofs : Bits64 -> PrimIO Bits32
+
+||| Safe wrapper for proof generation
+export
+generateProofs : Handle -> IO (Either Result Nat)
+generateProofs h = do
+  count <- primIO (prim__generateProofs (handlePtr h))
+  if count == 0
+    then pure (Left Error)
+    else pure (Right (cast count))
+
+||| Compile all generated proof obligations through the Idris2 type checker.
+||| This is the core operation: it invokes totality checking, elaborator
+||| reflection, and QTT analysis on the generated Idris2 code.
+||| Returns 0 if all proofs pass, non-zero on proof failure.
+export
+%foreign "C:idrisiser_compile_proofs, libidrisiser"
+prim__compileProofs : Bits64 -> PrimIO Bits32
+
+||| Safe wrapper for proof compilation
+export
+compileProofs : Handle -> IO (Either Result ())
+compileProofs h = do
+  result <- primIO (prim__compileProofs (handlePtr h))
+  pure $ case result of
+    0 => Right ()
+    _ => Left ProofFailure
+
+--------------------------------------------------------------------------------
+-- Proof Checking and Results
+--------------------------------------------------------------------------------
+
+||| Query the number of discharged (successfully proven) obligations.
+export
+%foreign "C:idrisiser_discharged_count, libidrisiser"
+prim__dischargedCount : Bits64 -> PrimIO Bits32
+
+||| Get the count of discharged proof obligations
+export
+dischargedCount : Handle -> IO Nat
+dischargedCount h = do
+  count <- primIO (prim__dischargedCount (handlePtr h))
+  pure (cast count)
+
+||| Query the number of remaining (unproven) obligations.
+export
+%foreign "C:idrisiser_remaining_count, libidrisiser"
+prim__remainingCount : Bits64 -> PrimIO Bits32
+
+||| Get the count of remaining proof obligations
+export
+remainingCount : Handle -> IO Nat
+remainingCount h = do
+  count <- primIO (prim__remainingCount (handlePtr h))
+  pure (cast count)
+
+--------------------------------------------------------------------------------
+-- Native Wrapper Output
+--------------------------------------------------------------------------------
+
+||| Emit the native wrapper (shared library) to the specified output path.
+||| Must be called after all proofs are compiled and discharged.
+export
+%foreign "C:idrisiser_emit_wrapper, libidrisiser"
+prim__emitWrapper : Bits64 -> Bits64 -> PrimIO Bits32
+
+||| Safe wrapper for native output emission
+export
+emitWrapper : Handle -> (outputPathPtr : Bits64) -> IO (Either Result ())
+emitWrapper h outPtr = do
+  result <- primIO (prim__emitWrapper (handlePtr h) outPtr)
+  pure $ case result of
+    0 => Right ()
+    _ => Left Error
 
 --------------------------------------------------------------------------------
 -- String Operations
 --------------------------------------------------------------------------------
 
-||| Convert C string to Idris String
+||| Convert C string pointer to Idris String
 export
 %foreign "support:idris2_getString, libidris2_support"
 prim__getString : Bits64 -> String
 
-||| Free C string
+||| Free a C string allocated by the engine
 export
-%foreign "C:{{project}}_free_string, lib{{project}}"
+%foreign "C:idrisiser_free_string, libidrisiser"
 prim__freeString : Bits64 -> PrimIO ()
 
-||| Get string result from library
+||| Get a diagnostic or result string from the engine
 export
-%foreign "C:{{project}}_get_string, lib{{project}}"
+%foreign "C:idrisiser_get_string, libidrisiser"
 prim__getResult : Bits64 -> PrimIO Bits64
 
-||| Safe string getter
+||| Safely retrieve a string result from the engine
 export
 getString : Handle -> IO (Maybe String)
 getString h = do
@@ -93,39 +208,12 @@ getString h = do
       pure (Just str)
 
 --------------------------------------------------------------------------------
--- Array/Buffer Operations
---------------------------------------------------------------------------------
-
-||| Process array data
-export
-%foreign "C:{{project}}_process_array, lib{{project}}"
-prim__processArray : Bits64 -> Bits64 -> Bits32 -> PrimIO Bits32
-
-||| Safe array processor
-export
-processArray : Handle -> (buffer : Bits64) -> (len : Bits32) -> IO (Either Result ())
-processArray h buf len = do
-  result <- primIO (prim__processArray (handlePtr h) buf len)
-  pure $ case resultFromInt result of
-    Just Ok => Right ()
-    Just err => Left err
-    Nothing => Left Error
-  where
-    resultFromInt : Bits32 -> Maybe Result
-    resultFromInt 0 = Just Ok
-    resultFromInt 1 = Just Error
-    resultFromInt 2 = Just InvalidParam
-    resultFromInt 3 = Just OutOfMemory
-    resultFromInt 4 = Just NullPointer
-    resultFromInt _ = Nothing
-
---------------------------------------------------------------------------------
 -- Error Handling
 --------------------------------------------------------------------------------
 
-||| Get last error message
+||| Get the last error message from the engine
 export
-%foreign "C:{{project}}_last_error, lib{{project}}"
+%foreign "C:idrisiser_last_error, libidrisiser"
 prim__lastError : PrimIO Bits64
 
 ||| Retrieve last error as string
@@ -137,7 +225,7 @@ lastError = do
     then pure Nothing
     else pure (Just (prim__getString ptr))
 
-||| Get error description for result code
+||| Human-readable description for each result code
 export
 errorDescription : Result -> String
 errorDescription Ok = "Success"
@@ -145,14 +233,15 @@ errorDescription Error = "Generic error"
 errorDescription InvalidParam = "Invalid parameter"
 errorDescription OutOfMemory = "Out of memory"
 errorDescription NullPointer = "Null pointer"
+errorDescription ProofFailure = "Proof obligation could not be discharged"
 
 --------------------------------------------------------------------------------
 -- Version Information
 --------------------------------------------------------------------------------
 
-||| Get library version
+||| Get engine version string
 export
-%foreign "C:{{project}}_version, lib{{project}}"
+%foreign "C:idrisiser_version, libidrisiser"
 prim__version : PrimIO Bits64
 
 ||| Get version as string
@@ -162,9 +251,9 @@ version = do
   ptr <- primIO prim__version
   pure (prim__getString ptr)
 
-||| Get library build info
+||| Get build information (compiler, platform, flags)
 export
-%foreign "C:{{project}}_build_info, lib{{project}}"
+%foreign "C:idrisiser_build_info, libidrisiser"
 prim__buildInfo : PrimIO Bits64
 
 ||| Get build information
@@ -173,38 +262,3 @@ buildInfo : IO String
 buildInfo = do
   ptr <- primIO prim__buildInfo
   pure (prim__getString ptr)
-
---------------------------------------------------------------------------------
--- Callback Support
---------------------------------------------------------------------------------
-
-||| Callback function type (C ABI)
-public export
-Callback : Type
-Callback = Bits64 -> Bits32 -> Bits32
-
-||| Register a callback
-export
-%foreign "C:{{project}}_register_callback, lib{{project}}"
-prim__registerCallback : Bits64 -> AnyPtr -> PrimIO Bits32
-
--- TODO: Implement safe callback registration.
--- The callback must be wrapped via a proper FFI callback mechanism.
--- Do NOT use cast — it is banned per project safety standards.
--- See: https://idris2.readthedocs.io/en/latest/ffi/ffi.html#callbacks
-
---------------------------------------------------------------------------------
--- Utility Functions
---------------------------------------------------------------------------------
-
-||| Check if library is initialized
-export
-%foreign "C:{{project}}_is_initialized, lib{{project}}"
-prim__isInitialized : Bits64 -> PrimIO Bits32
-
-||| Check initialization status
-export
-isInitialized : Handle -> IO Bool
-isInitialized h = do
-  result <- primIO (prim__isInitialized (handlePtr h))
-  pure (result /= 0)

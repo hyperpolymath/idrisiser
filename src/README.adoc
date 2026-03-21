@@ -1,1 +1,18 @@
-= src Pillar
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Source Code — Idrisiser
+
+Rust CLI orchestrator, Idris2 proof generation, and Zig FFI bridge.
+
+== Module Map
+
+* **main.rs** — CLI entry point: init, validate, generate, build, run, info
+* **lib.rs** — Library API: load -> validate -> generate pipeline
+* **manifest/** — `idrisiser.toml` parser and validator (serde + toml)
+* **codegen/** — Idris2 + Zig code generation orchestrator
+* **core/** — Proof obligation engine (WIP)
+* **definitions/** — Interface definition intermediate representation (WIP)
+* **contracts/** — Contract extraction from parsed interfaces (WIP)
+* **errors/** — Structured diagnostic types (WIP)
+* **bridges/** — Adapter plugins: OpenAPI, protobuf, C headers (WIP)
+* **aspects/** — Cross-cutting concerns: integrity, observability, security
+* **interface/** — Verified interface seams (Idris2 ABI + Zig FFI + generated headers)
