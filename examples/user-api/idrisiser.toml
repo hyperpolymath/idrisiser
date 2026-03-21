@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Example idrisiser manifest — verify a REST API and a C library.
+
+[project]
+name = "example-project"
+module-prefix = "Example.Verified"
+
+[[interfaces]]
+name = "user-api"
+source = "openapi.yaml"
+format = "openapi"
+preconditions = ["valid_auth_token"]
+postconditions = ["status < 500"]
+
+[[interfaces]]
+name = "core-lib"
+source = "include/core.h"
+format = "c-header"
+verify = ["process_item", "reduce"]
+invariants = ["heap_intact"]
+
+[proofs]
+require-totality = true
+round-trip-proofs = true
+qtt-tracking = false
+search-depth = 100

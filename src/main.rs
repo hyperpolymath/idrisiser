@@ -69,7 +69,7 @@ fn main() -> Result<()> {
         Commands::Validate { manifest } => {
             let m = manifest::load_manifest(&manifest)?;
             manifest::validate(&m)?;
-            println!("Manifest valid: {}", m.workload.name);
+            println!("Manifest valid: {} ({} interface(s))", m.project.name, m.interfaces.len());
         }
         Commands::Generate { manifest, output } => {
             let m = manifest::load_manifest(&manifest)?;

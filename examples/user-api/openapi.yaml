@@ -1,0 +1,30 @@
+# Minimal OpenAPI spec for testing idrisiser parsing
+openapi: "3.0.0"
+info:
+  title: User API
+  version: "1.0.0"
+paths:
+  /users:
+    get:
+      summary: List all users
+      responses:
+        "200":
+          description: OK
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not found
+  /users/{id}/posts:
+    get:
+      summary: List posts for a user
+      responses:
+        "200":
+          description: OK
