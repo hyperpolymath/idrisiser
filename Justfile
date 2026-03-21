@@ -43,3 +43,7 @@ quality: fmt-check lint test
 # Install locally
 install:
     cargo install --path .
+
+# Run panic-attacker pre-commit scan
+assail:
+    @command -v panic-attack >/dev/null 2>&1 && panic-attack assail . || echo "panic-attack not found — install from https://github.com/hyperpolymath/panic-attacker"
