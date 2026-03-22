@@ -1,0 +1,42 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= Idrisiser — Show Me The Receipts
+:toc:
+:icons: font
+
+The README makes claims. This file backs them up.
+
+[quote, README]
+____
+Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+____
+
+== Technology Choices
+
+[cols="1,2"]
+|===
+| Technology | Learn More
+
+| **Rust** | https://www.rust-lang.org
+| **Idris2 ABI** | https://www.idris-lang.org
+|===
+
+== Dogfooded Across The Account
+
+Part of the hyperpolymath -iser ecosystem — language binding generators following
+a shared pattern across 28+ languages.
+
+- All -iser repos: https://github.com/hyperpolymath?q=iser
+
+== File Map
+
+[cols="1,2"]
+|===
+| Path | What's There
+
+| `src/` | Source code
+| `test(s)/` | Test suite
+|===
+
+== Questions?
+
+Open an issue or reach out directly — happy to explain anything in more detail.
