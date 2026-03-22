@@ -143,13 +143,12 @@ jobs:
         continue-on-error: true
         run: |
           git clone https://github.com/hyperpolymath/hypatia.git "$HOME/hypatia" 2>/dev/null || true
-          if [ -d "$HOME/hypatia/scanner" ]; then
+          if [ -f "$HOME/hypatia/mix.exs" ]; then
             cd "$HOME/hypatia"
             if [ ! -f hypatia-v2 ]; then
-              cd scanner
               mix deps.get
               mix escript.build
-              mv hypatia ../hypatia-v2
+              mv hypatia hypatia-v2
             fi
             echo "ready=true" >> "$GITHUB_OUTPUT"
           else
