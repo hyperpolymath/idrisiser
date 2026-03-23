@@ -7,7 +7,7 @@
 // Each interface produces an Idris2 module with dependent-type proofs,
 // a Zig FFI bridge, and a compiled native wrapper.
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 
@@ -173,8 +173,8 @@ fn default_search_depth() -> u32 {
 pub fn load_manifest(path: &str) -> Result<Manifest> {
     let content = std::fs::read_to_string(path)
         .with_context(|| format!("Failed to read manifest: {}", path))?;
-    let manifest: Manifest = toml::from_str(&content)
-        .with_context(|| format!("Failed to parse manifest: {}", path))?;
+    let manifest: Manifest =
+        toml::from_str(&content).with_context(|| format!("Failed to parse manifest: {}", path))?;
     Ok(manifest)
 }
 
@@ -201,7 +201,10 @@ pub fn validate(manifest: &Manifest) -> Result<()> {
 pub fn init_manifest(path: &str) -> Result<()> {
     let manifest_path = Path::new(path).join("idrisiser.toml");
     if manifest_path.exists() {
-        bail!("idrisiser.toml already exists at {}", manifest_path.display());
+        bail!(
+            "idrisiser.toml already exists at {}",
+            manifest_path.display()
+        );
     }
 
     let template = r#"# idrisiser manifest — describes interfaces to formally verify.

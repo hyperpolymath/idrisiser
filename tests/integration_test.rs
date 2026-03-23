@@ -98,7 +98,10 @@ fn test_generate_produces_idris2_files() {
 
     let core_content = fs::read_to_string(&core_lib_idr).unwrap();
     // The module should contain the interface name as a function (fallback when source file not found)
-    assert!(core_content.contains("core_lib"), "Should contain interface name");
+    assert!(
+        core_content.contains("core_lib"),
+        "Should contain interface name"
+    );
 }
 
 #[test]
@@ -163,9 +166,7 @@ fn test_openapi_parsing_extracts_paths() {
     let dir = tempfile::tempdir().unwrap();
     idrisiser::codegen::generate_all(&m, dir.path().to_str().unwrap()).unwrap();
 
-    let user_api_idr = dir
-        .path()
-        .join("idris2/Example/Verified/user_api.idr");
+    let user_api_idr = dir.path().join("idris2/Example/Verified/user_api.idr");
     let content = fs::read_to_string(&user_api_idr).unwrap();
 
     // When source file isn't found at relative path, parser generates synthetic contract
@@ -182,9 +183,7 @@ fn test_c_header_parsing_extracts_functions() {
     let dir = tempfile::tempdir().unwrap();
     idrisiser::codegen::generate_all(&m, dir.path().to_str().unwrap()).unwrap();
 
-    let core_lib_idr = dir
-        .path()
-        .join("idris2/Example/Verified/core_lib.idr");
+    let core_lib_idr = dir.path().join("idris2/Example/Verified/core_lib.idr");
     let content = fs::read_to_string(&core_lib_idr).unwrap();
 
     // When source file isn't found, parser generates synthetic contracts from the
@@ -207,7 +206,8 @@ fn test_c_header_parsing_extracts_functions() {
 fn test_all_interface_formats_generate() {
     let formats = ["openapi", "c-header", "protobuf", "type-sig"];
     for fmt in &formats {
-        let toml_str = format!(r#"
+        let toml_str = format!(
+            r#"
         [project]
         name = "test-{fmt}"
 
@@ -215,7 +215,8 @@ fn test_all_interface_formats_generate() {
         name = "test-iface"
         source = "nonexistent.file"
         format = "{fmt}"
-        "#);
+        "#
+        );
 
         let m: idrisiser::manifest::Manifest = toml::from_str(&toml_str).unwrap();
         idrisiser::manifest::validate(&m).unwrap();
@@ -249,7 +250,10 @@ fn test_end_to_end_all_artifacts() {
     // All expected artifacts
     assert!(dir.path().join("idris2").exists(), "idris2/ dir");
     assert!(dir.path().join("zig").exists(), "zig/ dir");
-    assert!(dir.path().join("example_project_verified.ipkg").exists(), ".ipkg");
+    assert!(
+        dir.path().join("example_project_verified.ipkg").exists(),
+        ".ipkg"
+    );
     assert!(dir.path().join("build.sh").exists(), "build.sh");
 
     // Two interfaces should produce two Idris2 modules
@@ -348,10 +352,17 @@ fn test_interface_with_preconditions_and_postconditions() {
 
     let content = fs::read_to_string(idr_files[0].path()).unwrap();
     assert!(content.contains("auth_valid"), "Precondition should appear");
-    assert!(content.contains("status < 500"), "Postcondition should appear");
+    assert!(
+        content.contains("status < 500"),
+        "Postcondition should appear"
+    );
     // Invariants are stored in the contract but rendered in a future phase
-    assert!(m.interfaces[0].invariants.contains(&"db_consistent".to_string()),
-        "Invariant should be in manifest");
+    assert!(
+        m.interfaces[0]
+            .invariants
+            .contains(&"db_consistent".to_string()),
+        "Invariant should be in manifest"
+    );
 }
 
 #[test]
@@ -372,7 +383,11 @@ fn test_custom_module_prefix() {
     idrisiser::codegen::generate_all(&m, dir.path().to_str().unwrap()).unwrap();
 
     let idr_path = dir.path().join("idris2/Com/Example/Verified/api.idr");
-    assert!(idr_path.exists(), "Module should use custom prefix path: {:?}", idr_path);
+    assert!(
+        idr_path.exists(),
+        "Module should use custom prefix path: {:?}",
+        idr_path
+    );
 
     let content = fs::read_to_string(&idr_path).unwrap();
     assert!(content.contains("module Com.Example.Verified.api"));
@@ -486,8 +501,14 @@ fn test_ipkg_references_all_modules() {
     let ipkg = fs::read_to_string(dir.path().join("example_project_verified.ipkg")).unwrap();
 
     // Should reference both interfaces
-    assert!(ipkg.contains("user_api"), "ipkg should reference user_api module");
-    assert!(ipkg.contains("core_lib"), "ipkg should reference core_lib module");
+    assert!(
+        ipkg.contains("user_api"),
+        "ipkg should reference user_api module"
+    );
+    assert!(
+        ipkg.contains("core_lib"),
+        "ipkg should reference core_lib module"
+    );
 }
 
 // ==========================================================================

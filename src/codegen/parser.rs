@@ -60,8 +60,12 @@ pub fn parse_interface(iface: &InterfaceConfig) -> Result<Vec<FunctionContract>>
 
     // Apply user-specified preconditions/postconditions/invariants to all functions.
     for contract in &mut contracts {
-        contract.preconditions.extend(iface.preconditions.iter().cloned());
-        contract.postconditions.extend(iface.postconditions.iter().cloned());
+        contract
+            .preconditions
+            .extend(iface.preconditions.iter().cloned());
+        contract
+            .postconditions
+            .extend(iface.postconditions.iter().cloned());
         contract.invariants.extend(iface.invariants.iter().cloned());
     }
 
@@ -95,10 +99,7 @@ pub fn parse_interface(iface: &InterfaceConfig) -> Result<Vec<FunctionContract>>
 
 /// Parse an OpenAPI 3.x specification.
 /// Extracts each endpoint as a function contract.
-fn parse_openapi(
-    iface: &InterfaceConfig,
-    content: Option<&str>,
-) -> Result<Vec<FunctionContract>> {
+fn parse_openapi(iface: &InterfaceConfig, content: Option<&str>) -> Result<Vec<FunctionContract>> {
     let mut contracts = Vec::new();
 
     if let Some(text) = content {
@@ -119,7 +120,10 @@ fn parse_openapi(
                     params: vec![],
                     return_type: "Response".to_string(),
                     preconditions: vec!["valid_auth_token".to_string()],
-                    postconditions: vec!["status_code >= 200".to_string(), "status_code < 500".to_string()],
+                    postconditions: vec![
+                        "status_code >= 200".to_string(),
+                        "status_code < 500".to_string(),
+                    ],
                     invariants: vec![],
                     require_total: true,
                     http_method: Some("GET".to_string()),
@@ -130,10 +134,10 @@ fn parse_openapi(
             // Detect method entries like "    get:" or "    post:"
             let methods = ["get:", "post:", "put:", "delete:", "patch:"];
             for method in &methods {
-                if trimmed == *method {
-                    if let Some(last) = contracts.last_mut() {
-                        last.http_method = Some(method.trim_end_matches(':').to_uppercase());
-                    }
+                if trimmed == *method
+                    && let Some(last) = contracts.last_mut()
+                {
+                    last.http_method = Some(method.trim_end_matches(':').to_uppercase());
                 }
             }
         }
@@ -163,10 +167,7 @@ fn parse_openapi(
 
 /// Parse a C header file.
 /// Extracts function declarations as contracts.
-fn parse_c_header(
-    iface: &InterfaceConfig,
-    content: Option<&str>,
-) -> Result<Vec<FunctionContract>> {
+fn parse_c_header(iface: &InterfaceConfig, content: Option<&str>) -> Result<Vec<FunctionContract>> {
     let mut contracts = Vec::new();
 
     if let Some(text) = content {
@@ -195,8 +196,16 @@ fn parse_c_header(
         contracts.push(FunctionContract {
             name: iface.name.replace('-', "_"),
             params: vec![
-                Param { name: "input".to_string(), type_name: "Ptr".to_string(), required: true },
-                Param { name: "len".to_string(), type_name: "Int".to_string(), required: true },
+                Param {
+                    name: "input".to_string(),
+                    type_name: "Ptr".to_string(),
+                    required: true,
+                },
+                Param {
+                    name: "len".to_string(),
+                    type_name: "Int".to_string(),
+                    required: true,
+                },
             ],
             return_type: "Int".to_string(),
             preconditions: vec!["input != NULL".to_string()],
@@ -279,20 +288,17 @@ fn try_parse_c_function(line: &str) -> Option<FunctionContract> {
 
 /// Parse a Protocol Buffers .proto file.
 /// Extracts service RPC methods as contracts.
-fn parse_protobuf(
-    iface: &InterfaceConfig,
-    content: Option<&str>,
-) -> Result<Vec<FunctionContract>> {
+fn parse_protobuf(iface: &InterfaceConfig, content: Option<&str>) -> Result<Vec<FunctionContract>> {
     let mut contracts = Vec::new();
 
     if let Some(text) = content {
         // Look for rpc declarations: rpc MethodName (RequestType) returns (ResponseType);
         for line in text.lines() {
             let trimmed = line.trim();
-            if trimmed.starts_with("rpc ") {
-                if let Some(contract) = try_parse_rpc(trimmed) {
-                    contracts.push(contract);
-                }
+            if trimmed.starts_with("rpc ")
+                && let Some(contract) = try_parse_rpc(trimmed)
+            {
+                contracts.push(contract);
             }
         }
     }
@@ -355,10 +361,7 @@ fn try_parse_rpc(line: &str) -> Option<FunctionContract> {
 
 /// Parse a type signature file (custom format).
 /// Each line is: function_name : ParamType -> ParamType -> ReturnType
-fn parse_type_sig(
-    iface: &InterfaceConfig,
-    content: Option<&str>,
-) -> Result<Vec<FunctionContract>> {
+fn parse_type_sig(iface: &InterfaceConfig, content: Option<&str>) -> Result<Vec<FunctionContract>> {
     let mut contracts = Vec::new();
 
     if let Some(text) = content {
@@ -450,7 +453,10 @@ fn c_type_to_idris(c_type: &str) -> String {
         other => {
             // Pointer types
             if other.ends_with('*') {
-                format!("Ptr {}", c_type_to_idris(other.trim_end_matches('*').trim()))
+                format!(
+                    "Ptr {}",
+                    c_type_to_idris(other.trim_end_matches('*').trim())
+                )
             } else {
                 other.to_string()
             }
@@ -487,7 +493,12 @@ mod tests {
         assert_eq!(contract.return_type, "Int");
         assert_eq!(contract.params.len(), 2);
         assert_eq!(contract.params[0].name, "input");
-        assert!(contract.preconditions.iter().any(|p| p.contains("input != NULL")));
+        assert!(
+            contract
+                .preconditions
+                .iter()
+                .any(|p| p.contains("input != NULL"))
+        );
     }
 
     #[test]

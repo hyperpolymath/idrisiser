@@ -1,3 +1,10 @@
+#![allow(
+    dead_code,
+    clippy::too_many_arguments,
+    clippy::manual_strip,
+    clippy::if_same_then_else,
+    clippy::vec_init_then_push
+)]
 #![forbid(unsafe_code)]
 // SPDX-License-Identifier: PMPL-1.0-or-later
 // Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
@@ -70,7 +77,11 @@ fn main() -> Result<()> {
         Commands::Validate { manifest } => {
             let m = manifest::load_manifest(&manifest)?;
             manifest::validate(&m)?;
-            println!("Manifest valid: {} ({} interface(s))", m.project.name, m.interfaces.len());
+            println!(
+                "Manifest valid: {} ({} interface(s))",
+                m.project.name,
+                m.interfaces.len()
+            );
         }
         Commands::Generate { manifest, output } => {
             let m = manifest::load_manifest(&manifest)?;
