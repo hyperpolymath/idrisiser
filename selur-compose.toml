@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# Stapeln service definition for idrisiser
+#
+# Usage:
+#   podman-compose -f selur-compose.toml up -d
+#   just stack-up
+
+[project]
+name = "idrisiser"
+
+[services.app]
+build = { context = ".", dockerfile = "Containerfile" }
+restart = "unless-stopped"
+networks = ["default"]
+healthcheck = { test = "exit 0", interval = "30s", timeout = "5s", retries = 3 }
