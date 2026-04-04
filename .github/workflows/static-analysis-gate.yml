@@ -145,10 +145,9 @@ jobs:
           git clone https://github.com/hyperpolymath/hypatia.git "$HOME/hypatia" 2>/dev/null || true
           if [ -f "$HOME/hypatia/mix.exs" ]; then
             cd "$HOME/hypatia"
-            if [ ! -f hypatia-v2 ]; then
+            if [ ! -f hypatia ] && [ ! -f hypatia-v2 ]; then
               mix deps.get
               mix escript.build
-              mv hypatia hypatia-v2
             fi
             echo "ready=true" >> "$GITHUB_OUTPUT"
           else
