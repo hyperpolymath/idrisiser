@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# k9iser manifest for idrisiser
+# Idris2 iser — reads Idris2 source and generates K9 contracts
+
+[project]
+name = "idrisiser"
+safety_tier = "hunt"
+
+[[source]]
+path = "Cargo.toml"
+type = "cargo"
+output = "generated/k9iser/cargo-manifest.k9"
+
+[[source]]
+path = "Justfile"
+type = "justfile"
+output = "generated/k9iser/justfile-recipes.k9"
+
+[[source]]
+path = "Containerfile"
+type = "containerfile"
+output = "generated/k9iser/container-build.k9"
+
+[[source]]
+path = ".github/workflows/hypatia-scan.yml"
+type = "workflow"
+output = "generated/k9iser/ci-security.k9"
+
+[[constraint]]
+rule = "build.dependencies has no banned_packages"
+severity = "error"
+
+[[constraint]]
+rule = "container.base_image uses chainguard or distroless"
+severity = "warn"
+
+[[constraint]]
+rule = "workflows includes hypatia-scan"
+severity = "error"
+
+[[constraint]]
+rule = "binary outputs to stdout in JSON format"
+severity = "warn"
