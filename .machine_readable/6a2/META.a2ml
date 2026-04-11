@@ -1,63 +1,27 @@
-;; SPDX-License-Identifier: PMPL-1.0-or-later
-;; Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
-;; META.a2ml — Meta-level information for idrisiser
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# META.a2ml — Idrisiser meta-level information
+[metadata]
+version = "0.1.0"
+last-updated = "2026-03-21"
 
-(meta
-  (version "0.1.0")
-  (last-updated "2026-03-21")
+[project-info]
+license = "PMPL-1.0-or-later"
+author = "Jonathan D.A. Jewell (hyperpolymath)"
 
-  (architecture-decisions
-    (adr "001-idris2-as-sole-prover"
-      (status "accepted")
-      (context "Need a formal verification language for the hyperpolymath ecosystem; candidates were ATS2, Coq, Lean, Agda, and Idris2")
-      (decision "Idris2 is the sole formal verification language — dependent types, totality checking, elaborator reflection, and quantitative type theory")
-      (consequences "Single prover simplifies tooling; idrisiser is the universal proof generation frontend"))
+[architecture-decisions]
+decisions = [
+  # No ADRs recorded
+]
 
-    (adr "002-meta-prover-architecture"
-      (status "accepted")
-      (context "Developers should not need to learn Idris2 to get formal guarantees")
-      (decision "Idrisiser parses interface definitions and generates Idris2 proofs automatically — users write manifests, not proof terms")
-      (consequences "Proof generation is deterministic and reproducible; users get compile-time guarantees without type theory expertise"))
+[development-practices]
+versioning = "SemVer"
+documentation = "AsciiDoc"
+build-tool = "just"
 
-    (adr "003-multi-format-interface-parsing"
-      (status "accepted")
-      (context "Interfaces come in many formats: REST APIs, C headers, protobuf, type signatures")
-      (decision "Pluggable parser architecture with bridge adapters per format, all producing a common IR")
-      (consequences "New interface formats can be added without changing the proof engine"))
-
-    (adr "004-abi-ffi-standard"
-      (status "accepted")
-      (context "Need verified interop between Idris2 proof engine and native output")
-      (decision "Idris2 ABI for formal proofs, Zig FFI for C-ABI bridge — per hyperpolymath universal standard")
-      (consequences "Compile-time correctness guarantees; zero runtime overhead from proofs"))
-
-    (adr "005-proof-erasure"
-      (status "accepted")
-      (context "Proofs must not impose runtime cost on generated wrappers")
-      (decision "All proof witnesses are erased during Idris2 compilation (QTT 0-usage)")
-      (consequences "Native wrapper is as fast as hand-written C; proofs exist only at compile time"))
-
-    (adr "006-no-unsafe-patterns"
-      (status "accepted")
-      (context "Generated Idris2 code must be trustworthy")
-      (decision "Never use believe_me, assert_total, sorry, unsafeCoerce, or any escape hatch in generated code")
-      (consequences "If a proof cannot be discharged, idrisiser reports a clear error rather than silently unsound output")))
-
-  (development-practices
-    (language "Rust" (purpose "CLI orchestrator — parses manifest, invokes parsers and codegen"))
-    (language "Idris2" (purpose "ABI layer — formal proofs of interface correctness"))
-    (language "Zig" (purpose "FFI layer — C-ABI bridge implementing proof engine operations"))
-    (build-tool "cargo" (purpose "Rust CLI build"))
-    (build-tool "zig build" (purpose "FFI shared/static library build"))
-    (build-tool "idris2" (purpose "Proof compilation and totality checking"))
-    (ci "GitHub Actions (17 workflows)"))
-
-  (design-rationale
-    (principle "Interface-first"
-      (explanation "The parsed interface is the single source of truth; all proofs, FFI, and native output derive from it"))
-    (principle "Proof obligations, not proof terms"
-      (explanation "Idrisiser derives WHAT must be proven from the interface; Idris2 elaborator reflection builds HOW"))
-    (principle "Deterministic generation"
-      (explanation "Same manifest + same interface = same output, always; no randomness, no heuristics"))
-    (principle "Fail loudly on unproven obligations"
-      (explanation "A proof that cannot be discharged halts generation with a clear diagnostic; never emit unsound code"))))
+[maintenance-axes]
+scoping-first = true
+axis-1 = "must > intend > like"
+axis-2 = "corrective > adaptive > perfective"
+axis-3 = "systems > compliance > effects"

@@ -1,42 +1,40 @@
-;; SPDX-License-Identifier: PMPL-1.0-or-later
-;; Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
-;; STATE.a2ml — Current project state for idrisiser
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# STATE.a2ml — Idrisiser project state
+[metadata]
+project = "idrisiser"
+version = "0.1.0"
+last-updated = "2026-03-21"
+status = "active"
+session = "converted from scheme — 2026-04-11"
 
-(state
-  (metadata
-    (version "0.1.0")
-    (last-updated "2026-03-21")
-    (author "Jonathan D.A. Jewell"))
+[project-context]
+name = "Idrisiser"
+purpose = """Meta-prover: generates proven-correct wrappers from interface definitions using Idris2 dependent types"""
+completion-percentage = 45
 
-  (project-context
-    (name "idrisiser")
-    (description "Meta-prover: generates proven-correct wrappers from interface definitions using Idris2 dependent types")
-    (status "alpha")
-    (priority "foundational — most critical -iser after iseriser")
-    (ecosystem "-iser family (https://github.com/hyperpolymath/iseriser)"))
+[position]
+phase = "phase-1-complete"   # design | implementation | testing | maintenance | archived
+maturity = "experimental"  # experimental | alpha | beta | production | lts
 
-  (current-position
-    (phase "phase-1-complete")
-    (completion-percentage 45)
-    (milestone "Phase 1 complete — interface parsers, proof obligation engine, Idris2/Zig codegen")
-    (what-changed
-      "2026-03-21: Phase 1 complete. Interface parsers (OpenAPI, C headers, Protobuf), proof obligation engine, Idris2 codegen templates, Zig bridge generator, bespoke manifest parsing. Integration tests passing."))
+[route-to-mvp]
+milestones = [
+  # No milestones recorded
+]
 
-  (route-to-mvp
-    (step 1 "DONE — Interface parsers (OpenAPI 3.x, C headers, Protocol Buffers)")
-    (step 2 "DONE — Proof obligation engine from parsed contracts")
-    (step 3 "DONE — Idris2 codegen templates (Types.idr, Layout.idr, Foreign.idr)")
-    (step 4 "DONE — Zig bridge generator for FFI implementations")
-    (step 5 "DONE — Bespoke manifest parsing and CLI")
-    (step 6 "TODO — Invoke Idris2 totality checker on generated code")
-    (step 7 "TODO — End-to-end: OpenAPI spec to proven native wrapper")
-    (step 8 "TODO — PanLL panel and BoJ cartridge integration"))
+[blockers-and-issues]
+issues = [
+  "Idris2 compiler needed for totality checking — codegen verified by structure",
+]
 
-  (blockers-and-issues
-    (note "Idris2 compiler needed for totality checking — codegen verified by structure")
-    (note "Zig bridge generator produces stubs — needs Idris2 Foreign.idr to generate from"))
+[critical-next-actions]
+actions = [
+  "Hook up Idris2 totality checker to validate generated proofs",
+  "End-to-end test: OpenAPI spec to proven native wrapper",
+  "Add shell completions and additional examples",
+]
 
-  (critical-next-actions
-    (action "Hook up Idris2 totality checker to validate generated proofs")
-    (action "End-to-end test: OpenAPI spec to proven native wrapper")
-    (action "Add shell completions and additional examples")))
+[maintenance-status]
+last-run-utc = "2026-03-21T00:00:00Z"
+last-result = "unknown"  # unknown | pass | warn | fail

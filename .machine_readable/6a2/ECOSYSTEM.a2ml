@@ -1,48 +1,20 @@
-;; SPDX-License-Identifier: PMPL-1.0-or-later
-;; Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
-;; ECOSYSTEM.a2ml — Ecosystem position for idrisiser
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# ECOSYSTEM.a2ml — Idrisiser ecosystem position
+[metadata]
+version = "0.1.0"
+last-updated = "2026-04-11"
 
-(ecosystem
-  (version "0.1.0")
-  (name "idrisiser")
-  (type "meta-prover tool")
-  (purpose "Generate proven-correct wrappers from interface definitions using Idris2 dependent types")
+[project]
+name = "Idrisiser"
+purpose = "Generate proven-correct wrappers from interface definitions using Idris2 dependent types"
+role = "meta-prover tool"
 
-  (position-in-ecosystem
-    (family "-iser acceleration frameworks")
-    (meta-framework "iseriser")
-    (rank "Most foundational -iser after iseriser itself")
-    (role "Universal proof generation frontend — every -iser needing formal verification routes through idrisiser")
-    (unique-property "Only -iser that generates proofs, not just code"))
+[position-in-ecosystem]
+category = ""
 
-  (related-projects
-    (project "iseriser"
-      (relationship "meta-framework")
-      (description "Generates new -iser project scaffolding; idrisiser was scaffolded by iseriser"))
-    (project "proven"
-      (relationship "dependency")
-      (description "Shared Idris2 verified library — idrisiser reuses proven primitives"))
-    (project "proven-servers"
-      (relationship "consumer")
-      (description "Server implementations that use idrisiser-generated proof wrappers"))
-    (project "typedqliser"
-      (relationship "sibling-priority-1")
-      (description "Formal type safety for query languages — uses idrisiser for proof generation"))
-    (project "chapeliser"
-      (relationship "sibling-priority-2")
-      (description "Chapel distributed computing acceleration"))
-    (project "verisimiser"
-      (relationship "sibling-priority-3")
-      (description "VeriSimDB octad database augmentation"))
-    (project "halideiser"
-      (relationship "sibling")
-      (description "Halide image processing acceleration"))
-    (project "typell"
-      (relationship "dependency")
-      (description "Type theory engine — provides type-level reasoning foundations"))
-    (project "squeakwell"
-      (relationship "sibling")
-      (description "Database recovery via cross-modal constraint propagation"))
-    (project "boj-server"
-      (relationship "future-consumer")
-      (description "MCP server — idrisiser will be exposed as a BoJ cartridge"))))
+[related-projects]
+projects = [
+  # No related projects recorded
+]
