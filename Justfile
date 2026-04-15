@@ -2,6 +2,8 @@
 # idrisiser — Generate proven-correct wrappers using Idris2 dependent types
 
 # Default: build and test
+import? "contractile.just"
+
 default: build test
 
 # Build release binary
