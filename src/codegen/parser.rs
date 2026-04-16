@@ -381,7 +381,7 @@ fn parse_type_sig(iface: &InterfaceConfig, content: Option<&str>) -> Result<Vec<
                     continue;
                 }
 
-                let return_type = parts.last().unwrap().to_string();
+                let return_type = parts.last().expect("TODO: handle error").to_string();
                 let params: Vec<Param> = parts[..parts.len() - 1]
                     .iter()
                     .enumerate()
@@ -488,7 +488,7 @@ mod tests {
 
     #[test]
     fn parse_c_function_simple() {
-        let contract = try_parse_c_function("int process_item(void* input, size_t len);").unwrap();
+        let contract = try_parse_c_function("int process_item(void* input, size_t len);").expect("TODO: handle error");
         assert_eq!(contract.name, "process_item");
         assert_eq!(contract.return_type, "Int");
         assert_eq!(contract.params.len(), 2);
@@ -504,7 +504,7 @@ mod tests {
     #[test]
     fn parse_rpc_method() {
         let contract =
-            try_parse_rpc("rpc GetUser (GetUserRequest) returns (UserResponse);").unwrap();
+            try_parse_rpc("rpc GetUser (GetUserRequest) returns (UserResponse);").expect("TODO: handle error");
         assert_eq!(contract.name, "GetUser");
         assert_eq!(contract.params[0].type_name, "GetUserRequest");
         assert_eq!(contract.return_type, "UserResponse");
