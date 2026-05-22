@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # rhodibot.yml — Automated RSR compliance enforcement
 #
 # Reads root-hygiene rules and auto-fixes what it can:
@@ -86,7 +86,7 @@ jobs:
           # --- 4. Fix SPDX headers in dotfiles ---
           for dotfile in .gitignore .gitattributes .editorconfig; do
             if [ -f "$dotfile" ] && grep -q "AGPL-3.0" "$dotfile" 2>/dev/null; then
-              sed -i 's/AGPL-3.0-or-later/PMPL-1.0-or-later/g; s/AGPL-3.0/PMPL-1.0-or-later/g' "$dotfile"
+              sed -i 's/AGPL-3.0-or-later/MPL-2.0/g; s/AGPL-3.0/MPL-2.0/g' "$dotfile"
               FIXES="$FIXES\n- Fixed SPDX header in \`$dotfile\` (AGPL → PMPL)"
               CHANGED=true
             fi
@@ -95,7 +95,7 @@ jobs:
           # --- 5. Create missing required files ---
           if [ ! -f "SECURITY.md" ]; then
             cat > SECURITY.md << 'SECEOF'
-          <!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
+          <!-- SPDX-License-Identifier: MPL-2.0 -->
           # Security Policy
 
           ## Reporting a Vulnerability
@@ -115,7 +115,7 @@ jobs:
 
           if [ ! -f "CONTRIBUTING.md" ]; then
             cat > CONTRIBUTING.md << 'CONTEOF'
-          <!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
+          <!-- SPDX-License-Identifier: MPL-2.0 -->
           # Contributing
 
           1. Fork the repository

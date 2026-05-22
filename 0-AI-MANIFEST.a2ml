@@ -43,7 +43,7 @@ SOFTWARE-DEVELOPMENT-APPROACH.a2ml.
 
 1. **No state file duplication** — Root must NOT contain STATE.a2ml, META.a2ml, etc.
 2. **Single source of truth** — `.machine_readable/` is authoritative
-3. **License consistency** — All code PMPL-1.0-or-later
+3. **License consistency** — All code MPL-2.0
 4. **Author attribution** — Always "Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"
 5. **Container images** — Chainguard base only (`cgr.dev/chainguard/`)
 6. **Container runtime** — Podman, never Docker. Files are `Containerfile`.

@@ -1,5 +1,5 @@
 #!/bin/sh
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # {{PROJECT_NAME}} container entrypoint
 #
 # Handles signal propagation, startup logging, and health check

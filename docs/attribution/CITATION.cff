@@ -9,7 +9,7 @@ version: 0.1.0
 date-released: {{CURRENT_DATE}}
 url: "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
 repository-code: "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
-license: PMPL-1.0-or-later
+license: MPL-2.0
 keywords:
   - "rsr"
   - "formal-verification"

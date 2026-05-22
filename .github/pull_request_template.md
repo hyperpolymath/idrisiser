@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
+<!-- SPDX-License-Identifier: MPL-2.0 -->
 ## Summary
 
 <!-- Briefly describe what this PR does and why. Link to related issues with "Closes #N". -->
@@ -32,7 +32,7 @@
 - [ ] Documentation updated for user-facing changes
 - [ ] `TOPOLOGY.md` updated (if architecture changed)
 - [ ] `CHANGELOG` or release notes updated
-- [ ] New dependencies reviewed for license compatibility (PMPL-1.0-or-later / MPL-2.0)
+- [ ] New dependencies reviewed for license compatibility (MPL-2.0 / MPL-2.0)
 - [ ] ABI/FFI changes validated (`src/interface/abi/` and `src/interface/ffi/` consistent)
 
 ## Testing

@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # idrisiser — Generate proven-correct wrappers using Idris2 dependent types
 
 # Default: build and test

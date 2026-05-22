@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 // Template: QUICKSTART-MAINTAINER.adoc — packaging, deploying, and maintaining
 // Replace idrisiser, {{PACKAGE_NAME}}, {{DEPS}} with actuals
 = idrisiser — Quick Start for Platform Maintainers
@@ -106,7 +106,7 @@ Or via OPSM: `opsm update {{PACKAGE_NAME}}`
 
 == Security Notes
 
-* License: PMPL-1.0-or-later (Palimpsest License)
+* License: MPL-2.0 (Palimpsest License)
 * All dependencies SHA-pinned
 * `panic-attacker` scan results: link:INSTALL-SECURITY-REPORT.adoc[]
 * OpenSSF Scorecard: see badge in README

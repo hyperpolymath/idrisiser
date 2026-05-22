@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # Custom issue template for hyperpolymath/idrisiser
 name: Other
 description: Report an issue that does not fit the other categories

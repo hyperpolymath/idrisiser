@@ -86,7 +86,7 @@ sed -i "s/{{CURRENT_DATE}}/$(date +%Y-%m-%d)/g" $(grep -rl '{{CURRENT_DATE}}' .)
 
 | Placeholder | Description | Example | Files |
 |---|---|---|---|
-| `{{LICENSE}}` | License name | `PMPL-1.0-or-later` | ABI-FFI-README.md |
+| `{{LICENSE}}` | License name | `MPL-2.0` | ABI-FFI-README.md |
 | `{{PROJECT_PURPOSE}}` | One-line project description | `FFI bridges between languages` | STATE.a2ml |
 
 ### AI Manifest

@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # Static Analysis Gate — Required by branch protection rules.
 # Runs panic-attack and hypatia, deposits findings for gitbot-fleet learning.
 name: Static Analysis Gate

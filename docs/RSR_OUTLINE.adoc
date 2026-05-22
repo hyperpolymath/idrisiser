@@ -78,7 +78,7 @@ just validate-rsr
 |Container build (Wolfi base, Podman)
 
 |`LICENSE`
-|PMPL-1.0-or-later (Palimpsest MPL)
+|MPL-2.0 (Palimpsest MPL)
 
 |`EXHIBIT-A-ETHICAL-USE.txt`
 |Ethical use guidelines (LICENSE Exhibit A)
@@ -190,7 +190,7 @@ project/
 ├── guix.scm                   # Guix package
 ├── Justfile                   # Task runner
 ├── Containerfile              # Container build
-├── LICENSE                    # PMPL-1.0-or-later
+├── LICENSE                    # MPL-2.0
 ├── EXHIBIT-A-ETHICAL-USE.txt  # Ethical use guidelines
 ├── EXHIBIT-B-QUANTUM-SAFE.txt # Quantum-safe provenance
 ├── README.adoc                # Overview
@@ -214,7 +214,7 @@ project/
 * `.gitignore`
 * `Justfile`
 * `README.adoc`
-* `LICENSE` (PMPL-1.0-or-later)
+* `LICENSE` (MPL-2.0)
 * `.machine_readable/STATE.a2ml`
 * `.well-known/security.txt`
 * `.well-known/ai.txt`
@@ -281,7 +281,7 @@ This template is part of:
 
 == License
 
-SPDX-License-Identifier: PMPL-1.0-or-later
+SPDX-License-Identifier: MPL-2.0
 
 == Links
 

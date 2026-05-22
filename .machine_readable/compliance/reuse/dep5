@@ -3,52 +3,52 @@ Upstream-Name: {{PROJECT_NAME}}
 Upstream-Contact: {{AUTHOR}} <{{AUTHOR_EMAIL}}>
 Source: https://github.com/{{OWNER}}/{{REPO}}
 
-# Default: all files are PMPL-1.0-or-later
+# Default: all files are MPL-2.0
 Files: *
 Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-License: PMPL-1.0-or-later
+License: MPL-2.0
 
 # Configuration files that cannot carry headers
 Files: .editorconfig .gitignore .gitattributes .tool-versions .mailmap
 Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-License: PMPL-1.0-or-later
+License: MPL-2.0
 
 # Machine-readable state files
 Files: .machine_readable/*.a2ml
 Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-License: PMPL-1.0-or-later
+License: MPL-2.0
 
 # Bot directives
 Files: .machine_readable/bot_directives/*
 Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-License: PMPL-1.0-or-later
+License: MPL-2.0
 
 # Contractiles
 Files: .machine_readable/contractiles/*
 Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-License: PMPL-1.0-or-later
+License: MPL-2.0
 
 # GitHub/CI configuration
 Files: .github/* .github/**/*
 Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-License: PMPL-1.0-or-later
+License: MPL-2.0
 
 # Generated files
 Files: generated/*
 Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-License: PMPL-1.0-or-later
+License: MPL-2.0
 
 # Lockfiles and auto-generated
 Files: *.lock Cargo.lock flake.lock
 Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-License: PMPL-1.0-or-later
+License: MPL-2.0
 
 # Devcontainer config (JSON, no comments)
 Files: .devcontainer/*.json
 Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-License: PMPL-1.0-or-later
+License: MPL-2.0
 
 # Git-cliff config
 Files: cliff.toml
 Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
-License: PMPL-1.0-or-later
+License: MPL-2.0

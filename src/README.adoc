@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 = Source Code — Idrisiser
 
 Rust CLI orchestrator, Idris2 proof generation, and Zig FFI bridge.

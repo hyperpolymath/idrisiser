@@ -1,4 +1,4 @@
-;; SPDX-License-Identifier: PMPL-1.0-or-later
+;; SPDX-License-Identifier: MPL-2.0
 ;; Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 ;;
 ;; Guix package definition for {{PROJECT_NAME}}
@@ -67,5 +67,5 @@
   (synopsis "{{PROJECT_PURPOSE}}")
   (description "RSR-compliant project. See README.adoc for details.")
   (license (list
-            ;; PMPL-1.0-or-later extends MPL-2.0
+            ;; MPL-2.0 extends MPL-2.0
             mpl2.0)))

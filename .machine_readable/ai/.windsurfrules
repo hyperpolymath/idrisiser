@@ -1,11 +1,11 @@
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
 # Authoritative source: docs/AI-CONVENTIONS.md
 
 # STARTUP: Read 0-AI-MANIFEST.a2ml first, then .machine_readable/STATE.a2ml.
 
 # LICENSE
-# All original code: PMPL-1.0-or-later.
+# All original code: MPL-2.0.
 # Never AGPL-3.0. MPL-2.0 only as platform-required fallback.
 # SPDX header required on every source file.
 # Copyright: {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 = Zig FFI — C-ABI Bridge Implementation
 
 This directory contains the Zig FFI layer for idrisiser.  It implements the

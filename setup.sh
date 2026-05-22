@@ -1,5 +1,5 @@
 #!/bin/sh
-# SPDX-License-Identifier: PMPL-1.0-or-later
+# SPDX-License-Identifier: MPL-2.0
 # setup.sh — Universal setup script for idrisiser
 #
 # Detects your shell, platform, and installs prerequisites.
@@ -252,7 +252,7 @@ main() {
     # Write report
     REPORT_FILE="INSTALL-SECURITY-REPORT.adoc"
     {
-        printf "// SPDX-License-Identifier: PMPL-1.0-or-later\n"
+        printf "// SPDX-License-Identifier: MPL-2.0\n"
         printf "= Install Security Report\n"
         printf ":date: %s\n\n" "$(date -Iseconds 2>/dev/null || date)"
         printf "== Platform\n"

@@ -1,5 +1,5 @@
 = Architecture Decision Record: 0001-adopt-rsr-standard
-<!-- SPDX-License-Identifier: PMPL-1.0-or-later -->
+<!-- SPDX-License-Identifier: MPL-2.0 -->
 <!-- Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk> -->
 
 # 1. Adopt Rhodium Standard Repository (RSR) Template
@@ -45,7 +45,7 @@ The RSR template provides:
 - **Standardized workflows** (16+ GitHub Actions workflows, all SHA-pinned)
 - **Justfile automation** with standard recipes for common tasks
 - **Security and governance files**: SECURITY.md, CONTRIBUTING.md,
-  CODE_OF_CONDUCT.md, LICENSE (PMPL-1.0-or-later)
+  CODE_OF_CONDUCT.md, LICENSE (MPL-2.0)
 - **Architecture Decision Records** in `docs/decisions/`
 
 New repositories are created by cloning the template:

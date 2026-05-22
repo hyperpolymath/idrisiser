@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 = Contractile Templates
 
 Blank templates for projects that want to replace the hyperpolymath
