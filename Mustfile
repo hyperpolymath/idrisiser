@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: MPL-2.0
+# Mustfile — hyperpolymath mandatory checks
+# See: https://github.com/hyperpolymath/mustfile
+#
+# Declarative contract of checks that MUST pass. Each maps to a recipe
+# that already exists in this repo's Justfile.
+version: 1
+
+checks:
+  - name: security
+    run: just lint
+  - name: tests
+    run: just test
+  - name: format
+    run: just fmt
