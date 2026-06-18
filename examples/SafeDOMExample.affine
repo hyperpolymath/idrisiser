@@ -1,0 +1,129 @@
+// SPDX-License-Identifier: MPL-2.0
+// SafeDOMExample.affine — formally-verified DOM mounting (aspirational).
+//
+// This example shows the *shape* of SafeDOM consumer code in current
+// AffineScript syntax. The `SafeDOM` stdlib surface it references
+// (`mount_safe`, `mount_when_ready`, `mount_batch`,
+// `proven_selector_validate`, `proven_html_validate`, `mount`) is the
+// target of `affinescript#56` (DOM+Pixi binding survey) and does not
+// yet exist in the published stdlib. The file is therefore
+// parse-checked but not type-checked end-to-end until #56 lands the
+// bindings; `affinescript check` reports `Resolve.UndefinedModule
+// SafeDOM` which is expected.
+//
+// Previous versions of this file (estate-wide, 5 dialect variants)
+// pre-dated ADR-014 (qualified paths), ADR-016 (effect rows), and the
+// `#{`-record-literal sigil (ADR-215). They were retired in favour of
+// this canonical via the gitbot-fleet#208 sweep (2026-05-26).
+
+module SafeDOMExample;
+
+use prelude::{Option, Some, None, Result, Ok, Err};
+
+// `Element` and friends are nominal extern types for now — the real
+// shape lands with affinescript#56.
+extern type Element;
+extern type Selector;
+extern type ValidHTML;
+
+// Single-mount status, lifted from the host into a typed tag union.
+enum MountStatus {
+  Mounted(Element),
+  MountPointNotFound(String),
+  InvalidSelector(String),
+  InvalidHTML(String)
+}
+
+// Batch-mount result.
+enum MountResult {
+  Mounted([Element]),
+  Failed(String)
+}
+
+// Spec for one element in a batch mount.
+struct MountSpec {
+  selector: String,
+  html: String
+}
+
+// SafeDOM's host-side surface, all IO-effecting. Callbacks are passed
+// as separate parameters (rather than a `MountCallbacks` record)
+// because fn-typed struct fields are not currently parser-supported.
+extern fn mount_safe(
+  selector: ref String,
+  html: ref String,
+  on_success: fn(Element) -> (),
+  on_error: fn(String) -> (),
+) -{IO}-> ();
+
+extern fn mount_when_ready(
+  selector: ref String,
+  html: ref String,
+  on_success: fn(Element) -> (),
+  on_error: fn(String) -> (),
+) -{IO}-> ();
+
+extern fn mount_batch(specs: ref [MountSpec]) -{IO}-> MountResult;
+
+extern fn proven_selector_validate(s: ref String) -{IO}-> Result<Selector, String>;
+extern fn proven_html_validate(s: ref String) -{IO}-> Result<ValidHTML, String>;
+extern fn mount(sel: ref Selector, html: ref ValidHTML) -{IO}-> MountStatus;
+
+extern fn array_for_each(xs: ref [Element], f: fn(Element) -> ()) -{IO}-> ();
+extern fn array_len(xs: ref [Element]) -> Int;
+
+// Example 1 — basic mount with success/error branches.
+pub fn mount_app() -{IO}-> () {
+  mount_safe(
+    "#app",
+    "<div><h1>Hello, World!</h1><p>Mounted safely with proofs.</p></div>",
+    fn(el) -> () { Console::log("App mounted successfully"); },
+    fn(err) -> () { Console::error("Mount failed: " ++ err); },
+  );
+}
+
+// Example 2 — defer until DOM ready.
+pub fn mount_when_dom_ready() -{IO}-> () {
+  mount_when_ready(
+    "#app",
+    "<div class='container'><h1>App Title</h1></div>",
+    fn(_el) -> () { Console::log("Mounted after DOM ready"); },
+    fn(err) -> () { Console::error("Failed: " ++ err); },
+  );
+}
+
+// Example 3 — atomic batch mount.
+pub fn mount_multiple() -{IO}-> () {
+  let specs = [
+    MountSpec #{ selector: "#header", html: "<header><h1>Site Title</h1></header>" },
+    MountSpec #{ selector: "#nav",    html: "<nav><a href='/'>Home</a></nav>" },
+    MountSpec #{ selector: "#main",   html: "<main><p>Content here</p></main>" },
+    MountSpec #{ selector: "#footer", html: "<footer>2026</footer>" },
+  ];
+
+  match mount_batch(specs) {
+    Mounted(elements) => {
+      Console::log("Batch mount succeeded");
+      array_for_each(elements, fn(_el) -> () { Console::log("  element"); });
+    },
+    Failed(err) => {
+      Console::error("Batch mount failed (atomic — none mounted): " ++ err);
+    }
+  }
+}
+
+// Example 4 — explicit two-stage validation before mounting.
+pub fn mount_with_validation() -{IO}-> () {
+  match proven_selector_validate("#my-app") {
+    Err(e) => Console::error("Invalid selector: " ++ e),
+    Ok(valid_selector) => match proven_html_validate("<div>Content</div>") {
+      Err(e) => Console::error("Invalid HTML: " ++ e),
+      Ok(valid_html) => match mount(valid_selector, valid_html) {
+        Mounted(_el) => Console::log("Mounted with validated inputs"),
+        MountPointNotFound(s) => Console::error("Element not found: " ++ s),
+        InvalidSelector(_) => Console::error("impossible — already validated"),
+        InvalidHTML(_) => Console::error("impossible — already validated"),
+      },
+    },
+  }
+}
