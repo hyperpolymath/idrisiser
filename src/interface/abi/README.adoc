@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: CC-BY-SA-4.0
 = Idris2 ABI — Formal Proof Definitions
 
 This directory contains the Idris2 ABI layer for idrisiser.  These `.idr` files

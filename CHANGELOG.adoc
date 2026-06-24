@@ -1,6 +1,6 @@
 = Changelog
 :toc:
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: CC-BY-SA-4.0
 
 All notable changes to idrisiser will be documented in this file.
 
