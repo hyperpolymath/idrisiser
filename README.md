@@ -1,0 +1,159 @@
+<!--
+SPDX-License-Identifier: CC-BY-SA-4.0
+SPDX-FileCopyrightText: 2025-2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+-->
+
+# What Is This?
+
+Idrisiser is the **meta-prover** of the [-iser
+family](https://github.com/hyperpolymath/iseriser). It takes any
+interface definition — OpenAPI specs, C header files, `.proto` schemas,
+or bare type signatures — and generates **Idris2 dependent-type
+wrappers** that *formally prove* the interface contract is correct, then
+compiles those proofs down to a native wrapper via Zig FFI.
+
+Idris2 is the sole formal verification language in the hyperpolymath
+ecosystem (chosen over ATS2, Coq, Lean, and Agda for its dependent
+types, first-class elaborator reflection, and quantitative type theory).
+Idrisiser therefore sits just below `iseriser` itself in the -iser
+hierarchy: every other -iser that needs formal guarantees routes through
+Idrisiser.
+
+# Why Idrisiser?
+
+Idris2 can prove code correct at compile time, but the learning curve is
+brutal. Idrisiser makes dependent-type proofs accessible to developers
+who should not need a PhD in type theory:
+
+- **Automatic formal verification of *any* interface** — preconditions,
+  postconditions, invariants, and totality are proved, not tested.
+
+- **Impossible states become impossible** — dependent types enforce
+  contracts at the type level; invalid calls cannot compile.
+
+- **Zero runtime cost** — proofs are erased at compile time; the final
+  native wrapper carries no proof overhead.
+
+# How It Works
+
+Describe your interface in an `idrisiser.toml` manifest. Idrisiser then
+executes a six-stage pipeline:
+
+```text
+idrisiser.toml ①
+  ↓
+Interface Parser         <2>  OpenAPI / .h / .proto / type sigs → IR
+  ↓
+Idris2 ABI Generation    <3>  Dependent types + proof obligations
+  ↓
+Proof Compilation         <4>  Totality checker, elaborator reflection
+  ↓
+Zig FFI Bridge            <5>  C-ABI native wrapper, zero overhead
+  ↓
+Native Wrapper            <6>  Statically linked, provably correct
+```
+
+<div class="callout-list">
+
+1.  User writes only the manifest.
+
+2.  Parser extracts interface contracts from heterogeneous sources.
+
+3.  Generates `Types.idr`, `Layout.idr`, `Foreign.idr` with proof
+    obligations.
+
+4.  Idris2 compiler verifies totality, termination, and invariant
+    preservation.
+
+5.  Zig FFI implements C-ABI functions declared in the Idris2 ABI layer.
+
+6.  Output is a native shared/static library with formally verified
+    behaviour.
+
+</div>
+
+# Architecture
+
+```text
+idrisiser/
+├── Cargo.toml                # Rust CLI orchestrator
+├── src/
+│   ├── main.rs               # CLI entry point (init, validate, generate, build, run)
+│   ├── lib.rs                # Library API
+│   ├── manifest/             # idrisiser.toml parser & validator
+│   ├── codegen/              # Idris2 + Zig code generation
+│   ├── core/                 # Proof obligation engine
+│   ├── definitions/          # Interface definition IR
+│   ├── contracts/            # Contract extraction from parsed interfaces
+│   ├── errors/               # Structured diagnostics
+│   ├── bridges/              # Bridge adapters (OpenAPI, protobuf, C headers)
+│   └── interface/
+│       ├── abi/              # Idris2 ABI — formal proofs (Types.idr, Layout.idr, Foreign.idr)
+│       ├── ffi/              # Zig FFI — C-ABI bridge implementation
+│       └── generated/        # Auto-generated C headers
+├── verification/             # Property-based and proof verification harnesses
+├── examples/                 # End-to-end worked examples
+└── docs/                     # Technical documentation
+```
+
+## Key Idris2 Concepts Used
+
+- **Dependent types** — types that depend on values, so a function’s
+  return type can encode its postcondition.
+
+- **Totality checking** — the compiler proves every function terminates
+  and handles every input; partial functions are rejected.
+
+- **Elaborator reflection** — Idris2 metaprogramming that generates
+  proof terms at compile time from the parsed interface definition.
+
+- **Quantitative type theory (QTT)** — track how many times a value is
+  used; enforce linear or affine resource protocols in the generated
+  wrapper.
+
+# Use Cases
+
+- **Proving REST API contracts** — parse an OpenAPI spec, generate
+  Idris2 types that prove request/response schemas, status codes, and
+  auth flows.
+
+- **Safe database query wrappers** — generate wrappers that prove query
+  parameters are well-typed and result sets match declared schemas.
+
+- **Protocol state machine verification** — prove that a protocol (TLS
+  handshake, OAuth flow) can only transition through valid states.
+
+- **Provably-correct serialisation** — generate encoders/decoders with
+  proofs that round-tripping preserves data identity.
+
+- **C header safety** — parse `.h` files, generate wrappers proving null
+  safety, bounds checking, and resource cleanup.
+
+# Quick Start
+
+```bash
+# Initialise a manifest
+idrisiser init
+
+# Edit idrisiser.toml to describe your interface
+
+# Validate the manifest
+idrisiser validate
+
+# Generate proven-correct wrapper
+idrisiser generate -o generated/my-api
+
+# Build native artifacts
+idrisiser build --release
+```
+
+# Status
+
+**Codebase in progress.** Scaffold phase is complete (CLI, manifest
+parser, ABI/FFI stubs, RSR template with full CI/CD). Interface parser
+and proof generation are the active implementation frontier. See
+`ROADMAP.adoc`.
+
+# License
+
+SPDX-License-Identifier: CC-BY-SA-4.0
