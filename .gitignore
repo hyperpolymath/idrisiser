@@ -104,3 +104,8 @@ sync_report*.txt
 # Hypatia scan cache (local-only)
 .hypatia/
 target/
+
+# Idris2 ABI proof build artefacts
+**/build/
+*.ttc
+*.ttm
