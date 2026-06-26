@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: MPL-2.0
+# abi-ffi-gate.yml — enforce that the Zig FFI conforms to the Idris2 ABI.
+#
+# The Idris2 ABI (src/interface/abi) is the source of truth. This gate fails if
+# the Zig FFI (src/interface/ffi) drifts from it: a declared C function with no
+# export, a mismatched result-code map, or an unrendered template token. A
+# second job builds + tests the Zig FFI under the pinned Zig 0.14.0.
+name: ABI-FFI Gate
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  conformance:
+    name: ABI ↔ FFI structural conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ABI-FFI gate
+        run: python3 scripts/abi-ffi-gate.py
+
+  zig-build:
+    name: Zig FFI builds + tests (Zig 0.14.0)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Zig 0.14.0
+        run: |
+          curl -fsSL https://ziglang.org/download/0.14.0/zig-linux-x86_64-0.14.0.tar.xz -o /tmp/zig.tar.xz
+          tar -xf /tmp/zig.tar.xz -C /tmp
+          echo "/tmp/zig-linux-x86_64-0.14.0" >> "$GITHUB_PATH"
+      - name: zig test FFI
+        run: zig test src/interface/ffi/src/main.zig -lc
