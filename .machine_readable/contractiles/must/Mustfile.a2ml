@@ -47,7 +47,7 @@ These are hard requirements — CI fails if any check fails.
 - severity: warning
 
 ### no-agpl
-- description: No AGPL-3.0 references (replaced by PMPL)
+- description: No AGPL-3.0 references (replaced by MPL-2.0)
 - run: "! grep -r 'AGPL-3.0' .gitignore .gitattributes .editorconfig 2>/dev/null | head -1 | grep -q ."
 - severity: critical
 

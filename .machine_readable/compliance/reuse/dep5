@@ -52,3 +52,10 @@ License: MPL-2.0
 Files: cliff.toml
 Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
 License: MPL-2.0
+
+# Documentation prose is CC-BY-SA-4.0 (code/config is MPL-2.0).
+# Last-match-wins in the Debian copyright format, so this overrides the
+# `Files: *` default above for prose docs.
+Files: *.adoc *.md docs/* docs/**/*
+Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+License: CC-BY-SA-4.0

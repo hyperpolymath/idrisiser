@@ -16,7 +16,7 @@ Maximal trust by default — LLM may read, build, test, lint, format.
 
 ### license-content
 - description: LICENSE contains expected SPDX identifier
-- run: grep -q 'SPDX\|License\|MIT\|Apache\|PMPL\|MPL' LICENSE
+- run: grep -q 'SPDX\|MPL-2.0' LICENSE
 - severity: critical
 
 ### no-secrets-committed
