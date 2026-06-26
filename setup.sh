@@ -194,6 +194,15 @@ main() {
     printf "%sStep 1: Install task runner%s\n" "$BOLD" "$RESET"
     install_just || { fail "Cannot proceed without just"; exit 1; }
     printf "\n"
+    # Step 1b: Install the pinned Zig toolchain (the Zig FFI bridge half of the
+    # ABI-FFI standard). Best-effort — see scripts/install-zig.sh.
+    printf "%sStep 1b: Install Zig toolchain%s\n" "$BOLD" "$RESET"
+    if [ -x ./scripts/install-zig.sh ]; then
+        ./scripts/install-zig.sh || warn "Zig install skipped (see scripts/install-zig.sh)"
+    else
+        warn "scripts/install-zig.sh not found — skipping Zig install"
+    fi
+    printf "\n"
 
     # Step 2: Check if we're in the repo directory
     if [ ! -f "Justfile" ] && [ ! -f "justfile" ]; then

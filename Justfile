@@ -116,3 +116,9 @@ crg-badge:
       D) color="orange" ;; E) color="red" ;; F) color="critical" ;; \
       *) color="lightgrey" ;; esac; \
     echo "[![CRG $$grade](https://img.shields.io/badge/CRG-$$grade-$$color?style=flat-square)](https://github.com/hyperpolymath/standards/tree/main/component-readiness-grades)"
+
+# Install dev dependencies (invoked by the devcontainer postCreateCommand).
+# Installs the pinned Zig FFI toolchain, then warms the Cargo cache.
+deps:
+    ./scripts/install-zig.sh
+    cargo fetch
