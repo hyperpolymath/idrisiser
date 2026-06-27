@@ -9,3 +9,4 @@ modules = Idrisiser.ABI.Types
         , Idrisiser.ABI.Layout
         , Idrisiser.ABI.Foreign
         , Idrisiser.ABI.Proofs
+        , Idrisiser.ABI.Semantics
