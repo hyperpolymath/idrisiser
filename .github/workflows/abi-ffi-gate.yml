@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run ABI-FFI gate
-        run: python3 scripts/abi-ffi-gate.py
+        run: bash scripts/abi-ffi-gate.sh
 
   zig-build:
     name: Zig FFI builds + tests (Zig 0.14.0)
