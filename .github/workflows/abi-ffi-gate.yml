@@ -21,8 +21,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install Julia 1.11.5
+        run: |
+          curl -fsSL https://julialang-s3.julialang.org/bin/linux/x64/1.11/julia-1.11.5-linux-x86_64.tar.gz -o /tmp/julia.tar.gz
+          tar -xf /tmp/julia.tar.gz -C /tmp
+          echo "/tmp/julia-1.11.5/bin" >> "$GITHUB_PATH"
       - name: Run ABI-FFI gate
-        run: bash scripts/abi-ffi-gate.sh
+        run: |
+          julia --version   # confirms the pinned 1.11.5 is on PATH, not the runner default
+          julia scripts/abi-ffi-gate.jl
 
   zig-build:
     name: Zig FFI builds + tests (Zig 0.14.0)
