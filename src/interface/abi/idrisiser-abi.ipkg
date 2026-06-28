@@ -11,3 +11,4 @@ modules = Idrisiser.ABI.Types
         , Idrisiser.ABI.Proofs
         , Idrisiser.ABI.Semantics
         , Idrisiser.ABI.Invariants
+        , Idrisiser.ABI.FfiSeam
