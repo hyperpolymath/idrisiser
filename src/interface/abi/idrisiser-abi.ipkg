@@ -12,3 +12,4 @@ modules = Idrisiser.ABI.Types
         , Idrisiser.ABI.Semantics
         , Idrisiser.ABI.Invariants
         , Idrisiser.ABI.FfiSeam
+        , Idrisiser.ABI.Capstone
