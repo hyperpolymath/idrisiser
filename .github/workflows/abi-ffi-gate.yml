@@ -20,7 +20,7 @@ jobs:
     name: ABI ↔ FFI structural conformance
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Install Julia 1.11.5
         run: |
           curl -fsSL https://julialang-s3.julialang.org/bin/linux/x64/1.11/julia-1.11.5-linux-x86_64.tar.gz -o /tmp/julia.tar.gz
@@ -35,7 +35,7 @@ jobs:
     name: Zig FFI builds + tests (Zig 0.14.0)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Install Zig 0.14.0
         run: |
           curl -fsSL https://ziglang.org/download/0.14.0/zig-linux-x86_64-0.14.0.tar.xz -o /tmp/zig.tar.xz
