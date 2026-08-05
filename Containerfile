@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MPL-2.0
-# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 #
-# Containerfile for {{PROJECT_NAME}}
+# Containerfile for What Is This?
 # Build: podman build -t {{project}}:latest -f Containerfile .
 # Run:   podman run --rm -it {{project}}:latest
 # Seal:  selur seal {{project}}:latest

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 #
-# Svalinn gatekeeper policy for {{PROJECT_NAME}}
+# Svalinn gatekeeper policy for What Is This?
 #
 # Controls which operations are permitted through the edge gateway.
 # This template provides moderate security defaults — not wide-open test

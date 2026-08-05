@@ -5,7 +5,7 @@
 TEMPLATE INSTRUCTIONS (delete this block before publishing)
 ============================================================================
 Replace all {{PLACEHOLDER}} values with your information:
-  {{PROJECT_NAME}}     - Your project name
+  What Is This?     - Your project name
   hyperpolymath            - GitHub username or org (e.g., hyperpolymath)
   idrisiser             - Repository name
   {{SECURITY_EMAIL}}   - Security contact email
@@ -348,7 +348,7 @@ To stay informed about security updates:
 
 ## Security Best Practices
 
-When using {{PROJECT_NAME}}, we recommend:
+When using What Is This?, we recommend:
 
 ### General
 
@@ -399,7 +399,7 @@ This security policy may be updated from time to time. Significant changes will 
 
 ---
 
-*Thank you for helping keep {{PROJECT_NAME}} and its users safe.* 🛡️
+*Thank you for helping keep What Is This? and its users safe.* 🛡️
 
 ---
 

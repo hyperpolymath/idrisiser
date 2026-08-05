@@ -5,10 +5,10 @@
 TEMPLATE INSTRUCTIONS (delete this block before publishing)
 ============================================================================
 Replace all {{PLACEHOLDER}} values:
-  {{PROJECT_NAME}}     - Your project name
+  What Is This?     - Your project name
   hyperpolymath            - GitHub/GitLab username or org
   idrisiser             - Repository name
-  {{CONDUCT_EMAIL}}    - Email for conduct reports
+  j.d.a.jewell@open.ac.uk    - Email for conduct reports
   {{CONDUCT_TEAM}}     - Name of conduct team/committee
   {{RESPONSE_TIME}}    - Initial response SLA (e.g., 48 hours)
   2026     - Current year
@@ -22,7 +22,7 @@ Review and customise:
 
 ## Our Pledge
 
-We as members, contributors, and leaders pledge to make participation in {{PROJECT_NAME}} a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, colour, religion, or sexual identity and orientation.
+We as members, contributors, and leaders pledge to make participation in What Is This? a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, colour, religion, or sexual identity and orientation.
 
 We pledge to act and interact in ways that contribute to an open, welcoming, diverse, inclusive, and healthy community.
 
@@ -136,7 +136,7 @@ If you experience or witness unacceptable behaviour, or have any other concerns,
 
 | Method | Details | Best For |
 |--------|---------|----------|
-| **Email** | {{CONDUCT_EMAIL}} | Detailed reports, sensitive matters |
+| **Email** | j.d.a.jewell@open.ac.uk | Detailed reports, sensitive matters |
 | **Private Message** | Contact any maintainer directly | Quick questions, minor issues |
 | **Anonymous Form** | [Link to form if available] | When you need anonymity |
 
@@ -231,7 +231,7 @@ For contributors with elevated access (Perimeter 2 or 1):
 If you believe an enforcement decision was made in error:
 
 1. **Wait 7 days** after the decision (cooling-off period)
-2. **Email** {{CONDUCT_EMAIL}} with subject line "Appeal: [Original Report ID]"
+2. **Email** j.d.a.jewell@open.ac.uk with subject line "Appeal: [Original Report ID]"
 3. **Explain** why you believe the decision should be reconsidered
 4. **Provide** any new information not previously available
 
@@ -311,7 +311,7 @@ We thank these communities for their leadership in creating welcoming spaces.
 If you have questions about this Code of Conduct:
 
 - Open a [Discussion](https://github.com/hyperpolymath/idrisiser/discussions) (for general questions)
-- Email {{CONDUCT_EMAIL}} (for private questions)
+- Email j.d.a.jewell@open.ac.uk (for private questions)
 - Contact any maintainer directly
 
 ---

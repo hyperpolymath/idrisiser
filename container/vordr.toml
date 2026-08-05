@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 #
-# Vordr runtime monitoring configuration for {{PROJECT_NAME}}
+# Vordr runtime monitoring configuration for What Is This?
 #
 # Vordr watches container health, detects crashes, tracks resource usage,
 # and emits structured logs. It runs alongside the application stack and
@@ -94,7 +94,7 @@ output = "stdout"
 # on = ["failure", "recovery", "resource_critical"]
 
 # [notifications.email]
-# to = "{{EMAIL}}"
+# to = "j.d.a.jewell@open.ac.uk"
 # from = "vordr@{{SERVICE_NAME}}.local"
 # smtp = "smtp://localhost:25"
 # on = ["failure", "resource_critical"]

@@ -5,7 +5,7 @@
 
 [metadata]
 version = "1.0.0"
-last-updated = "{{CURRENT_DATE}}"
+last-updated = "2026-08-05"
 
 [anchor]
 schema = "hyperpolymath.anchor/1"
@@ -19,7 +19,7 @@ purpose = [
 ]
 
 [identity]
-project = "{{PROJECT_NAME}}"
+project = "What Is This?"
 kind = "{{PROJECT_KIND}}"                # language | library | service | tool
 one-sentence = "{{PROJECT_PURPOSE}}"
 domain = "{{PROJECT_DOMAIN}}"

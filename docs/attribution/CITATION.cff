@@ -1,14 +1,14 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-- family-names: "{{AUTHOR_LAST}}"
-  given-names: "{{AUTHOR_FIRST}}"
+- family-names: "Jewell"
+  given-names: "Jonathan"
   orcid: "https://orcid.org/0000-0000-0000-0000" # Placeholder
-title: "{{PROJECT_NAME}}"
+title: "What Is This?"
 version: 0.1.0
-date-released: {{CURRENT_DATE}}
-url: "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
-repository-code: "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
+date-released: 2026-08-05
+url: "https://github.com/hyperpolymath/idrisiser"
+repository-code: "https://github.com/hyperpolymath/idrisiser"
 license: MPL-2.0
 keywords:
   - "rsr"

@@ -7,7 +7,7 @@ Contact: j.d.a.jewell@open.ac.uk
 From: United Kingdom
 
 /* SITE */
-Last update: {{CURRENT_DATE}}
+Last update: 2026-08-05
 Standards: RSR (Rhodium Standard Repository)
 License: MPL-2.0 (Palimpsest MPL)
 Components: Idris2 ABI, Zig FFI

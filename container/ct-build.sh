@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MPL-2.0
 #
-# {{PROJECT_NAME}} — Cerro Torre build, sign, and verify pipeline
+# What Is This? — Cerro Torre build, sign, and verify pipeline
 #
 # Builds the container image, packages it as a verified .ctp bundle,
 # signs it with Ed25519, and verifies the result. Gracefully degrades
@@ -46,7 +46,7 @@ IMAGE_NAME="{{SERVICE_NAME}}"
 FULL_IMAGE="${CT_REGISTRY}/${IMAGE_NAME}:${CT_TAG}"
 CTP_FILE="${SCRIPT_DIR}/${IMAGE_NAME}-${CT_TAG}.ctp"
 
-echo "=== {{PROJECT_NAME}} Cerro Torre Build Pipeline ==="
+echo "=== What Is This? Cerro Torre Build Pipeline ==="
 echo "  Image:  ${FULL_IMAGE}"
 echo "  Key:    ${CT_KEY_ID}"
 echo "  Bundle: ${CTP_FILE}"

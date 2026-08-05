@@ -1,20 +1,20 @@
 ;; SPDX-License-Identifier: MPL-2.0
-;; Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+;; Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 ;;
-;; Guix channel definition for {{PROJECT_NAME}}
+;; Guix channel definition for What Is This?
 ;;
 ;; To use this channel, add to ~/.config/guix/channels.scm:
 ;;
 ;;   (channel
-;;     (name '{{PROJECT_NAME}})
-;;     (url "https://github.com/{{OWNER}}/{{PROJECT_NAME}}")
+;;     (name 'What Is This?)
+;;     (url "https://github.com/hyperpolymath/What Is This?")
 ;;     (branch "main"))
 ;;
 ;; Then: guix pull
 
 (channel
   (version 0)
-  (url "https://github.com/{{OWNER}}/{{PROJECT_NAME}}")
+  (url "https://github.com/hyperpolymath/What Is This?")
   (dependencies
    (channel
      (name 'guix)

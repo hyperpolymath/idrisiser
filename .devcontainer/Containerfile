@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: MPL-2.0
-# Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 #
-# Dev Container image for {{PROJECT_NAME}}
+# Dev Container image for What Is This?
 # Base: Chainguard Wolfi (minimal, supply-chain-secure)
-# Build: podman build -t {{PROJECT_NAME}}-dev -f .devcontainer/Containerfile .
+# Build: podman build -t What Is This?-dev -f .devcontainer/Containerfile .
 
 FROM cgr.dev/chainguard/wolfi-base:latest
 
@@ -24,7 +24,7 @@ RUN groupadd -g 1000 nonroot || true \
     && useradd -m -u 1000 -g 1000 -s /bin/bash nonroot || true
 
 # Set workspace directory
-WORKDIR /workspaces/{{PROJECT_NAME}}
+WORKDIR /workspaces/What Is This?
 
 # Default shell
 ENV SHELL=/bin/bash

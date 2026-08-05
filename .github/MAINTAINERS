@@ -4,7 +4,7 @@
 # Format: Name <email> (role)
 # Replace placeholders with actual maintainer information.
 
-{{AUTHOR}} <{{AUTHOR_EMAIL}}> (Lead Maintainer)
+Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk> (Lead Maintainer)
 
 # Additional maintainers:
 # Name <email> (role)

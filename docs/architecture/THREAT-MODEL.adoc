@@ -2,15 +2,15 @@
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk> -->
 
-# Threat Model: {{PROJECT_NAME}}
+# Threat Model: What Is This?
 
 ## Document Info
 
 | Field         | Value                          |
 |---------------|--------------------------------|
-| Project       | {{PROJECT_NAME}}               |
+| Project       | What Is This?               |
 | Version       | 1.0                            |
-| Last Reviewed | {{DATE}}                       |
+| Last Reviewed | 2026-08-05                       |
 | Author        | Jonathan D.A. Jewell                     |
 | Methodology   | STRIDE                         |
 
@@ -34,7 +34,7 @@
 
 ## System Overview
 
-Brief description of {{PROJECT_NAME}} and its architecture.
+Brief description of What Is This? and its architecture.
 
 > See [STATE-VISUALIZER.adoc](../STATE-VISUALIZER.adoc) for the full architecture diagram and completion dashboard.
 

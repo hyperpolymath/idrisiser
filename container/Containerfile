@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MPL-2.0
-# {{PROJECT_NAME}} Container Image
+# What Is This? Container Image
 #
 # Multi-stage build template for Chainguard Wolfi base images.
 # Customise the builder stage for your language and copy the
@@ -69,13 +69,13 @@ COPY . .
 FROM cgr.dev/chainguard/wolfi-base:latest
 
 # OCI image labels (compatible with cerro-torre .ctp bundle metadata)
-LABEL org.opencontainers.image.title="{{PROJECT_NAME}}" \
+LABEL org.opencontainers.image.title="What Is This?" \
       org.opencontainers.image.description="{{PROJECT_DESCRIPTION}}" \
-      org.opencontainers.image.url="https://{{FORGE}}/{{OWNER}}/{{REPO}}" \
-      org.opencontainers.image.source="https://{{FORGE}}/{{OWNER}}/{{REPO}}" \
-      org.opencontainers.image.vendor="{{OWNER}}" \
+      org.opencontainers.image.url="https://github.com/hyperpolymath/idrisiser" \
+      org.opencontainers.image.source="https://github.com/hyperpolymath/idrisiser" \
+      org.opencontainers.image.vendor="hyperpolymath" \
       org.opencontainers.image.licenses="{{LICENSE}}" \
-      org.opencontainers.image.authors="{{AUTHOR}} <{{AUTHOR_EMAIL}}>" \
+      org.opencontainers.image.authors="Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>" \
       dev.cerrotorre.manifest="container/manifest.toml" \
       dev.cerrotorre.gatekeeper="container/.gatekeeper.yaml" \
       dev.stapeln.compose="container/compose.toml"

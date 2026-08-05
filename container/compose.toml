@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 #
-# {{PROJECT_NAME}} selur-compose configuration
+# What Is This? selur-compose configuration
 #
 # Orchestrates the container stack as verified container bundles (.ctp).
 # Uses selur zero-copy IPC between services on the same host.

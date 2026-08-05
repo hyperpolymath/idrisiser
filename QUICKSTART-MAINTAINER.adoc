@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC-BY-SA-4.0
 // Template: QUICKSTART-MAINTAINER.adoc — packaging, deploying, and maintaining
-// Replace idrisiser, {{PACKAGE_NAME}}, {{DEPS}} with actuals
+// Replace idrisiser, idrisiser, {{DEPS}} with actuals
 = idrisiser — Quick Start for Platform Maintainers
 :toc:
 :toclevels: 2
@@ -65,10 +65,10 @@ Files installed:
 | `$PREFIX/bin/`
 | Executables
 
-| `$PREFIX/share/{{PACKAGE_NAME}}/`
+| `$PREFIX/share/idrisiser/`
 | Data files, assets
 
-| `$PREFIX/share/doc/{{PACKAGE_NAME}}/`
+| `$PREFIX/share/doc/idrisiser/`
 | Documentation
 
 | `$PREFIX/share/applications/`
@@ -80,9 +80,9 @@ Files installed:
 
 == Configuration
 
-Default config location: `$XDG_CONFIG_HOME/{{PACKAGE_NAME}}/config.toml`
+Default config location: `$XDG_CONFIG_HOME/idrisiser/config.toml`
 
-Fallback: `$HOME/.config/{{PACKAGE_NAME}}/config.toml`
+Fallback: `$HOME/.config/idrisiser/config.toml`
 
 == Health Checks
 
@@ -102,7 +102,7 @@ just build-release
 just install --prefix=/usr/local
 ----
 
-Or via OPSM: `opsm update {{PACKAGE_NAME}}`
+Or via OPSM: `opsm update idrisiser`
 
 == Security Notes
 
@@ -117,8 +117,8 @@ For deploying multiple instances (e.g., different users or tenants):
 
 [source,bash]
 ----
-just install --prefix=/opt/{{PACKAGE_NAME}}-instance1 --config=/etc/{{PACKAGE_NAME}}/instance1.toml
-just install --prefix=/opt/{{PACKAGE_NAME}}-instance2 --config=/etc/{{PACKAGE_NAME}}/instance2.toml
+just install --prefix=/opt/idrisiser-instance1 --config=/etc/idrisiser/instance1.toml
+just install --prefix=/opt/idrisiser-instance2 --config=/etc/idrisiser/instance2.toml
 ----
 
 Each instance has isolated config, data, and logs.

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 #
-# Cerro Torre manifest for {{PROJECT_NAME}} .ctp bundle
+# Cerro Torre manifest for What Is This? .ctp bundle
 #
 # This manifest describes the container image for verified
 # container packaging. Used by `ct pack` to create .ctp bundles.
@@ -11,17 +11,17 @@ version = "{{VERSION}}"
 revision = 1
 summary = "{{PROJECT_DESCRIPTION}}"
 description = """
-{{PROJECT_NAME}} — containerised service packaged as a verified
+What Is This? — containerised service packaged as a verified
 cerro-torre .ctp bundle with Ed25519 signing and full provenance
 tracking.
 """
 license = "{{LICENSE}}"
 homepage = "https://github.com/hyperpolymath/idrisiser"
-maintainer = "Jonathan D.A. Jewell <{{EMAIL}}>"
+maintainer = "Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"
 
 [provenance]
 upstream = "https://github.com/hyperpolymath/idrisiser"
-import_date = {{CURRENT_DATE}}T00:00:00Z
+import_date = 2026-08-05T00:00:00Z
 
 [dependencies]
 runtime = ["ca-certificates", "curl"]

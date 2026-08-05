@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MPL-2.0
 // Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 //
-// Dev Container configuration for {{PROJECT_NAME}}
+// Dev Container configuration for What Is This?
 // Works with: VS Code Dev Containers, GitHub Codespaces, Gitpod
 // Container runtime: Podman (recommended) or any OCI-compliant runtime
 {
-  "name": "{{PROJECT_NAME}}",
+  "name": "What Is This?",
 
   "build": {
     "dockerfile": "Containerfile",

@@ -90,7 +90,7 @@ version = "1.0.0"
 # Example: a custom portfolio for this project
 # [[portfolios.custom]]
 # id = "{{project}}-dev"
-# name = "{{PROJECT_NAME}} Development"
-# description = "Panels for {{PROJECT_NAME}} development"
+# name = "What Is This? Development"
+# description = "Panels for What Is This? development"
 # panels = ["valence-shell", "editor-bridge", "build-dashboard"]
 # default-isolation = "native"

@@ -1,61 +1,61 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: {{PROJECT_NAME}}
-Upstream-Contact: {{AUTHOR}} <{{AUTHOR_EMAIL}}>
-Source: https://github.com/{{OWNER}}/{{REPO}}
+Upstream-Name: What Is This?
+Upstream-Contact: Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+Source: https://github.com/hyperpolymath/idrisiser
 
 # Default: all files are MPL-2.0
 Files: *
-Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 License: MPL-2.0
 
 # Configuration files that cannot carry headers
 Files: .editorconfig .gitignore .gitattributes .tool-versions .mailmap
-Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 License: MPL-2.0
 
 # Machine-readable state files
 Files: .machine_readable/*.a2ml
-Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 License: MPL-2.0
 
 # Bot directives
 Files: .machine_readable/bot_directives/*
-Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 License: MPL-2.0
 
 # Contractiles
 Files: .machine_readable/contractiles/*
-Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 License: MPL-2.0
 
 # GitHub/CI configuration
 Files: .github/* .github/**/*
-Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 License: MPL-2.0
 
 # Generated files
 Files: generated/*
-Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 License: MPL-2.0
 
 # Lockfiles and auto-generated
 Files: *.lock Cargo.lock flake.lock
-Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 License: MPL-2.0
 
 # Devcontainer config (JSON, no comments)
 Files: .devcontainer/*.json
-Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 License: MPL-2.0
 
 # Git-cliff config
 Files: cliff.toml
-Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 License: MPL-2.0
 
 # Documentation prose is CC-BY-SA-4.0 (code/config is MPL-2.0).
 # Last-match-wins in the Debian copyright format, so this overrides the
 # `Files: *` default above for prose docs.
 Files: *.adoc *.md docs/* docs/**/*
-Copyright: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+Copyright: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 License: CC-BY-SA-4.0
