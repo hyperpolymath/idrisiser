@@ -1,5 +1,5 @@
-# This workflow is managed by gh actions-lock.
 # SPDX-License-Identifier: MPL-2.0
+# This workflow is managed by gh actions-lock.
 # abi-ffi-gate.yml — enforce that the Zig FFI conforms to the Idris2 ABI.
 #
 # The Idris2 ABI (src/interface/abi) is the source of truth. This gate fails if
