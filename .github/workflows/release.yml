@@ -22,7 +22,7 @@ jobs:
     permissions:
       contents: read
     steps:
- uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Build
         run: |
@@ -35,7 +35,7 @@ jobs:
           #   mix release
 
       # TODO: Upload build artifacts if needed
- uses: actions/upload-artifact@13131bb095770b4070a7477c3cd2d96e1c16d9f4 # v4
+      - uses: actions/upload-artifact@13131bb095770b4070a7477c3cd2d96e1c16d9f4 # v4
       #   with:
       #     name: release-artifacts
       #     path: target/release/
@@ -49,7 +49,7 @@ jobs:
       changelog: ${{ steps.cliff.outputs.content }}
       version: ${{ steps.version.outputs.version }}
     steps:
- uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
@@ -92,10 +92,10 @@ jobs:
     permissions:
       contents: write
     steps:
- uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # TODO: Download build artifacts if uploading to the release
- uses: actions/download-artifact@6b208ae046db98c579e8a3aa621ab581ff575935 # v4
+      - uses: actions/download-artifact@6b208ae046db98c579e8a3aa621ab581ff575935 # v4
       #   with:
       #     name: release-artifacts
       #     path: artifacts/
