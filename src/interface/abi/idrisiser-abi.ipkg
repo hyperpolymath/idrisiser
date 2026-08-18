@@ -9,7 +9,3 @@ modules = Idrisiser.ABI.Types
         , Idrisiser.ABI.Layout
         , Idrisiser.ABI.Foreign
         , Idrisiser.ABI.Proofs
-        , Idrisiser.ABI.Semantics
-        , Idrisiser.ABI.Invariants
-        , Idrisiser.ABI.FfiSeam
-        , Idrisiser.ABI.Capstone
