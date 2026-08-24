@@ -1,17 +1,15 @@
-<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-<!-- Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk> -->
-# TOPOLOGY.md — Idrisiser
+== TOPOLOGY.md — Idrisiser
 
-## Purpose
+=== Purpose
 
-Idrisiser is the **meta-prover** of the -iser family.  It takes interface
-definitions (OpenAPI, C headers, `.proto`, type signatures) and generates
-Idris2 dependent-type wrappers with formal proofs of correctness, compiled
-to native code via Zig FFI.
+Idrisiser is the *meta-prover* of the -iser family. It takes interface
+definitions (OpenAPI, C headers, `+.proto+`, type signatures) and
+generates Idris2 dependent-type wrappers with formal proofs of
+correctness, compiled to native code via Zig FFI.
 
-## Module Map
+=== Module Map
 
-```
+....
 idrisiser/
 ├── src/
 │   ├── main.rs                    # CLI entry (clap): init, validate, generate, build, run, info
@@ -54,11 +52,11 @@ idrisiser/
     ├── contractiles/              # k9, dust, lust, must, trust enforcement
     ├── ai/                        # AI.a2ml, PLACEHOLDERS.md
     └── integrations/              # Tool integration configs
-```
+....
 
-## Data Flow
+=== Data Flow
 
-```
+....
                     idrisiser.toml
                          │
                     ┌────▼────┐
@@ -97,20 +95,28 @@ idrisiser/
                    │  Native   │  .so / .a / .dylib / .dll
                    │  Wrapper  │  Provably correct, zero proof overhead
                    └───────────┘
-```
+....
 
-## Ecosystem Position
+=== Ecosystem Position
 
-- **Above:** `iseriser` (meta-framework that scaffolds -iser repos)
-- **Peers:** 28 other -iser repos (chapeliser, typedqliser, verisimiser, etc.)
-- **Below:** `proven` (shared Idris2 verified library), `typell` (type theory engine)
-- **Consumers:** Any -iser that needs formal verification routes through idrisiser
-- **Unique role:** Only -iser that generates _proofs_, not just code
+* *Above:* `+iseriser+` (meta-framework that scaffolds -iser repos)
+* *Peers:* 28 other -iser repos (chapeliser, typedqliser, verisimiser,
+etc.)
+* *Below:* `+proven+` (shared Idris2 verified library), `+typell+` (type
+theory engine)
+* *Consumers:* Any -iser that needs formal verification routes through
+idrisiser
+* *Unique role:* Only -iser that generates _proofs_, not just code
 
-## Key Invariants
+=== Key Invariants
 
-1. Generated Idris2 code must be **total** — no partial functions, no `sorry`, no `believe_me`
-2. Proof obligations must be **complete** — every contract clause produces a proof term
-3. Zig FFI must **exactly match** the Idris2 Foreign.idr declarations
-4. Generated C headers must be **ABI-compatible** across Linux, macOS, Windows, WASM
-5. The manifest is the **single source of truth** — all generation is deterministic
+[arabic]
+. Generated Idris2 code must be *total* — no partial functions, no
+`+sorry+`, no `+believe_me+`
+. Proof obligations must be *complete* — every contract clause produces
+a proof term
+. Zig FFI must *exactly match* the Idris2 Foreign.idr declarations
+. Generated C headers must be *ABI-compatible* across Linux, macOS,
+Windows, WASM
+. The manifest is the *single source of truth* — all generation is
+deterministic
