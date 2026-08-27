@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MPL-2.0
+# This workflow is managed by gh actions-lock.
 # Dormant push-email notification. ARMED by setting the repo variable
 # PUSH_EMAIL_ENABLED=true (the single on/off switch). Addresses are pre-filled;
 # sending needs the org SMTP secrets (SMTP_HOST/PORT/USER/PASS). Inherited by
@@ -15,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send push notification email
-        uses: dawidd6/action-send-mail@0bbdab096651ee93f37ec02383e088183d41ff0b # pinned
+        uses: dawidd6/action-send-mail@v3.12.0
         with:
           server_address: ${{ secrets.SMTP_HOST }}
           server_port: ${{ secrets.SMTP_PORT }}

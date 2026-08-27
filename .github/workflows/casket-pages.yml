@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 # This workflow is managed by gh actions-lock.
+# This workflow is managed by gh actions-lock.
 name: GitHub Pages
 
 on:
@@ -21,22 +22,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
 
       - name: Checkout casket-ssg
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           repository: hyperpolymath/casket-ssg
           path: .casket-ssg
 
       - name: Setup GHCup
-        uses: haskell-actions/setup@6037f33647c3f17758a2356c80fc4a53d7e0685d # v2.12.0
+        uses: haskell-actions/setup@v2.12.0
         with:
           ghc-version: '9.8.2'
           cabal-version: '3.10'
 
       - name: Cache Cabal
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        uses: actions/cache@v6.1.0
         with:
           path: |
             ~/.cabal/packages
@@ -98,10 +99,10 @@ jobs:
           touch ../_site/.nojekyll
 
       - name: Setup Pages
-        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+        uses: actions/configure-pages@v6.0.0
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        uses: actions/upload-pages-artifact@v5.0.0
         with:
           path: '_site'
 
@@ -114,4 +115,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
+        uses: actions/deploy-pages@v5.0.0
