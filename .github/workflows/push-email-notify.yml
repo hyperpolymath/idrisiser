@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send push notification email
-        uses: dawidd6/action-send-mail@v18
+        uses: dawidd6/action-send-mail@94de994a9f6fffee200243214e17002e2920bb59 # v18
         with:
           server_address: ${{ secrets.SMTP_HOST }}
           server_port: ${{ secrets.SMTP_PORT }}
