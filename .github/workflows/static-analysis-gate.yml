@@ -47,12 +47,26 @@ jobs:
         if: steps.install.outputs.installed == 'true'
         run: |
           set +e
-          panic-attack assail --format json . > panic-attack-findings.json 2>&1
+          panic-attack assail --format json . > panic-attack-findings.json
           PA_EXIT=$?
           set -e
 
+          # Same defect class as the Hypatia job below: `2>&1` folded the
+          # scanner's stderr into the JSON payload, so every jq parse failed,
+          # every count silently became 0 via `|| echo 0`, and "Fail on critical
+          # findings" could never fire on any input. Keep stderr on the log.
           if [ ! -s panic-attack-findings.json ]; then
             echo "[]" > panic-attack-findings.json
+          fi
+
+          # Deliberately a WARNING, not a failure. panic-attack is a downloaded
+          # release binary whose exit-code and output contract are not verified
+          # here, and it has no confirmed --exit-zero equivalent, so we surface a
+          # malformed payload in the log rather than block on an unverified tool.
+          # Promote to `exit 1` (as the Hypatia job does) once that contract is
+          # confirmed -- see the follow-up issue linked from this PR.
+          if ! jq -e 'type == "array"' panic-attack-findings.json >/dev/null 2>&1; then
+            echo "::warning::panic-attack output is not a JSON array (exit ${PA_EXIT}); counts below are unreliable"
           fi
 
           # Parse finding counts
@@ -73,13 +87,19 @@ jobs:
         if: steps.install.outputs.installed == 'true'
         run: |
           # Convert JSON findings into GitHub Actions annotations
-          jq -r '.[] | select(.file != null) |
+          # Findings carry no `.message` (keys: action,file,line,reason,rule_module,
+          # severity,type), so every annotation read "null". `.file` is an absolute
+          # runner path, which GitHub cannot anchor to the diff, so it is made
+          # workspace-relative here.
+          jq -r --arg ws "$GITHUB_WORKSPACE" '.[] | select(.file != null) |
+            (.file | ltrimstr($ws + "/")) as $f |
+            (.reason // .message // .type // "finding") as $m |
             if .severity == "critical" then
-              "::error file=\(.file),line=\(.line // 1)::[panic-attack] \(.message)"
+              "::error file=\($f),line=\(.line // 1)::[panic-attack] \($m)"
             elif .severity == "high" then
-              "::error file=\(.file),line=\(.line // 1)::[panic-attack] \(.message)"
+              "::error file=\($f),line=\(.line // 1)::[panic-attack] \($m)"
             else
-              "::warning file=\(.file),line=\(.line // 1)::[panic-attack] \(.message)"
+              "::warning file=\($f),line=\(.line // 1)::[panic-attack] \($m)"
             end
           ' panic-attack-findings.json || true
 
@@ -162,12 +182,28 @@ jobs:
         if: steps.build.outputs.ready == 'true'
         run: |
           set +e
-          HYPATIA_FORMAT=json "$HOME/hypatia/hypatia-cli.sh" scan . > hypatia-findings.json 2>&1
+          HYPATIA_FORMAT=json "$HOME/hypatia/hypatia-cli.sh" scan . --exit-zero > hypatia-findings.json
           HYP_EXIT=$?
           set -e
 
-          if [ ! -s hypatia-findings.json ] || ! jq empty hypatia-findings.json 2>/dev/null; then
-            echo "[]" > hypatia-findings.json
+          # --exit-zero is Hypatia's own documented CI recipe (lib/hypatia/cli.ex),
+          # for exactly this case: "use in CI when a downstream step gates on
+          # severity counts". Findings go to stdout, the one-line summary to
+          # stderr, and the process exits 0 unless the SCANNER itself failed.
+          #
+          # Do NOT redirect stderr into the payload with `2>&1`: that folds the
+          # summary line into the JSON, so every parse fails, the old `[]`
+          # fallback substituted a clean result, CRITICAL was always 0, and the
+          # gate below could never fire on any input. Keep stderr on the log.
+          if [ "$HYP_EXIT" -ne 0 ]; then
+            echo "::error::Hypatia scanner execution failed with exit ${HYP_EXIT}"
+            exit "$HYP_EXIT"
+          fi
+          # `jq empty` is NOT sufficient -- it succeeds on any valid JSON,
+          # including a bare string, object or null. Assert the array.
+          if [ ! -s hypatia-findings.json ] || ! jq -e 'type == "array"' hypatia-findings.json >/dev/null; then
+            echo "::error::Hypatia did not produce a valid JSON findings array"
+            exit 1
           fi
 
           TOTAL=$(jq '. | length' hypatia-findings.json 2>/dev/null || echo 0)
@@ -185,13 +221,19 @@ jobs:
       - name: Emit check annotations
         if: steps.build.outputs.ready == 'true'
         run: |
-          jq -r '.[] | select(.file != null) |
+          # Findings carry no `.message` (keys: action,file,line,reason,rule_module,
+          # severity,type), so every annotation read "null". `.file` is an absolute
+          # runner path, which GitHub cannot anchor to the diff, so it is made
+          # workspace-relative here.
+          jq -r --arg ws "$GITHUB_WORKSPACE" '.[] | select(.file != null) |
+            (.file | ltrimstr($ws + "/")) as $f |
+            (.reason // .message // .type // "finding") as $m |
             if .severity == "critical" then
-              "::error file=\(.file),line=\(.line // 1)::[hypatia] \(.message)"
+              "::error file=\($f),line=\(.line // 1)::[hypatia] \($m)"
             elif .severity == "high" then
-              "::error file=\(.file),line=\(.line // 1)::[hypatia] \(.message)"
+              "::error file=\($f),line=\(.line // 1)::[hypatia] \($m)"
             else
-              "::warning file=\(.file),line=\(.line // 1)::[hypatia] \(.message)"
+              "::warning file=\($f),line=\(.line // 1)::[hypatia] \($m)"
             end
           ' hypatia-findings.json || true
 
