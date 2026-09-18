@@ -40,7 +40,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Send push notification email
-        uses: hyperpolymath/smtp-notify-action@v0.2.0 # NOSONAR — pin authority is actions.lock (sha1-ede1191ef6ff3ac02c4f4d9efdf837ee517e11d7)
+        uses: hyperpolymath/smtp-notify-action@v0.3.0 # NOSONAR — pin authority is actions.lock (sha1-ede1191ef6ff3ac02c4f4d9efdf837ee517e11d7)
         with:
           server_address: ${{ secrets.SMTP_HOST }}
           server_port: ${{ secrets.SMTP_PORT }}
