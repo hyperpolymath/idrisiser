@@ -5,7 +5,7 @@
 TEMPLATE INSTRUCTIONS (delete this block before publishing)
 ============================================================================
 Replace all {{PLACEHOLDER}} values:
-  {{PROJECT_NAME}}     - Your project name
+  idrisiser     - Your project name
   hyperpolymath            - GitHub/GitLab username or org
   idrisiser             - Repository name
   {{CONDUCT_EMAIL}}    - Email for conduct reports
@@ -22,7 +22,7 @@ Review and customise:
 
 ## Our Pledge
 
-We as members, contributors, and leaders pledge to make participation in {{PROJECT_NAME}} a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, colour, religion, or sexual identity and orientation.
+We as members, contributors, and leaders pledge to make participation in idrisiser a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, colour, religion, or sexual identity and orientation.
 
 We pledge to act and interact in ways that contribute to an open, welcoming, diverse, inclusive, and healthy community.
 
