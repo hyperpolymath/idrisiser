@@ -128,7 +128,7 @@ jobs:
           echo "Skipped: panic-attack not available in this environment." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload panic-attack findings
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: panic-attack-findings
           path: panic-attack-findings.json
@@ -262,7 +262,7 @@ jobs:
           echo "Skipped: Hypatia scanner not available in this environment." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload hypatia findings
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: hypatia-findings
           path: hypatia-findings.json
@@ -285,13 +285,13 @@ jobs:
 
     steps:
       - name: Download panic-attack findings
-        uses: actions/download-artifact@v8.0.1
+        uses: actions/download-artifact@v8.0.2
         with:
           name: panic-attack-findings
           path: findings/
 
       - name: Download hypatia findings
-        uses: actions/download-artifact@v8.0.1
+        uses: actions/download-artifact@v8.0.2
         with:
           name: hypatia-findings
           path: findings/
@@ -345,7 +345,7 @@ jobs:
           echo "low=$LOW"           >> "$GITHUB_OUTPUT"
 
       - name: Upload unified findings (fleet scanner picks these up)
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: unified-findings
           path: findings/unified-findings.json
