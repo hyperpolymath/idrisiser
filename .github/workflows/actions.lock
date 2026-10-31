@@ -38,8 +38,6 @@ workflows:
         - 'actions/checkout@v7.0.1'
     '.github/workflows/rust-ci.yml': []
     '.github/workflows/scorecard.yml': []
-    # Remote reusable checkout edge: gh actions-lock cannot discover job-level
-    # reusable calls; preserve this entry when regenerating the lock.
     '.github/workflows/secret-scanner.yml':
         - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
     '.github/workflows/static-analysis-gate.yml':
