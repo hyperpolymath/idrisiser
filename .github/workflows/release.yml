@@ -37,7 +37,7 @@ jobs:
           #   mix release
 
       # TODO: Upload build artifacts if needed
-      - uses: actions/upload-artifact@13131bb095770b4070a7477c3cd2d96e1c16d9f4 # v4
+      - uses: actions/upload-artifact@main
       #   with:
       #     name: release-artifacts
       #     path: target/release/
